@@ -4,10 +4,7 @@ class LoginForm extends Component{
     constructor(props){
         super(props);
         this.state = {
-            firstName: "",
-            lastName: "",
             email: "",
-            telNr: "",
             password: ""
         }
 
@@ -28,7 +25,7 @@ class LoginForm extends Component{
         return (
             <form className="form-inner" onSubmit={this.handleSubmit}>
                 <h2>Login</h2>
-                {/*ERROR! */}
+                {(this.props.error !== "") ? ( <div className={ "error"}>{this.props.error}</div>) : ""}
                 <div className={"form-group"}>
                     <label htmlFor={"email"}>Email:</label>
                     <input type={"email"} name={"email"} id={"email"} onChange={this.changeHandler} required/>

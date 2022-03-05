@@ -26,16 +26,15 @@ class RegisterForm extends Component{
 
     render() {
         return (
-            <form className="form-inner" onSubmit={this.handleSubmit}>
+            <form className="form-inner" onSubmit={this.handleSubmit} >
                 <h2>Register</h2>
-                {/*ERROR! */}
                 <div className={"form-group"}>
-                    <label htmlFor={"first name"}>First Name:</label>
-                    <input type={"text"} name={"first name"} id={"first name"} onChange={this.changeHandler} required/>
+                    <label htmlFor={"firstName"}>First Name:</label>
+                    <input type={"text"} name={"firstName"} id={"firstName"} onChange={this.changeHandler} required/>
                 </div>
                 <div className={"form-group"}>
-                    <label htmlFor={"last name"}>Last Name:</label>
-                    <input type={"text"} name={"last name"} id={"last name"} onChange={this.changeHandler} required/>
+                    <label htmlFor={"lastName"}>Last Name:</label>
+                    <input type={"text"} name={"lastName"} id={"lastName"} onChange={this.changeHandler} required/>
                 </div>
                 <div className={"form-group"}>
                     <label htmlFor={"email"}>Email:</label>

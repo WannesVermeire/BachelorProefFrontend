@@ -1,4 +1,6 @@
 import React,{Component} from 'react'
+import {Button, Col, Form, Row, Container} from "react-bootstrap";
+import {Link} from "react-router-dom";
 
 class RegisterForm extends Component{
     constructor(props){
@@ -26,30 +28,37 @@ class RegisterForm extends Component{
 
     render() {
         return (
-            <form className="form-inner" onSubmit={this.handleSubmit} >
-                <h2>Register</h2>
-                <div className={"form-group"}>
-                    <label htmlFor={"firstName"}>First Name:</label>
-                    <input type={"text"} name={"firstName"} id={"firstName"} onChange={this.changeHandler} required/>
-                </div>
-                <div className={"form-group"}>
-                    <label htmlFor={"lastName"}>Last Name:</label>
-                    <input type={"text"} name={"lastName"} id={"lastName"} onChange={this.changeHandler} required/>
-                </div>
-                <div className={"form-group"}>
-                    <label htmlFor={"email"}>Email:</label>
-                    <input type={"email"} name={"email"} id={"email"} onChange={this.changeHandler} required/>
-                </div>
-                <div className={"form-group"}>
-                    <label htmlFor={"telNr"}>Tel:</label>
-                    <input type={"text"} name={"telNr"} id={"telNr"} onChange={this.changeHandler} required/>
-                </div>
-                <div className={"form-group"}>
-                    <label htmlFor={"password"}>Password:</label>
-                    <input type={"password"} name={"password"} id={"password"} onChange={this.changeHandler} required/>
-                </div>
-                <input type="submit" onSubmit={this.handleSubmit} value={"REGISTER"}/>
-            </form>
+            <Container style={{textAlign: "left"}}>
+                <Form onSubmit={this.handleSubmit}>
+                    <Row className={"mb-3"}>
+                        <Form.Group as={Col}  >
+                            <Form.Label >First Name</Form.Label>
+                            <Form.Control type="firstName" required/>
+                        </Form.Group>
+                        <Form.Group as={Col}  >
+                            <Form.Label>Last Name</Form.Label>
+                            <Form.Control type="lastName" required/>
+                        </Form.Group>
+                    </Row>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control type="email" required/>
+                    </Form.Group>
+                    <Form.Group  className="mb-3">
+                        <Form.Label>TelNr</Form.Label>
+                        <Form.Control type="telNr" required/>
+                    </Form.Group>
+                    <Form.Group  className="mb-3">
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control type="password" required/>
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Button type="submit" onSubmit={this.handleSubmit} >Register</Button>
+                    </Form.Group>
+                </Form>
+            </Container>
+
+
         );
     }
 }

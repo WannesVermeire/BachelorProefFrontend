@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import LoginForm from "../components/LoginForm";
+import {Button} from 'react-bootstrap';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class Home extends Component {
     state = {
@@ -15,6 +17,10 @@ class Home extends Component {
     }
 
     Login = (details) =>{
+        /*api.get('/').then(res => {
+            console.log(res.data)
+            this.setState({students: res.data })
+        })*/
         //Checking information in backend and requesting token for future requests
         if(true) { //ToDo change true to backend request
             this.setState({[this.state.user.token]: "backendtoken"});
@@ -31,12 +37,11 @@ class Home extends Component {
     }
 
     //LoginForm en RegisterForm mogen niet tegelijk zichtbaar zijn!
+    //Logout button <Button onClick={this.Logout}>LOGOUT</Button>
     render(){
         return(
-            <div>
-                <h1>Master Tool</h1>
+            <div >
                 <LoginForm Login={this.Login} error ={this.state.error}/>
-                <button onClick={this.Logout}>LOGOUT</button>
             </div>
 
         );

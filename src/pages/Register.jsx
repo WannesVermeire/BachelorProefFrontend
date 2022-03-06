@@ -11,9 +11,8 @@ class Register extends Component {
     //LoginForm en RegisterForm mogen niet tegelijk zichtbaar zijn!
     render(){
         return(
-            <div>
+            <div style={{textAlign: "center"}}>
                 <RegisterForm Register={this.Login} />
-                <button onClick={this.Logout}>LOGOUT</button>
             </div>
 
         );

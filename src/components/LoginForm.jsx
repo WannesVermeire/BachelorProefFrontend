@@ -1,4 +1,6 @@
 import React,{Component} from 'react'
+import {Form, Button, Row, Col,Container } from 'react-bootstrap';
+import {Link} from "react-router-dom";
 
 class LoginForm extends Component{
     constructor(props){
@@ -18,24 +20,41 @@ class LoginForm extends Component{
     }
 
     changeHandler = (e) =>{
+        e.preventDefault()
         this.setState({[e.target.name]: e.target.value})
     }
 
     render() {
         return (
-            <form className="form-inner" onSubmit={this.handleSubmit}>
-                <h2>Login</h2>
-                {(this.props.error !== "") ? ( <div className={ "error"}>{this.props.error}</div>) : ""}
-                <div className={"form-group"}>
-                    <label htmlFor={"email"}>Email:</label>
-                    <input type={"email"} name={"email"} id={"email"} onChange={this.changeHandler} required/>
-                </div>
-                <div className={"form-group"}>
-                    <label htmlFor={"password"}>Password:</label>
-                    <input type={"password"} name={"password"} id={"password"} onChange={this.changeHandler} required/>
-                </div>
-                <input type="submit" onSubmit={this.handleSubmit} value={"LOGIN"}/>
-            </form>
+            <Container fluid="sm">
+                <Form onSubmit={this.handleSubmit}>
+                    <Form.Group  as={Row} className={"mb-3"}>
+                        <Form.Label column sm={1}>Email address</Form.Label>
+                        <Col >
+                            <Form.Control type={"email"} name={"email"}  placeholder={"Enter email"} onChange={this.changeHandler} required/>
+                        </Col>
+                    </Form.Group>
+                    <Form.Group as={Row} className={"mb-3"}>
+                        <Form.Label column sm={1}>Password</Form.Label>
+                        <Col >
+                            <Form.Control type={"password"} name={"password"} placeholder={"Password"} onChange={this.changeHandler} required/>
+                        </Col>
+                    </Form.Group>
+                    <Form.Group as={Row} className="mb-3">
+                        <Col >
+                            <Button type="submit" onSubmit={this.handleSubmit} >Sign in</Button>
+                        </Col>
+                    </Form.Group>
+                    <Form.Group as={Row} className="mb-3">
+                        <Col >
+                            <Link to ="/register">
+                                <Button variant={"link"}>Don't have an account yet?</Button>
+                            </Link>
+                        </Col>
+                    </Form.Group>
+                </Form>
+            </Container>
+
         );
     }
 }

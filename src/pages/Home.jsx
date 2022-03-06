@@ -17,10 +17,6 @@ class Home extends Component {
     }
 
     Login = (details) =>{
-        /*api.get('/').then(res => {
-            console.log(res.data)
-            this.setState({students: res.data })
-        })*/
         //Checking information in backend and requesting token for future requests
         if(true) { //ToDo change true to backend request
             this.setState({[this.state.user.token]: "backendtoken"});

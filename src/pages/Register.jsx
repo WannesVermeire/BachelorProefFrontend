@@ -12,7 +12,7 @@ class Register extends Component {
     render(){
         return(
             <div style={{textAlign: "center"}}>
-                <RegisterForm Register={this.Login} />
+                <RegisterForm Register={this.Register} />
             </div>
 
         );

@@ -33,24 +33,24 @@ class RegisterForm extends Component{
                     <Row className={"mb-3"}>
                         <Form.Group as={Col}  >
                             <Form.Label >First Name</Form.Label>
-                            <Form.Control type="firstName" required/>
+                            <Form.Control type={"text"} name={"firstName"} id={"firstName"} onChange={this.changeHandler} required/>
                         </Form.Group>
                         <Form.Group as={Col}  >
                             <Form.Label>Last Name</Form.Label>
-                            <Form.Control type="lastName" required/>
+                            <Form.Control type={"text"} name={"lastName"} id={"lastName"} onChange={this.changeHandler} required/>
                         </Form.Group>
                     </Row>
                     <Form.Group className="mb-3">
                         <Form.Label>Email</Form.Label>
-                        <Form.Control type="email" required/>
+                        <Form.Control type={"email"} name={"email"} id={"email"} onChange={this.changeHandler} required/>
                     </Form.Group>
                     <Form.Group  className="mb-3">
                         <Form.Label>TelNr</Form.Label>
-                        <Form.Control type="telNr" required/>
+                        <Form.Control type={"text"} name={"telNr"} id={"telNr"} onChange={this.changeHandler} required/>
                     </Form.Group>
                     <Form.Group  className="mb-3">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" required/>
+                        <Form.Control type={"password"} name={"password"} id={"password"} onChange={this.changeHandler} required/>
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Button type="submit" onSubmit={this.handleSubmit} >Register</Button>

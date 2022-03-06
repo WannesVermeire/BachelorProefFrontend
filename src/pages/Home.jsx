@@ -28,6 +28,7 @@ class Home extends Component {
         else {
             this.setState({error: "Details do not match!"});
         }
+        console.log(details);
     }
 
     Logout = () => {

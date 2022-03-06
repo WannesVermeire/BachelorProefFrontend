@@ -3,6 +3,7 @@ import Home from "./Home";
 import {Route, Routes} from "react-router-dom";
 import Register from "./Register";
 import Error from "./Error";
+import studentList from "./StudentList";
 
 function App() {
     return (
@@ -11,6 +12,7 @@ function App() {
             <Routes>
                 <Route path='/' element={<Home/>}/>
                 <Route path='/register' element={<Register/>}/>
+                <Route path='/studentList' element={<studentList/>}/>
                 <Route path='*' element={<Error/>}/>
             </Routes>
         </div>

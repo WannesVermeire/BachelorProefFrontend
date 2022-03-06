@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import LoginForm from "../components/LoginForm";
-import RegisterForm from "../components/RegisterForm";
+
 
 class Home extends Component {
     state = {
@@ -11,7 +11,6 @@ class Home extends Component {
     }
     Register =(details) =>{
         //Saving information in database
-        this.Login(details);
         console.log(details);
     }
 
@@ -35,12 +34,8 @@ class Home extends Component {
     render(){
         return(
             <div>
-                <div>
-                    <LoginForm Login={this.Login} error ={this.state.error}/>
-                </div>
-                <div style={{display: 'none'}}>
-                    <RegisterForm Register={this.Register} />
-                </div>
+                <h1>Master Tool</h1>
+                <LoginForm Login={this.Login} error ={this.state.error}/>
                 <button onClick={this.Logout}>LOGOUT</button>
             </div>
 

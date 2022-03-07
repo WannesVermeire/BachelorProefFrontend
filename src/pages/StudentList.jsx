@@ -22,7 +22,17 @@ class StudentList extends Component {
             <Container>
                 <h2>Students</h2>
                 <div className={"users"}>
-                    {this.state.students.map(student => <h6 key={student.id}>{student.firstname} {student.lastname} {student.email} {student.telNr}</h6> )}
+                    <div className="row">
+                        <div className="col">
+                            {this.state.students.map(student => <h6 key={student.id}>{student.firstname} {student.lastname}</h6> )}
+                        </div>
+                        <div className="col">
+                            {this.state.students.map(student => <h6 key={student.id}>{student.email}</h6> )}
+                        </div>
+                        <div className="col">Css studentlist
+                            {this.state.students.map(student => <h6 key={student.id}>{student.telNr}</h6> )}
+                        </div>
+                    </div>
                 </div>
             </Container>
 

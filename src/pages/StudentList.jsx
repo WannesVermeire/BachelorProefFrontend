@@ -29,7 +29,7 @@ class StudentList extends Component {
                         <div className="col">
                             {this.state.students.map(student => <h6 key={student.id}>{student.email}</h6> )}
                         </div>
-                        <div className="col">Css studentlist
+                        <div className="col">
                             {this.state.students.map(student => <h6 key={student.id}>{student.telNr}</h6> )}
                         </div>
                     </div>

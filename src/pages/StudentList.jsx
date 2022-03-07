@@ -12,7 +12,7 @@ class StudentList extends Component {
     }
     constructor() {
         super();
-        api.get('/').then(res => {
+        api.get('/userManegement/users/student').then(res => {
             console.log(res.data)
             this.setState({students: res.data})
         })

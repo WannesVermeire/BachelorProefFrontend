@@ -18,7 +18,7 @@ class Home extends Component {
     }
 
     Login = (details) =>{
-        api.get('/authentication/login',details).then(res => {
+        api.post('/authentication/login',details).then(res => {
             console.log(res.data)
             //this.setState({students: res.data})
         })

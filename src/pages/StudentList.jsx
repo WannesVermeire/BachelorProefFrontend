@@ -12,7 +12,7 @@ class StudentList extends Component {
     }
     constructor() {
         super();
-        api.get('/userManegement/users/student').then(res => {
+        api.get('/userManagement/users/student').then(res => {
             console.log(res.data)
             this.setState({students: res.data})
         })
@@ -22,7 +22,7 @@ class StudentList extends Component {
             <Container>
                 <h2>Students</h2>
                 <div className={"users"}>
-                    {this.state.students.map(student => <h2 key={student.name}>{student.name}</h2> )}
+                    {this.state.students.map(student => <h6 key={student.id}>{student.firstname} {student.lastname} {student.email} {student.telNr}</h6> )}
                 </div>
             </Container>
 

@@ -3,6 +3,11 @@ import LoginForm from "../components/LoginForm";
 import {Button} from 'react-bootstrap';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from "axios";
+
+const api = axios.create ({
+    baseURL: 'http://localhost:8081'
+})
 
 class Home extends Component {
     state = {
@@ -11,12 +16,12 @@ class Home extends Component {
         },
         error:""
     }
-    Register =(details) =>{
-        //Saving information in database
-        console.log(details);
-    }
 
     Login = (details) =>{
+        api.get('/authentication/login',details).then(res => {
+            console.log(res.data)
+            //this.setState({students: res.data})
+        })
         //Checking information in backend and requesting token for future requests
         if(true) { //ToDo change true to backend request
             this.setState({[this.state.user.token]: "backendtoken"});

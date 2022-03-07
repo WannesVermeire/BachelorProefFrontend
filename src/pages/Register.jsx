@@ -14,7 +14,6 @@ class Register extends Component {
             <div style={{textAlign: "center"}}>
                 <RegisterForm Register={this.Register} />
             </div>
-
         );
     }
 }

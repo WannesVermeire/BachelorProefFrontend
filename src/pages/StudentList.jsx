@@ -3,7 +3,7 @@ import {Container} from 'react-bootstrap';
 import axios from 'axios';
 
 const api = axios.create ({
-    baseURL: 'http://localhost:8080/api/v1/student'
+    baseURL: 'http://localhost:8081/'
 })
 
 class StudentList extends Component {

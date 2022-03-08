@@ -15,7 +15,7 @@ class Register extends Component {
         var data = qs.stringify(details);
         var config = {
             method: 'post',
-            url: 'http://localhost:8081/userManagement/user',
+            url: 'http://localhost:8081/userManagement/users',
             headers:{
                 'Content-Type': "application/x-www-form-urlencoded"
             },

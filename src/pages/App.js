@@ -10,21 +10,21 @@ import {Navbar, Container, Nav, NavDropdown, Button} from "react-bootstrap";
 class App extends Component {
     constructor(){
         super();
-        this.state = {
+        /*this.state = {
             user: {
                 access_token: '',
                 refresh_token: ''
             },
-        }
-        this.GlobalLogin = this.GlobalLogin.bind(this);
+        }*/
+        //this.GlobalLogin = this.GlobalLogin.bind(this);
 
     }
 
-    GlobalLogin = (tokens) =>{
+    /*GlobalLogin = (tokens) =>{
         console.log(tokens);
         this.setState({user: {access_token: tokens.access_token,
                             refresh_token: tokens.refresh_token}});
-    }
+    }*/
     Logout = () => {
         //Logging out = resetting token
     }
@@ -51,7 +51,7 @@ class App extends Component {
                     </Container>
                 </Navbar>
                 <Routes>
-                    <Route path='/' element={<Home GlobalLogin={this.GlobalLogin} />}/>
+                    <Route path='/' element={<Home />}/>
                     <Route path='/register' element={<Register/>}/>
                     <Route path='/studentlist' element={<StudentList />}/>
                     <Route path='*' element={<Error/>}/>

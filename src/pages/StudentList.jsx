@@ -10,13 +10,28 @@ class StudentList extends Component {
     state = {
         students: []
     }
-    constructor() {
-        super();
-        api.get('/userManagement/users/student').then(res => {
-            console.log(res.data)
-            this.setState({students: res.data})
-        })
+    constructor(props) {
+        super(props);
+        var axios = require('axios');
+        var header = {'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))}
+        console.log(header);
+        var config = {
+            method: 'get',
+            url: 'http://localhost:8081/userManagement/users',
+            headers: {
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))}
+        };
+        var self = this
+        axios(config)
+            .then(function (res) {
+                self.setState({students: res.data});
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }
+
+
     render(){
         return(
             <Container>

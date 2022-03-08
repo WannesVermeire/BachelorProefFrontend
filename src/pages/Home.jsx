@@ -18,6 +18,23 @@ class Home extends Component {
     }
 
     Login = (details) =>{
+        /*
+        var data = JSON.stringify(details);
+        var config = {
+            method: 'post',
+            url: 'http://localhost:8081/authentication/login',
+            headers:{
+                'Content-Type': "application/x-www-form-urlencoded"
+            },
+            data: data
+        }
+        axios(config).then(function(res){
+            console.log(JSON.stringify(res.data));
+        })
+            .catch(function(error){
+                console.log(error);
+            })
+         */
         api.post('/authentication/login',details).then(res => {
             console.log(res.data)
             //this.setState({students: res.data})

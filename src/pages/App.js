@@ -1,6 +1,6 @@
 import React from "react";
 import Home from "./Home";
-import {Route, Routes} from "react-router-dom";
+import {Link, Route, Routes} from "react-router-dom";
 import Register from "./Register";
 import Error from "./Error";
 import StudentList from "./StudentList";
@@ -11,12 +11,12 @@ function App() {
         <div className="App">
                 <Navbar className="mb-3" bg="dark" variant="dark" expand="lg">
                     <Container >
-                        <Navbar.Brand  href="#home">Master Tool</Navbar.Brand>
+                        <Navbar.Brand as={Link} to="/">Master Tool</Navbar.Brand>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         <Navbar.Collapse id="basic-navbar-nav">
                             <Nav className="me-auto">
-                                <Nav.Link to ="/">Home</Nav.Link>
-                                <Nav.Link to ="/studentlist">Studentlist</Nav.Link>
+                                <Nav.Link as={Link} to ="/">Home</Nav.Link>
+                                <Nav.Link as={Link} to ="/studentlist">Studentlist</Nav.Link>
                                 <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                                     <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                                     <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>

@@ -26,7 +26,6 @@ class LoginForm extends Component{
 
     render() {
         return (
-            <Container fluid="sm">
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Group  as={Row} className={"mb-3"}>
                         <Form.Label column sm={1}>Email address</Form.Label>
@@ -53,7 +52,6 @@ class LoginForm extends Component{
                         </Col>
                     </Form.Group>
                 </Form>
-            </Container>
 
         );
     }

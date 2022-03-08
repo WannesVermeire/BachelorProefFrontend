@@ -28,7 +28,6 @@ class Home extends Component {
             data: data
         }
         axios(config).then(function(res){
-            console.log(res.data);
             localStorage.setItem("access_token", JSON.stringify(res.data.access_token));
             localStorage.setItem("refresh_token", JSON.stringify(res.data.refresh_token));
         })

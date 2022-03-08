@@ -13,8 +13,6 @@ class StudentList extends Component {
     constructor(props) {
         super(props);
         var axios = require('axios');
-        var header = {'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))}
-        console.log(header);
         var config = {
             method: 'get',
             url: 'http://localhost:8081/userManagement/users',

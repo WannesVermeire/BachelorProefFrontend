@@ -4,7 +4,7 @@ import {Button, Container} from 'react-bootstrap';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
-
+import qs from 'qs';
 const api = axios.create ({
     baseURL: 'http://localhost:8081'
 })
@@ -15,8 +15,7 @@ class Home extends Component {
     }
 
     Login = (details) =>{
-        /*
-        var data = JSON.stringify(details);
+        var data = qs.stringify(details);
         var config = {
             method: 'post',
             url: 'http://localhost:8081/authentication/login',
@@ -26,22 +25,13 @@ class Home extends Component {
             data: data
         }
         axios(config).then(function(res){
-            console.log(JSON.stringify(res.data));
-        })
-            .catch(function(error){
-                console.log(error);
-            })
-         */
-        api.post('/authentication/login',details).then(res => {
-            //Checking information in backend and requesting token for future requests
             if(res) { //ToDo change true to backend request
-                this.props.Login(res.data.tokens);
+                this.props.Login(res);
             }
-            else {
-                this.setState({error: "Details do not match!"});
-            }
+        }).catch(function(){
+            this.setState({error: "Details do not match!"});;
         })
-        console.log(details);
+        console.log(this.state.error);
     }
 
     Logout = () => {
@@ -56,6 +46,7 @@ class Home extends Component {
         return(
             <Container fluid="sm">
                 <LoginForm Login={this.Login} error ={this.state.error}/>
+                <h2 >{this.state.error}</h2>
                 <div className="card text-white bg-primary mb-3">
                     <div className="card-header">Welkom bij de grootste fout van je leven</div>
                     <div className="card-body">

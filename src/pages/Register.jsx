@@ -1,17 +1,31 @@
 import RegisterForm from "../components/RegisterForm";
 import React, {Component} from 'react';
 import axios from "axios";
+import qs from 'qs';
 
-const api = axios.create ({
-    baseURL: 'http://localhost:8081'
-})
 class Register extends Component {
+    constructor (){
+        super();
+        this.state = {
+            error:""
+        }
+    }
+
     Register =(details) =>{
-        api.post('/userManagement/users',details).then(res => {
-            console.log(res.data)
-            //this.setState({students: res.data})
+        var data = qs.stringify(details);
+        var config = {
+            method: 'post',
+            url: 'http://localhost:8081/userManagement/user',
+            headers:{
+                'Content-Type': "application/x-www-form-urlencoded"
+            },
+            data: data
+        }
+        axios(config).then(function(res){
+        }).catch(function() {
+            this.setState({error: "Details do not match!"});
+            console.log("Else werkt!")
         })
-        //Saving information in database
         console.log(details);
     }
 

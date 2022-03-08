@@ -3,8 +3,8 @@ import {Form, Button, Row, Col,Container } from 'react-bootstrap';
 import {Link} from "react-router-dom";
 
 class LoginForm extends Component{
-    constructor(props){
-        super(props);
+    constructor(){
+        super();
         this.state = {
             email: "",
             password: ""
@@ -16,7 +16,7 @@ class LoginForm extends Component{
 
     handleSubmit = (e) =>{
         e.preventDefault()
-        this.props.Login(this.state);
+        this.props.Login(this.state)
     }
 
     changeHandler = (e) =>{

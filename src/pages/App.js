@@ -5,16 +5,28 @@ import Register from "./Register";
 
 import Error from "./Error";
 import StudentList from "./StudentList";
-import {Navbar, Container, Nav, NavDropdown} from "react-bootstrap";
+import {Navbar, Container, Nav, NavDropdown, Button} from "react-bootstrap";
 
 class App extends Component {
-    state = {
-        user: {
-            tokens: ''
-        },
+    constructor(){
+        super();
+        this.state = {
+            user: {
+                access_token: '',
+                refresh_token: ''
+            },
+        }
+        this.GlobalLogin = this.GlobalLogin.bind(this);
+
     }
-    Login = (tokens) =>{
-        this.setState({[this.state.user.tokens]: "token"});
+
+    GlobalLogin = (tokens) =>{
+        console.log(tokens);
+        this.setState({user: {access_token: tokens.access_token,
+                            refresh_token: tokens.refresh_token}});
+    }
+    Logout = () => {
+        //Logging out = resetting token
     }
     render(){
         return (
@@ -39,11 +51,12 @@ class App extends Component {
                     </Container>
                 </Navbar>
                 <Routes>
-                    <Route path='/' element={<Home Login={this.Login} />}/>
+                    <Route path='/' element={<Home GlobalLogin={this.GlobalLogin} />}/>
                     <Route path='/register' element={<Register/>}/>
                     <Route path='/studentlist' element={<StudentList />}/>
                     <Route path='*' element={<Error/>}/>
                 </Routes>
+                <Button onClick={this.Logout}>LOGOUT</Button>
             </div>
         );
     }

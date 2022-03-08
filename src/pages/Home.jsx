@@ -5,16 +5,19 @@ import {Button, Container} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
 import qs from 'qs';
-const api = axios.create ({
-    baseURL: 'http://localhost:8081'
-})
 
 class Home extends Component {
-    state = {
-        error:""
+    constructor(){
+        super();
+        this.state = {
+            error:""
+        }
+        this.Login = this.Login.bind(this);
     }
 
+
     Login = (details) =>{
+        var self =this;
         var data = qs.stringify(details);
         var config = {
             method: 'post',
@@ -25,23 +28,9 @@ class Home extends Component {
             data: data
         }
         axios(config).then(function(res){
-            if(res) { //ToDo change true to backend request
-                this.props.Login(res);
-            }
-        }).catch(function(){
-            this.setState({error: "Details do not match!"});;
+            self.props.GlobalLogin( res.data);
         })
-        console.log(this.state.error);
     }
-
-    Logout = () => {
-        //Logging out = resetting token
-        this.setState({[this.state.user.token]: ''});
-        console.log("logged out");
-    }
-
-    //LoginForm en RegisterForm mogen niet tegelijk zichtbaar zijn!
-    //Logout button <Button onClick={this.Logout}>LOGOUT</Button>
     render(){
         return(
             <Container fluid="sm">
@@ -57,7 +46,6 @@ class Home extends Component {
                     </div>
                 </div>
             </Container>
-
         );
     }
 }

@@ -11,9 +11,6 @@ const api = axios.create ({
 
 class Home extends Component {
     state = {
-        user:{
-            token: ''
-        },
         error:""
     }
 
@@ -36,16 +33,14 @@ class Home extends Component {
             })
          */
         api.post('/authentication/login',details).then(res => {
-            console.log(res.data)
-            //this.setState({students: res.data})
+            //Checking information in backend and requesting token for future requests
+            if(res) { //ToDo change true to backend request
+                this.props.Login(res.data.tokens);
+            }
+            else {
+                this.setState({error: "Details do not match!"});
+            }
         })
-        //Checking information in backend and requesting token for future requests
-        if(true) { //ToDo change true to backend request
-            this.setState({[this.state.user.token]: "backendtoken"});
-        }
-        else {
-            this.setState({error: "Details do not match!"});
-        }
         console.log(details);
     }
 

@@ -1,14 +1,24 @@
-import React from "react";
+import React,{Component} from "react";
 import Home from "./Home";
 import {Link, Route, Routes} from "react-router-dom";
 import Register from "./Register";
+
 import Error from "./Error";
 import StudentList from "./StudentList";
 import {Navbar, Container, Nav, NavDropdown} from "react-bootstrap";
 
-function App() {
-    return (
-        <div className="App">
+class App extends Component {
+    state = {
+        user: {
+            tokens: ''
+        },
+    }
+    Login = (tokens) =>{
+        this.setState({[this.state.user.tokens]: "token"});
+    }
+    render(){
+        return (
+            <div className="App">
                 <Navbar className="mb-3" bg="dark" variant="dark" expand="lg">
                     <Container >
                         <Navbar.Brand as={Link} to="/">Master Tool</Navbar.Brand>
@@ -28,14 +38,15 @@ function App() {
                         </Navbar.Collapse>
                     </Container>
                 </Navbar>
-            <Routes>
-                <Route path='/' element={<Home/>}/>
-                <Route path='/register' element={<Register/>}/>
-                <Route path='/studentlist' element={<StudentList/>}/>
-                <Route path='*' element={<Error/>}/>
-            </Routes>
-        </div>
-    );
+                <Routes>
+                    <Route path='/' element={<Home Login={this.Login} />}/>
+                    <Route path='/register' element={<Register/>}/>
+                    <Route path='/studentlist' element={<StudentList />}/>
+                    <Route path='*' element={<Error/>}/>
+                </Routes>
+            </div>
+        );
+    }
 }
 
 export default App;

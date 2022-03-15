@@ -2,31 +2,31 @@ import React,{Component} from "react";
 import Home from "./Home";
 import {Link, Route, Routes} from "react-router-dom";
 import Register from "./Register";
+import Login from "./Login";
 
 import Error from "./Error";
 import StudentList from "./StudentList";
 import {Navbar, Container, Nav, NavDropdown, Button} from "react-bootstrap";
+import axios from "axios";
 
 class App extends Component {
-    constructor(){
-        super();
-        /*this.state = {
-            user: {
-                access_token: '',
-                refresh_token: ''
-            },
-        }*/
-        //this.GlobalLogin = this.GlobalLogin.bind(this);
-
-    }
-
-    /*GlobalLogin = (tokens) =>{
-        console.log(tokens);
-        this.setState({user: {access_token: tokens.access_token,
-                            refresh_token: tokens.refresh_token}});
-    }*/
     Logout = () => {
-        //Logging out = resetting token
+        localStorage.clear();
+    }
+    refreshToken = () => {
+        console.log("Aan het checken op login");
+        var config = {
+            method: 'get',
+            url: 'http://localhost:8081/authentication/token/refresh',
+            headers:{
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('refresh_token'))
+            }
+        }
+        axios(config).then(function(res){
+            localStorage.setItem("access_token", JSON.stringify(res.data.access_token));
+            localStorage.setItem("refresh_token", JSON.stringify(res.data.refresh_token));
+        }).catch(function (error) {
+        });
     }
     render(){
         return (
@@ -51,12 +51,12 @@ class App extends Component {
                     </Container>
                 </Navbar>
                 <Routes>
-                    <Route path='/' element={<Home />}/>
+                    <Route path='/' element={ <Home />}/>
+                    <Route path='/login' element={<Login />}/>
                     <Route path='/register' element={<Register/>}/>
-                    <Route path='/studentlist' element={<StudentList />}/>
+                    <Route path='/studentlist' element={<StudentList/>}/>
                     <Route path='*' element={<Error/>}/>
                 </Routes>
-                <Button onClick={this.Logout}>LOGOUT</Button>
             </div>
         );
     }

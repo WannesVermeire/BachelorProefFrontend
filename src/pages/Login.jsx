@@ -1,26 +1,40 @@
 import React, {Component} from 'react';
-import LoginForm from "../components/LoginForm";
-import {Button, Container} from 'react-bootstrap';
-import Home from "./Home";
+import {Button, Col, Container, Form, Row} from 'react-bootstrap';
+import { useRef, useState, useEffect } from 'react';
+import useAuth from '../hooks/useAuth';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
 import qs from 'qs';
-import {Link} from "react-router-dom";
+import {Link, useNavigate, useLocation} from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
 
-class Login extends Component {
-    constructor(){
-        super();
-        this.state = {
-            error:""
-        }
-        this.Login = this.Login.bind(this);
-    }
+const Login = () => {
+    const { auth, setAuth } = useAuth();
 
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/";
 
-    Login = (details) =>{
-        var self =this;
-        var data = qs.stringify(details);
+    const userRef = useRef();
+    const errRef = useRef();
+
+    const [email,setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [errMsg, setErrMsg] = useState('');
+
+    useEffect(() => {
+        userRef.current.focus();
+    },[])
+
+    useEffect(() => {
+        setErrMsg('');
+    },[email,setPassword])
+
+    const handleSubmit = async (e) =>{
+        e.preventDefault()
+
+        var data = qs.stringify({email, password});
         var config = {
             method: 'post',
             url: 'http://localhost:8081/authentication/login',
@@ -30,19 +44,70 @@ class Login extends Component {
             data: data
         };
         axios(config).then(function(res){
+            const decoded = jwt_decode(res.data.access_token);
+            const roles = decoded.roles;
+            setAuth({email,password, roles});
+
             localStorage.setItem("access_token", JSON.stringify(res.data.access_token));
             localStorage.setItem("refresh_token", JSON.stringify(res.data.refresh_token));
+            navigate(from, {replace: true});
         }).catch(function (error) {
+            console.log(error.response?.status)
+            if (!error?.response) {
+                setErrMsg('No Server Response');
+            } else if (error.response?.status ===401){
+                setErrMsg('Unauthorized');
+            } else {
+                setErrMsg('Login Failed')
+            }
+            errRef.current.focus();
         });
     }
-    render(){
-        return(
-            <Container fluid="sm">
-                <LoginForm Login={this.Login} error ={this.state.error}/>
-                <h2 >{this.state.error}</h2>
-            </Container>
-        );
-    }
+    return(
+        <Container fluid="sm">
+            <p ref={errRef} aria-live="assertive" className={"mb-1"}>{errMsg}</p>
+            <Form onSubmit={handleSubmit}>
+                <Form.Group  as={Row} className={"mb-3"}>
+                    <Form.Label column sm={1}>Email address</Form.Label>
+                    <Col >
+                        <Form.Control
+                            type={"email"}
+                            id={"email"}
+                            ref={userRef}
+                            autoComplete={"off"}
+                            placeholder={"Enter email"}
+                            onChange={(e) => setEmail(e.target.value)}
+                            value={email}
+                            required/>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row} className={"mb-3"}>
+                    <Form.Label column sm={1}>Password</Form.Label>
+                    <Col>
+                        <Form.Control
+                            type={"password"}
+                            name={"password"}
+                            placeholder={"Password"}
+                            onChange={(e) => setPassword(e.target.value)}
+                            value={password}
+                            required/>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row} className="mb-3">
+                    <Col >
+                        <Button type="submit">Sign in</Button>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row} className="mb-3">
+                    <Col >
+                        <Link to ="/register">
+                            <Button variant={"link"}>Don't have an account yet?</Button>
+                        </Link>
+                    </Col>
+                </Form.Group>
+            </Form>
+        </Container>
+    )
 }
 
 export default Login;

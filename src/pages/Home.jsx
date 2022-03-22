@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import LoginForm from "../components/LoginForm";
 import {Button, Container} from 'react-bootstrap';
 
 import 'bootstrap/dist/css/bootstrap.min.css';

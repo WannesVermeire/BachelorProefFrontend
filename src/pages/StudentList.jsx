@@ -20,7 +20,7 @@ class StudentList extends Component {
             headers: {
                 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))}
         };
-        var self = this
+        const self = this
         axios(config)
             .then(function (res) {
                 self.setState({students: res.data});

@@ -65,7 +65,7 @@ const Login = () => {
     }
     return(
         <Container fluid="sm">
-            <p ref={errRef} aria-live="assertive" className={"mb-1"}>{errMsg}</p>
+            <p className="alert alert-danger" hidden={!errMsg} ref={errRef} aria-live="assertive" >{errMsg}</p>
             <Form onSubmit={handleSubmit}>
                 <Form.Group  as={Row} className={"mb-3"}>
                     <Form.Label column sm={1}>Email address</Form.Label>

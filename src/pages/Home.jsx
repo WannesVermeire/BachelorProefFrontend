@@ -9,7 +9,7 @@ class Home extends Component {
         return(
             <Container fluid="sm">
                 <div className="card text-white bg-primary mb-3">
-                    <div className="card-header">Welkom bij de grootste fout van je leven</div>
+                    <div className="card-header">Ku Leuven</div>
                     <div className="card-body">
                         <h5 className="card-title">MasterTool</h5>
                         <p className="card-text">Met deze mastertool geraak je aan een onderwerp voor je masterproef.

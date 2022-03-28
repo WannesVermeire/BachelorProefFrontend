@@ -8,7 +8,7 @@ import {Link} from "react-router-dom";
 class Subjects extends Component {
     state = {
         subjects: [],
-        details: [false,false,false]
+        details: []
     }
     constructor(props) {
         super(props);
@@ -33,7 +33,6 @@ class Subjects extends Component {
                 <Button onClick={() => {
                     let details = [...this.state.details];
                     let detail = details[subject.id-1];
-                    console.log(detail);
                     detail = !detail;
                     details[subject.id-1] = detail;
                     this.setState({details});
@@ -70,9 +69,17 @@ class Subjects extends Component {
 
     render(){
         return(
-            <Container>
-                {this.state.subjects.map(this.renderSubject)}
-            </Container>
+                <Container>
+                    <Container className={"mb-3"} style={{textAlign: 'right'}} >
+                        <Link to ="/subjectForm">
+                            <Button variant={"outline-success"}>
+                                Upload
+                            </Button>
+                        </Link>
+                    </Container>
+                    {this.state.subjects.map(this.renderSubject)}
+                </Container>
+
 
         );
     }

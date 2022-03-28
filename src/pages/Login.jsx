@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {Button, Col, Container, Form, Row} from 'react-bootstrap';
 import { useRef, useState, useEffect } from 'react';
 import useAuth from '../hooks/useAuth';

@@ -2,7 +2,12 @@ import {Link, Outlet} from "react-router-dom"
 import {Container, Nav, Navbar, NavDropdown} from "react-bootstrap";
 import React from "react";
 
+
 const Layout = () => {
+    const Logout = () => {
+        localStorage.setItem("access_token", JSON.stringify());
+        localStorage.setItem("refresh_token", JSON.stringify());
+    }
     return (
         <main className={"App"}>
             <Navbar className="mb-3" bg="dark" variant="dark" expand="lg">
@@ -14,6 +19,9 @@ const Layout = () => {
                             <Nav.Link as={Link} to ="/">Home</Nav.Link>
                             <Nav.Link as={Link} to ="/studentlist">Studentlist</Nav.Link>
                             <Nav.Link as={Link} to ="/subjects">Subjects</Nav.Link>
+                        </Nav>
+                        <Nav style={{textAlign: "right"}} >
+                            <Nav.Link as={Link} onClick={Logout} to ="/login">Logout</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>

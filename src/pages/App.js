@@ -7,6 +7,8 @@ import Layout from "../components/Layout"
 import RequireAuth from "../components/RequireAuth";
 import Unauthorized from "./Unauthorized";
 import Subjects from "./Subjects";
+import SubjectForm from "./SubjectForm";
+
 
 import Error from "./Error";
 import StudentList from "./StudentList";
@@ -16,9 +18,7 @@ import axios from "axios";
 
 class App extends Component {
     //Sla op in state dat je bent ingelogd of niet
-    /*Logout = () => {
-        localStorage.clear();
-    }
+    /*
     refreshToken = () => {
         console.log("Aan het checken op login");
         var config = {
@@ -51,6 +51,9 @@ class App extends Component {
                         </Route>
                         <Route element={<RequireAuth allowedRoles={["ROLE_STUDENT","ROLE_ADMIN","ROLE_PROMOTOR", "ROLE_COORDINATOR", "ROLE_CONTACT"]}/>}>
                             <Route path='/subjects' element={<Subjects />}/>
+                        </Route>
+                        <Route element={<RequireAuth allowedRoles={["ROLE_STUDENT","ROLE_ADMIN","ROLE_PROMOTOR", "ROLE_COORDINATOR", "ROLE_CONTACT"]}/>}>
+                            <Route path='/subjectForm' element={<SubjectForm />}/>
                         </Route>
                         <Route path='*' element={<Error/>}/>
                     </Route>

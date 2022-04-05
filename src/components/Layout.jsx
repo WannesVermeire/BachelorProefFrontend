@@ -19,7 +19,7 @@ const Layout = () => {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
                             <Nav.Link as={Link} to ="/">Home</Nav.Link>
-                            <Nav.Link as={Link} to ="/studentlist">Studentlist</Nav.Link>
+                            <Nav.Link as={Link} to ="/userlist">Userlist</Nav.Link>
                             <Nav.Link as={Link} to ="/subjects">Subjects</Nav.Link>
                         </Nav>
                         <Nav style={{textAlign: "right"}} >

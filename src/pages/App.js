@@ -11,7 +11,7 @@ import SubjectForm from "./SubjectForm";
 
 
 import Error from "./Error";
-import StudentList from "./StudentList";
+import UserList from "./UserList";
 import axios from "axios";
 
 
@@ -47,7 +47,7 @@ class App extends Component {
                             <Route path='/' element={ <Home />}/>
                         </Route>
                         <Route element={<RequireAuth allowedRoles={["ROLE_ADMIN","ROLE_COORDINATOR","ROLE_PROMOTOR"]}/>}>
-                            <Route path='/studentlist' element={<StudentList/>}/>
+                            <Route path='/userlist' element={<UserList/>}/>
                         </Route>
                         <Route element={<RequireAuth allowedRoles={["ROLE_STUDENT","ROLE_ADMIN","ROLE_PROMOTOR", "ROLE_COORDINATOR", "ROLE_CONTACT"]}/>}>
                             <Route path='/subjects' element={<Subjects />}/>

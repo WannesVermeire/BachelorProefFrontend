@@ -48,6 +48,13 @@ const Login = () => {
             const roles = decoded.roles;
             setAuth({email,password, roles});
 
+
+            var time = new Date().getTime();//getTime gives the amount of millieseconds that have passed since January 1st 1970
+            var access_token_expired = new Date(time + 10*60*1000).getTime();
+            var refresh_token_expired = new Date(time + 24*60*60*1000).getTime();
+            localStorage.setItem("access_token_expired", JSON.stringify(access_token_expired));
+            localStorage.setItem("refresh_token_expired", JSON.stringify(refresh_token_expired));
+
             localStorage.setItem("access_token", JSON.stringify(res.data.access_token));
             localStorage.setItem("refresh_token", JSON.stringify(res.data.refresh_token));
             navigate(from, {replace: true});

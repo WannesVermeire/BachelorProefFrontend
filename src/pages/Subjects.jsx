@@ -30,7 +30,7 @@ class Subjects extends Component {
     renderDetails =(subject)=>{
         return(
             <>
-                <Button onClick={() => {
+                <Button variant="secondary" onClick={() => {
                     let details = [...this.state.details];
                     let detail = details[subject.id-1];
                     detail = !detail;
@@ -55,7 +55,7 @@ class Subjects extends Component {
     renderSubject = (subject) => {
         return(
             <Container fluid="sm" key={subject.id}>
-                <div className="card text-white bg-info mb-3">
+                <div className="card text-white bg-dark mb-3">
                     <div className="card-header">Students: {subject.nrOfStudents}</div>
                     <div className="card-body">
                         <h5 className="card-title">{subject.name}</h5>

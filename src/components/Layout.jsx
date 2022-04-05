@@ -6,7 +6,9 @@ import React from "react";
 const Layout = () => {
     const Logout = () => {
         localStorage.setItem("access_token", JSON.stringify());
+        localStorage.setItem("access_token_expired", JSON.stringify());
         localStorage.setItem("refresh_token", JSON.stringify());
+        localStorage.setItem("refresh_token_expired", JSON.stringify());
     }
     return (
         <main className={"App"}>

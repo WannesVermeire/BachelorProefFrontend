@@ -12,12 +12,14 @@ const RequireAuth = ({allowedRoles}) => {
         let expTime_at = localStorage.getItem('access_token_expired');
         let expTime_rt = localStorage.getItem('refresh_token_expired');
         let curTime = new Date().getTime();
-        console.log("atexp: " + expTime_at +"\n" + "rtexp: " + expTime_rt + "\n" + "curTi: " + curTime);
+
         if(expTime_at>curTime){
+            //If the access token hasn't expired yet
             const decoded = jwt_decode(JSON.parse(localStorage.getItem('access_token')));
             if(decoded != null) roles = decoded.roles;
         }
         else if(expTime_rt>curTime){
+            //If the access token has expired but the refresh token not
             let config = {
                 method: 'get',
                 url: 'http://localhost:8081/authentication/token/refresh',
@@ -35,9 +37,7 @@ const RequireAuth = ({allowedRoles}) => {
             const decoded = jwt_decode(JSON.parse(localStorage.getItem('access_token')));
             if(decoded != null) roles = decoded.roles;
         }
-        console.log(roles);
     }
-
 
     return (
         roles?.find(role => allowedRoles?.includes(role))

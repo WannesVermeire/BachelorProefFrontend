@@ -66,21 +66,18 @@ class Subjects extends Component {
         )
     }
 
-
     render(){
         return(
-                <Container>
-                    <Container className={"mb-3"} style={{textAlign: 'right'}} >
-                        <Link to ="/subjectForm">
-                            <Button variant={"outline-success"}>
-                                Upload
-                            </Button>
-                        </Link>
-                    </Container>
-                    {this.state.subjects.map(this.renderSubject)}
+            <Container>
+                <Container className={"mb-3"} style={{textAlign: 'right'}} >
+                    <Link to ="/subjectForm">
+                        <Button variant={"outline-success"}>
+                            Upload
+                        </Button>
+                    </Link>
                 </Container>
-
-
+                {this.state.subjects.map(this.renderSubject)}
+            </Container>
         );
     }
 }

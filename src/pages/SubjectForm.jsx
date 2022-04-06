@@ -11,7 +11,6 @@ const SubjectForm = () =>{
     const [name,setName] = useState('');
     const [description, setDescription] = useState('');
     const [nrOfStudents, setNrOfStudents] = useState('');
-
     const navigate = useNavigate();
 
     const handleSubmit = async (e) =>{

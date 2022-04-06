@@ -17,10 +17,8 @@ const RequireAuth = ({allowedRoles}) => {
             //If the access token hasn't expired yet
             const decoded = jwt_decode(JSON.parse(localStorage.getItem('access_token')));
             if(decoded != null) roles = decoded.roles;
-            console.log("acces token valid");
         }
         else if(expTime_rt>curTime){
-            console.log("Refresh token valid");
             //If the access token has expired but the refresh token hasn't
             let config = {
                 method: 'get',
@@ -30,7 +28,6 @@ const RequireAuth = ({allowedRoles}) => {
                 }
             }
             axios(config).then(function(res){
-                console.log(res);
                 localStorage.setItem("access_token", JSON.stringify(res.data.access_token));
                 let time = new Date().getTime();//getTime gives the amount of millieseconds that have passed since January 1st 1970
                 let access_token_expired = new Date(time + 10*60*1000).getTime();
@@ -40,7 +37,6 @@ const RequireAuth = ({allowedRoles}) => {
             const decoded = jwt_decode(JSON.parse(localStorage.getItem('access_token')));
             if(decoded != null) roles = decoded.roles;
         }
-        console.log(roles);
     }
 
     return (

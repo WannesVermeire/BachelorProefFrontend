@@ -59,7 +59,6 @@ class UserList extends Component {
     }
 
     roleSwitch =(r)=>{
-        console.log(r.target.value);
         this.setState({role: r.target.value})
     }
 
@@ -77,94 +76,104 @@ class UserList extends Component {
     }
 
     renderUsers =()=>{
-        console.log(this.state.companies);
         if(this.state.role === "Students"){
             return(
-                this.state.students.map(student =>
-                    <Container fluid="sm" key={student.id}>
-                        <div className="card text-black bg-white mb-3">
-                            <div className="row">
-                                <div className="col">
-                                    <h6 className="m-3" key={student.id}>{student.firstName} {student.lastName}</h6>
-                                </div>
-                                <div className="col">
-                                    <h6 className="m-3" key={student.id}>{student.email}</h6>
-                                </div>
-                                <div className="col">
-                                    <h6 className="m-3" key={student.id}>{student.telNr}</h6>
-                                </div>
-                                <div className={"col"}>
-                                    <Link fluid="sm" to="/studentDetails">
-                                        <Button className="m-2" variant={"link"} style={{ color: '#000', textDecoration: 'none' }}>
-                                            <h6>Details</h6>
-                                        </Button>
-                                    </Link>
+                <div className="card text-black bg-secondary mb-3">
+                    {this.state.students.map(student =>
+                        <Container fluid="sm" key={student.id}>
+                            <div className="card text-black bg-white m-3">
+                                <div className="row">
+                                    <div className="col">
+                                        <h6 className="m-3" key={student.id}>{student.firstName} {student.lastName}</h6>
+                                    </div>
+                                    <div className="col">
+                                        <h6 className="m-3" key={student.id}>{student.email}</h6>
+                                    </div>
+                                    <div className="col">
+                                        <h6 className="m-3" key={student.id}>{student.telNr}</h6>
+                                    </div>
+                                    <div className={"col"}>
+                                        <Link fluid="sm" to={{pathname:"/userlist/studentDetails/" + student.id}}>
+                                            <Button className="m-2" variant={"link"}
+                                                    style={{color: '#000', textDecoration: 'none'}}>
+                                                <h6>Details</h6>
+                                            </Button>
+                                        </Link>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </Container>
-
-                )
+                        </Container>
+                    )
+                    }
+                </div>
             )
         }
         if(this.state.role === "Promotors"){
             return(
-                this.state.promotors.map(promotor =>
-                    <Container fluid="lg" key={promotor.id}>
-                        <div className="card text-black bg-white mb-3">
-                            <div className="row">
-                                <div className="col">
-                                    <h6 className="m-3" key={promotor.id}>{promotor.firstName} {promotor.lastName}</h6>
+                <div className="card text-black bg-secondary mb-3">
+                    {this.state.promotors.map(promotor =>
+                            <Container fluid="lg" key={promotor.id}>
+                                <div className="card text-black bg-white m-3">
+                                    <div className="row">
+                                        <div className="col">
+                                            <h6 className="m-3" key={promotor.id}>{promotor.firstName} {promotor.lastName}</h6>
+                                        </div>
+                                        <div className="col">
+                                            <h6 className="m-3" key={promotor.id}>{promotor.email}</h6>
+                                        </div>
+                                        <div className="col">
+                                            <h6 className="m-3" key={promotor.id}>{promotor.telNr}</h6>
+                                        </div>
+                                        <div className={"col"}>
+                                            <Link fluid="sm" to="/promotorDetails">
+                                                <Button className="m-2" variant={"link"}
+                                                        style={{color: '#000', textDecoration: 'none'}}>
+                                                    <h6>Details</h6>
+                                                </Button>
+                                            </Link>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="col">
-                                    <h6 className="m-3" key={promotor.id}>{promotor.email}</h6>
-                                </div>
-                                <div className="col">
-                                    <h6 className="m-3" key={promotor.id}>{promotor.telNr}</h6>
-                                </div>
-                                <div className={"col"}>
-                                    <Link fluid="sm" to="/studentDetails">
-                                        <Button className="m-2" variant={"link"} style={{ color: '#000', textDecoration: 'none' }}>
-                                            <h6>Details</h6>
-                                        </Button>
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>
-                    </Container>
-                )
+                            </Container>
+                        )
+                    }
+                </div>
+
             )
         }
         if(this.state.role === "Companies"){
             return(
-                this.state.companies.map(company =>
-                <Container fluid="sm" key={company.id}>
-                    <div className="card text-black bg-white mb-3">
-                        <div className="row">
-                            <div className="col">
-                                <h6 className="m-3" key={company.id}>{company.name}</h6>
-                            </div>
-                            <div className="col">
-                                <h6 className="m-3" key={company.id}>{company.description}</h6>
-                            </div>
-                            <div className="col">
-                                <h6 className="m-3" key={company.id}>{company.btwnr}</h6>
-                            </div>
-                            <div className={"col"}>
-                                <Link fluid="sm" to="/studentDetails">
-                                    <Button className="m-2" variant={"link"} style={{ color: '#000', textDecoration: 'none' }}>
-                                        <h6>Details</h6>
-                                    </Button>
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
-                </Container>
-                )
+                <div className="card text-black bg-secondary mb-3">
+                    {this.state.companies.map(company =>
+                            <Container fluid="sm" key={company.id}>
+                                <div className="card text-black bg-white m-3">
+                                    <div className="row">
+                                        <div className="col">
+                                            <h6 className="m-3" key={company.id}>{company.name}</h6>
+                                        </div>
+                                        <div className="col">
+                                            <h6 className="m-3" key={company.id}>{company.description}</h6>
+                                        </div>
+                                        <div className="col">
+                                            <h6 className="m-3" key={company.id}>{company.btwnr}</h6>
+                                        </div>
+                                        <div className={"col"}>
+                                            <Link fluid="sm" to={"/companyDetails/"}>
+                                                <Button className="m-2" variant={"link"}
+                                                        style={{color: '#000', textDecoration: 'none'}}>
+                                                    <h6>Details</h6>
+                                                </Button>
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </div>
+                            </Container>
+                        )
+                    }
+                </div>
             )
         }
     }
-
     render(){
         return(
             <Container>

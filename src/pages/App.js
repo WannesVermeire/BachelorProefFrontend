@@ -8,6 +8,7 @@ import RequireAuth from "../components/RequireAuth";
 import Unauthorized from "./Unauthorized";
 import Subjects from "./Subjects";
 import SubjectForm from "./SubjectForm";
+import StudentDetails from "./StudentDetails";
 
 
 import Error from "./Error";
@@ -46,8 +47,11 @@ class App extends Component {
                         <Route element={<RequireAuth allowedRoles={["ROLE_STUDENT","ROLE_ADMIN","ROLE_PROMOTOR", "ROLE_COORDINATOR", "ROLE_CONTACT"]}/>}>
                             <Route path='/' element={ <Home />}/>
                         </Route>
-                        <Route element={<RequireAuth allowedRoles={["ROLE_ADMIN","ROLE_COORDINATOR","ROLE_PROMOTOR"]}/>}>
+                        <Route element={<RequireAuth allowedRoles={["ROLE_ADMIN","ROLE_COORDINATOR"]}/>}>
                             <Route path='/userlist' element={<UserList/>}/>
+                        </Route>
+                        <Route element={<RequireAuth allowedRoles={["ROLE_ADMIN","ROLE_COORDINATOR"]}/>}>
+                            <Route path='/userlist/studentDetails/:id' element={<StudentDetails/>}/>
                         </Route>
                         <Route element={<RequireAuth allowedRoles={["ROLE_STUDENT","ROLE_ADMIN","ROLE_PROMOTOR", "ROLE_COORDINATOR", "ROLE_CONTACT"]}/>}>
                             <Route path='/subjects' element={<Subjects />}/>

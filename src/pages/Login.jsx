@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Col, Container, Form, Row} from 'react-bootstrap';
+import {Button, Col, Container, Form, Row, Image} from 'react-bootstrap';
 import { useRef, useState, useEffect } from 'react';
 import useAuth from '../hooks/useAuth';
 
@@ -8,6 +8,7 @@ import axios from "axios";
 import qs from 'qs';
 import {Link, useNavigate, useLocation} from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
+import InlogLogo from '../Images/Ingelogd.PNG';
 
 const Login = () => {
     const { auth, setAuth } = useAuth();
@@ -48,7 +49,6 @@ const Login = () => {
             const roles = decoded.roles;
             setAuth({email,password, roles});
 
-            console.log(decoded.exp);
             var time = new Date().getTime();//getTime gives the amount of millieseconds that have passed since January 1st 1970
             var access_token_expired = new Date(time + 10*60*1000).getTime();
             var refresh_token_expired = new Date(time + 24*60*60*1000).getTime();
@@ -71,12 +71,13 @@ const Login = () => {
         });
     }
     return(
-        <Container fluid="sm">
+        <Container fluid={"sm"} style={{display: "flex" ,width: 500, textAlign: "center"}} >
             <p className="alert alert-danger" hidden={!errMsg} ref={errRef} aria-live="assertive" >{errMsg}</p>
-            <Form onSubmit={handleSubmit}>
-                <Form.Group  as={Row} className={"mb-3"}>
-                    <Form.Label column sm={1}>Email address</Form.Label>
-                    <Col >
+            <Form className="card text-black bg-white m-3" onSubmit={handleSubmit}>
+                <Image className="rounded mx-auto d-block" src={InlogLogo} style={{width: 300, textAlign: "center"}}></Image>
+                <Form.Group  as={Row} className={"m-3"}>
+                    <Form.Label className={"mb-0"}>Email address</Form.Label>
+                    <Col>
                         <Form.Control
                             type={"email"}
                             id={"email"}
@@ -88,8 +89,8 @@ const Login = () => {
                             required/>
                     </Col>
                 </Form.Group>
-                <Form.Group as={Row} className={"mb-3"}>
-                    <Form.Label column sm={1}>Password</Form.Label>
+                <Form.Group as={Row} className={"m-3"}>
+                    <Form.Label className={"mb-0"}>Password</Form.Label>
                     <Col>
                         <Form.Control
                             type={"password"}
@@ -105,7 +106,7 @@ const Login = () => {
                         <Button type="submit">Sign in</Button>
                     </Col>
                 </Form.Group>
-                <Form.Group as={Row} className="mb-3">
+                <Form.Group as={Row}  className="mb-3">
                     <Col >
                         <Link to ="/register">
                             <Button variant={"link"}>Don't have an account yet?</Button>

@@ -4,7 +4,6 @@ import jwt_decode from 'jwt-decode';
 import axios from "axios";
 
 const RequireAuth = ({allowedRoles}) => {
-    const { auth } = useAuth();
     const location = useLocation();
 
     let roles = null;

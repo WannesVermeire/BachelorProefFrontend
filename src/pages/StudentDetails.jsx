@@ -9,7 +9,8 @@ import {useParams} from "react-router-dom";
 
 const StudentDetails =()=> {
     const [student,setStudent] = useState('');
-    const id = useParams().id;
+    const [id] = useState(useParams().id);
+    const [hasLoaded, setHasLoaded] = useState(false);
     var axios = require('axios');
     var config = {
         method: 'get',
@@ -21,12 +22,36 @@ const StudentDetails =()=> {
     axios(config)
         .then(function (res) {
             if(student==='')setStudent(res);
+            setHasLoaded(true);
+            console.log(res)
         })
         .catch(function (error) {
             console.log(error);
         });
+
     return(
-        <p>{student.data.firstName}</p>
+        hasLoaded ?
+            (
+                <Container fluid="sm">
+                    <div className="card text-black bg-white m-3">
+                        <div className="row">
+                            <div className="col">
+                                <h6 className="m-3" >{student.data.firstName} {student.data.lastName}</h6>
+                            </div>
+                            <div className="col">
+                                <h6 className="m-3" >{student.data.email}</h6>
+                            </div>
+                            <div className="col">
+                                <h6 className="m-3" >{student.data.telNr}</h6>
+                            </div>
+                        </div>
+                        <div className={"m-3"}>
+                            FinalSubject:
+                            {student.data.finalSubject}
+                        </div>
+                    </div>
+                </Container>)
+            : <p></p>
     );
 }
 

@@ -9,6 +9,8 @@ import Unauthorized from "./Unauthorized";
 import Subjects from "./Subjects";
 import SubjectForm from "./SubjectForm";
 import StudentDetails from "./StudentDetails";
+import PromotorDetails from "./PromotorDetails";
+import CompanyDetails from "./CompanyDetails";
 
 
 import Error from "./Error";
@@ -18,24 +20,6 @@ import axios from "axios";
 
 
 class App extends Component {
-    //Sla op in state dat je bent ingelogd of niet
-    /*
-    refreshToken = () => {
-        console.log("Aan het checken op login");
-        var config = {
-            method: 'get',
-            url: 'http://localhost:8081/authentication/token/refresh',
-            headers:{
-                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('refresh_token'))
-            }
-        }
-        axios(config).then(function(res){
-            localStorage.setItem("access_token", JSON.stringify(res.data.access_token));
-            localStorage.setItem("refresh_token", JSON.stringify(res.data.refresh_token));
-        }).catch(function (error) {
-        });
-    }*/
-
     render(){
         return (
             <div className="App">
@@ -51,7 +35,13 @@ class App extends Component {
                             <Route path='/userlist' element={<UserList/>}/>
                         </Route>
                         <Route element={<RequireAuth allowedRoles={["ROLE_ADMIN","ROLE_COORDINATOR"]}/>}>
-                            <Route path='/userlist/studentDetails/:id' element={<StudentDetails/>}/>
+                            <Route path='/studentDetails/:id' element={<StudentDetails/>}/>
+                        </Route>
+                        <Route element={<RequireAuth allowedRoles={["ROLE_ADMIN","ROLE_COORDINATOR"]}/>}>
+                            <Route path='/promotorDetails/:id' element={<PromotorDetails/>}/>
+                        </Route>
+                        <Route element={<RequireAuth allowedRoles={["ROLE_ADMIN","ROLE_COORDINATOR"]}/>}>
+                            <Route path='/companyDetails/:id' element={<CompanyDetails/>}/>
                         </Route>
                         <Route element={<RequireAuth allowedRoles={["ROLE_STUDENT","ROLE_ADMIN","ROLE_PROMOTOR", "ROLE_COORDINATOR", "ROLE_CONTACT"]}/>}>
                             <Route path='/subjects' element={<Subjects />}/>

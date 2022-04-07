@@ -93,7 +93,7 @@ class UserList extends Component {
                                         <h6 className="m-3" key={student.id}>{student.telNr}</h6>
                                     </div>
                                     <div className={"col"}>
-                                        <Link fluid="sm" to={{pathname:"/userlist/studentDetails/" + student.id }}>
+                                        <Link fluid="sm" to={{pathname:"/studentDetails/" + student.id }}>
                                             <Button className="m-2" variant={"link"}
                                                     style={{color: '#000', textDecoration: 'none'}}>
                                                 <h6>Details</h6>
@@ -125,7 +125,7 @@ class UserList extends Component {
                                             <h6 className="m-3" key={promotor.id}>{promotor.telNr}</h6>
                                         </div>
                                         <div className={"col"}>
-                                            <Link fluid="sm" to="/promotorDetails">
+                                            <Link fluid="sm" to={"/promotorDetails/" + promotor.id}>
                                                 <Button className="m-2" variant={"link"}
                                                         style={{color: '#000', textDecoration: 'none'}}>
                                                     <h6>Details</h6>
@@ -158,7 +158,7 @@ class UserList extends Component {
                                             <h6 className="m-3" key={company.id}>{company.btwnr}</h6>
                                         </div>
                                         <div className={"col"}>
-                                            <Link fluid="sm" to={"/companyDetails/"}>
+                                            <Link fluid="sm" to={"/companyDetails/" + company.id}>
                                                 <Button className="m-2" variant={"link"}
                                                         style={{color: '#000', textDecoration: 'none'}}>
                                                     <h6>Details</h6>

@@ -7,21 +7,21 @@ import qs from 'qs';
 import {useParams} from "react-router-dom";
 
 
-const StudentDetails =()=> {
-    const [student,setStudent] = useState('');
+const CompanyDetails =()=> {
+    const [company,setCompany] = useState('');
     const [id] = useState(useParams().id);
     const [hasLoaded, setHasLoaded] = useState(false);
     var axios = require('axios');
     var config = {
         method: 'get',
-        url: 'http://localhost:8081/userManagement/users/' + id,
+        url: 'http://localhost:8081/userManagement/company/' + id,
         headers: {
             'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
         }
     };
     axios(config)
         .then(function (res) {
-            if(student==='')setStudent(res);
+            if(company==='')setCompany(res);
             setHasLoaded(true);
             console.log(res)
         })
@@ -34,32 +34,27 @@ const StudentDetails =()=> {
             (
                 <Container fluid="sm">
                     <div className="card text-black bg-white m-3">
-                        <div className="row">
-                            <div className="col">
-                                <h6 className="m-3" >{student.data.firstName} {student.data.lastName}</h6>
+                        <div className="col">
+                            <div className="row">
+                                <h6 className="m-3" >{company.data.name}</h6>
                             </div>
-                            <div className="col">
-                                <h6 className="m-3" >{student.data.email}</h6>
+                            <div className="row">
+                                <h6 className="m-3" >{company.data.description}</h6>
                             </div>
-                            <div className="col">
-                                <h6 className="m-3" >{student.data.telNr}</h6>
+                            <div className="row">
+                                <h6 className="m-3" >{company.data.address}</h6>
+                            </div>
+                            <div className="row">
+                                <h6 className="m-3" >{company.data.btwnr}</h6>
                             </div>
                         </div>
                         <div className={"m-3"}>
-                            Preferences:
-                            ToDo
+                            Approved:
+                            {company.data.approved ? " Yes" : " No"}
                         </div>
                         <div className={"m-3"}>
-                            Specialization:
-                            ToDo
-                        </div>
-                        <div className={"m-3"}>
-                            Campus:
-                            ToDo
-                        </div>
-                        <div className={"m-3"}>
-                            FinalSubject:
-                            {student.data.finalSubject}
+                            Contacts:
+                            {company.data.contacts}
                         </div>
                     </div>
                 </Container>)
@@ -67,4 +62,4 @@ const StudentDetails =()=> {
     );
 }
 
-export default StudentDetails;
+export default CompanyDetails;

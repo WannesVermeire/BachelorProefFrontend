@@ -24,7 +24,6 @@ class Register extends Component {
         axios(config).then(function(res){
         }).catch(function() {
             this.setState({error: "Details do not match!"});
-            console.log("Else werkt!")
         })
         console.log(details);
     }

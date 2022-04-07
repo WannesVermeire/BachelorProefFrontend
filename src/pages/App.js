@@ -16,6 +16,7 @@ import CompanyDetails from "./CompanyDetails";
 import Error from "./Error";
 import UserList from "./UserList";
 import axios from "axios";
+import RegisterCompany from "./RegisterCompany";
 
 
 
@@ -33,6 +34,9 @@ class App extends Component {
                         </Route>
                         <Route element={<RequireAuth allowedRoles={["ROLE_ADMIN","ROLE_COORDINATOR"]}/>}>
                             <Route path='/userlist' element={<UserList/>}/>
+                        </Route>
+                        <Route element={<RequireAuth allowedRoles={["ROLE_ADMIN","ROLE_COORDINATOR"]}/>}>
+                            <Route path='/registerCompany' element={<RegisterCompany/>}/>
                         </Route>
                         <Route element={<RequireAuth allowedRoles={["ROLE_ADMIN","ROLE_COORDINATOR"]}/>}>
                             <Route path='/studentDetails/:id' element={<StudentDetails/>}/>

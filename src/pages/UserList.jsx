@@ -64,13 +64,27 @@ class UserList extends Component {
 
     renderDropdownMenu =()=>{
         return (
-            <div onChange={this.roleSwitch}>
-                <label className={"me-1 mb-3"}>Students</label>
-                <input className={"me-3"} type="radio" name="roleRadios" value={"Students"}/>
-                <label className={"me-1"}>Promotors</label>
-                <input className={"me-3"} type="radio" name="roleRadios" value={"Promotors"}/>
-                <label className={"me-1"}>Companies</label>
-                <input className={"me-3"} type="radio" name="roleRadios" value={"Companies"}/>
+            <div style={{overflow: "hidden"}}>
+                <div style={{float: "left" }} onChange={this.roleSwitch}>
+                    <label className={"mt-2 me-1 mb-3"}>Students</label>
+                    <input className={"me-3"} type="radio" name="roleRadios" value={"Students"}/>
+                    <label className={"me-1"}>Promotors</label>
+                    <input className={"me-3"} type="radio" name="roleRadios" value={"Promotors"}/>
+                    <label className={"me-1"}>Companies</label>
+                    <input className={"me-3"} type="radio" name="roleRadios" value={"Companies"}/>
+                </div>
+                <div style={{ float:"right"  }}>
+                    <Link  className={"me-3"} style={{ textDecoration: 'none' }} to ="/register">
+                        <Button variant={"outline-success"}>
+                            Add new user
+                        </Button>
+                    </Link>
+                    <Link  style={{ textDecoration: 'none' }} to ="/registerCompany">
+                        <Button variant={"outline-success"}>
+                            Add new company
+                        </Button>
+                    </Link>
+                </div>
             </div>
         )
     }
@@ -146,13 +160,10 @@ class UserList extends Component {
                 <div className="card text-black bg-secondary mb-3">
                     {this.state.companies.map(company =>
                             <Container fluid="sm" key={company.id}>
-                                <div className="card text-black bg-white m-3">
+                                <div className={company.approved?"card text-black m-3 bg-white" : "card text-black m-3 bg-danger"}>
                                     <div className="row">
                                         <div className="col">
                                             <h6 className="m-3" key={company.id}>{company.name}</h6>
-                                        </div>
-                                        <div className="col">
-                                            <h6 className="m-3" key={company.id}>{company.description}</h6>
                                         </div>
                                         <div className="col">
                                             <h6 className="m-3" key={company.id}>{company.btwnr}</h6>

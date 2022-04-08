@@ -32,7 +32,7 @@ class Register extends Component {
     //LoginForm en RegisterForm mogen niet tegelijk zichtbaar zijn!
     render(){
         return(
-            <div style={{textAlign: "center"}}>
+            <div className={"mt-5"} style={{textAlign: "center"}}>
                 <RegisterForm Register={this.Register} />
             </div>
         );

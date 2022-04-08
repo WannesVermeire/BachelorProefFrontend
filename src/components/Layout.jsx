@@ -5,12 +5,22 @@ import jwt_decode from "jwt-decode";
 
 
 const Layout = () => {
+    let roles = null;
+    const decoded = jwt_decode(JSON.parse(localStorage.getItem('access_token')));
+    if(decoded != null) roles = decoded.roles;
 
     const Logout = () => {
         localStorage.setItem("access_token", JSON.stringify());
         localStorage.setItem("access_token_expired", JSON.stringify());
         localStorage.setItem("refresh_token", JSON.stringify());
         localStorage.setItem("refresh_token_expired", JSON.stringify());
+    }
+
+    let isRole = (r)=>{
+        for(let i = 0; i < roles.length; i++){
+            if(r===roles[i])return true;
+        }
+        return false;
     }
 
     return (
@@ -22,8 +32,8 @@ const Layout = () => {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
                             <Nav.Link as={Link} to ="/">Home</Nav.Link>
-                            <Nav.Link as={Link} to ="/userlist">Userlist</Nav.Link>
                             <Nav.Link as={Link} to ="/subjects">Subjects</Nav.Link>
+                            {isRole("ROLE_ADMIN")?<Nav.Link as={Link} to ="/userlist">Userlist</Nav.Link>: null}
                         </Nav>
                         <Nav style={{textAlign: "right"}} >
                             <Nav.Link as={Link} onClick={Logout} to ="/login">Logout</Nav.Link>

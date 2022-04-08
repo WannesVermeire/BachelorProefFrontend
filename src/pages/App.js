@@ -25,10 +25,10 @@ class App extends Component {
         return (
             <div className="App">
                 <Routes>
+                    <Route path='/login' element={<Login />}/>
+                    <Route path='/register' element={<Register/>}/>
+                    <Route path={'/unauthorized'} element={<Unauthorized/>}/>
                     <Route path="/" element={<Layout/>}>
-                        <Route path='/login' element={<Login />}/>
-                        <Route path='/register' element={<Register/>}/>
-                        <Route path={'/unauthorized'} element={<Unauthorized/>}/>
                         <Route element={<RequireAuth allowedRoles={["ROLE_STUDENT","ROLE_ADMIN","ROLE_PROMOTOR", "ROLE_COORDINATOR", "ROLE_CONTACT"]}/>}>
                             <Route path='/' element={ <Home />}/>
                         </Route>

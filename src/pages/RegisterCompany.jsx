@@ -28,8 +28,7 @@ class RegisterCompany extends Component{
             method: 'post',
             url: 'http://localhost:8081/userManagement/company',
             headers: {
-                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token')),
-                data:data
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
             },
             data : data
         };

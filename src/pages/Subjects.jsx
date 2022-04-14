@@ -23,6 +23,7 @@ class Subjects extends Component {
         axios(config)
             .then(function (res) {
                 self.setState({subjects: res.data});
+                console.log(self.state);
             }).catch(function (error) {
         });
     }

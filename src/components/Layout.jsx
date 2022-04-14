@@ -2,12 +2,11 @@ import {Link, Outlet} from "react-router-dom"
 import {Container, Nav, Navbar, NavDropdown} from "react-bootstrap";
 import React from "react";
 import jwt_decode from "jwt-decode";
+import {useNavigate} from "react-router-dom";
 
 
 const Layout = () => {
-    let roles = null;
-    const decoded = jwt_decode(JSON.parse(localStorage.getItem('access_token')));
-    if(decoded != null) roles = decoded.roles;
+    const navigate = useNavigate();
 
     const Logout = () => {
         localStorage.setItem("access_token", JSON.stringify());
@@ -17,8 +16,13 @@ const Layout = () => {
     }
 
     let isRole = (r)=>{
-        for(let i = 0; i < roles.length; i++){
-            if(r===roles[i])return true;
+        let roles = null;
+        if(localStorage.getItem('access_token')!=='undefined'){
+            const decoded = jwt_decode(JSON.parse(localStorage.getItem('access_token')));
+            roles = decoded.roles;
+            for(let i = 0; i < roles.length; i++){
+                if(r===roles[i])return true;
+            }
         }
         return false;
     }

@@ -14,6 +14,7 @@ const SubjectForm = () =>{
     const [description, setDescription] = useState('');
     const [nrOfStudents, setNrOfStudents] = useState('');
     const [tags, setTags] = useState([]);
+    const [inputTags, setInputTags] = useState([]);
     const [hasLoaded, setHasLoaded] = useState(false);
     const navigate = useNavigate();
 
@@ -43,7 +44,7 @@ const SubjectForm = () =>{
     console.log(tags);
     const handleSubmit = async (e) =>{
         e.preventDefault()
-        var axios = require('axios');
+        /*var axios = require('axios');
         var qs = require('qs');
         var data = qs.stringify({title,description,nrOfStudents});
         var config = {
@@ -62,7 +63,8 @@ const SubjectForm = () =>{
             })
             .catch(function (error) {
                 console.log(error);
-            });
+            });*/
+        console.log("Title: " + title + "\n" + "Tags: " + inputTags.map(inputTags=>inputTags.id) + "\n" + "Max nr of students: " + nrOfStudents + "\n" + "Description: " + description)
     }
 
     return (
@@ -70,7 +72,7 @@ const SubjectForm = () =>{
             (
                 <Container style={{textAlign:"left"}} fluid="sm"  >
                     <Form onSubmit={handleSubmit}>
-                        <InputGroup className="pt-3  pb-3">
+                        <InputGroup style={{display: "flex" ,width: 400}} className={"pt-3  pb-3"}>
                             <InputGroup.Text id="title">Title</InputGroup.Text>
                             <Form.Control
                                 autoComplete={"off"}
@@ -81,26 +83,29 @@ const SubjectForm = () =>{
                                 aria-describedby="title"
                                 required/>
                         </InputGroup>
-                        <Select
-                            options={tags}
-                            getOptionLabel={(options) => options['name']}
-                            getOptionValue={(options) => options['id']}
-                            isMulti
-                            name="colors"
-                            className="basic-multi-select"
-                            classNamePrefix="select"
-                        />
-                        <Form.Group className="mb-3">
-                            <Form.Label className="mb-1">Max amount of students</Form.Label>
-                            <Form.Control
-                                type={"text"}
+                        <InputGroup className={"pt-3 pb-3"}>
+                            <InputGroup.Text id="tags">Tags</InputGroup.Text>
+                            <Select
+                                style={{display: "flex",width:20}}
+                                options={tags}
+                                getOptionLabel={(options) => options['name']}
+                                getOptionValue={(options) => options['id']}
+                                isMulti
+                                onChange={(e) => setInputTags(e)}
+                            />
+                        </InputGroup>
+                        <InputGroup className={"pt-3 pb-3"}>
+                            <InputGroup.Text id="nrOfStudents">Max amount of students</InputGroup.Text>
+                            <input
+                                type={"number"}
                                 id={"nrOfStudents"}
-                                autoComplete={"off"}
-                                placeholder={"Maximum amount of students"}
+                                min="1" max="3"
+                                placeholder={1}
+                                defaultValue={1}
                                 onChange={(e) => setNrOfStudents(e.target.value)}
                                 value={nrOfStudents}
                                 required/>
-                        </Form.Group>
+                        </InputGroup>
                         <Form.Group className="mb-3">
                             <Form.Label className="mb-1">Description</Form.Label>
                             <Form.Control

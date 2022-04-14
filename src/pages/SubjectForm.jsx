@@ -13,7 +13,7 @@ const SubjectForm = () =>{
     const [title,setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [nrOfStudents, setNrOfStudents] = useState('');
-    const [tags, setTags] = useState('');
+    const [tags, setTags] = useState([]);
     const [hasLoaded, setHasLoaded] = useState(false);
     const navigate = useNavigate();
 
@@ -28,15 +28,19 @@ const SubjectForm = () =>{
     };
     axios(config)
         .then(function (res) {
-            console.log(res)
-            if(tags==='')setTags(res);
-            setHasLoaded(true);
+            if(tags.length===0){
+                for(let i =0; i< res.data.length; i++){
+                    setTags(res.data);
+                }
+                setHasLoaded(true);
+            }
+
         })
         .catch(function (error) {
             console.log(error);
         });
 
-
+    console.log(tags);
     const handleSubmit = async (e) =>{
         e.preventDefault()
         var axios = require('axios');
@@ -78,9 +82,11 @@ const SubjectForm = () =>{
                                 required/>
                         </InputGroup>
                         <Select
+                            options={tags}
+                            getOptionLabel={(options) => options['name']}
+                            getOptionValue={(options) => options['id']}
                             isMulti
                             name="colors"
-                            options={tags}
                             className="basic-multi-select"
                             classNamePrefix="select"
                         />

@@ -18,30 +18,31 @@ const SubjectForm = () =>{
     const [hasLoaded, setHasLoaded] = useState(false);
     const navigate = useNavigate();
 
-
-    var axios = require('axios');
-    var config = {
-        method: 'get',
-        url: 'http://localhost:8081/subjectManagement/tag',
-        headers: {
-            'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
-        }
-    };
-    axios(config)
-        .then(function (res) {
-            if(tags.length===0){
-                for(let i =0; i< res.data.length; i++){
-                    setTags(res.data);
-                }
-                setHasLoaded(true);
+    if(!hasLoaded){
+        var axios = require('axios');
+        var config = {
+            method: 'get',
+            url: 'http://localhost:8081/subjectManagement/tag',
+            headers: {
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
             }
+        };
+        axios(config)
+            .then(function (res) {
+                if(tags.length===0){
+                    for(let i =0; i< res.data.length; i++){
+                        setTags(res.data);
+                    }
+                    setHasLoaded(true);
+                }
 
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        console.log(tags);
+    }
 
-    console.log(tags);
     const handleSubmit = async (e) =>{
         e.preventDefault()
         /*var axios = require('axios');
@@ -72,7 +73,7 @@ const SubjectForm = () =>{
             (
                 <Container style={{textAlign:"left"}} fluid="sm"  >
                     <Form onSubmit={handleSubmit}>
-                        <InputGroup style={{display: "flex" ,width: 400}} className={"pt-3  pb-3"}>
+                        <InputGroup style={{display: "flex",width:400}} className={"pt-3  pb-3"}>
                             <InputGroup.Text id="title">Title</InputGroup.Text>
                             <Form.Control
                                 autoComplete={"off"}
@@ -86,36 +87,38 @@ const SubjectForm = () =>{
                         <InputGroup className={"pt-3 pb-3"}>
                             <InputGroup.Text id="tags">Tags</InputGroup.Text>
                             <Select
-                                style={{display: "flex",width:20}}
+                                fluid="sm"
                                 options={tags}
                                 getOptionLabel={(options) => options['name']}
                                 getOptionValue={(options) => options['id']}
                                 isMulti
-                                onChange={(e) => setInputTags(e)}
-                            />
+                                onChange={(e) => setInputTags(e)}>
+                            </Select>
+
                         </InputGroup>
-                        <InputGroup className={"pt-3 pb-3"}>
+                        <InputGroup style={{display: "flex",width:250}} className={"pt-3 pb-3"}>
                             <InputGroup.Text id="nrOfStudents">Max amount of students</InputGroup.Text>
-                            <input
+                            <Form.Control
                                 type={"number"}
                                 id={"nrOfStudents"}
                                 min="1" max="3"
                                 placeholder={1}
-                                defaultValue={1}
                                 onChange={(e) => setNrOfStudents(e.target.value)}
                                 value={nrOfStudents}
                                 required/>
                         </InputGroup>
-                        <Form.Group className="mb-3">
-                            <Form.Label className="mb-1">Description</Form.Label>
-                            <Form.Control
-                                type={"text"}
+                        <InputGroup className={"pt-3 pb-3"}>
+                            <InputGroup.Text id="description">Description</InputGroup.Text>
+                            <textarea
                                 id={"description"}
+                                rows={10}
+                                cols={125}
                                 autoComplete={"off"}
                                 onChange={(e) => setDescription(e.target.value)}
                                 value={description}
-                                required/>
-                        </Form.Group>
+                                required>
+                            </textarea>
+                        </InputGroup>
                         <Form.Group className="mb-3">
                             <Button type="submit" >
                                 Upload subject

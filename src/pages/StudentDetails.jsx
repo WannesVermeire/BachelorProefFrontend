@@ -6,31 +6,62 @@ import axios from "axios";
 import qs from 'qs';
 import {useParams} from "react-router-dom";
 
-
+let counter = 0;
 const StudentDetails =()=> {
     const [student,setStudent] = useState('');
     const [id] = useState(useParams().id);
-    const [hasLoaded, setHasLoaded] = useState(false);
-    var axios = require('axios');
-    var config = {
-        method: 'get',
-        url: 'http://localhost:8081/userManagement/users/' + id,
-        headers: {
-            'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
-        }
-    };
-    axios(config)
-        .then(function (res) {
-            if(student==='')setStudent(res);
-            setHasLoaded(true);
-            console.log(res)
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+    const [preferredSubjects, setPreferredSubjects] = useState([]); //Get subject objects
+
+    if(counter<2){
+        //Loading student
+        let axios = require('axios');
+        let config = {
+            method: 'get',
+            url: 'http://localhost:8081/userManagement/users/' + id,
+            headers: {
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
+            }
+        };
+        axios(config)
+            .then(function (res) {
+                if(student===''){
+                    setStudent(res);
+                    console.log("Student loaded");
+                    console.log(student);
+                    counter++;
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+
+        //Loading preferred subject
+        axios = require('axios');
+        config = {
+            method: 'get',
+            url: 'http://localhost:8081/userManagement/users/' + id +'/preferredSubjects',
+            headers: {
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
+            }
+        };
+        axios(config)
+            .then(function (res) {
+                if(preferredSubjects.length===0){
+                    setPreferredSubjects(res.data);
+                    console.log("preferred subjects loaded");
+                    console.log(preferredSubjects);
+                    counter++;
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
 
     return(
-        hasLoaded ?
+        counter>=2 ?
             (
                 <Container fluid="sm">
                     <div className="card text-black bg-white m-3">
@@ -46,11 +77,10 @@ const StudentDetails =()=> {
                             </div>
                         </div>
                         <div className={"m-3"}>
-                            Preferences:
-                            ToDo
+                            Preferences: {preferredSubjects}
                         </div>
                         <div className={"m-3"}>
-                            Specialization:
+                            Campus:
                             ToDo
                         </div>
                         <div className={"m-3"}>
@@ -63,7 +93,7 @@ const StudentDetails =()=> {
                         </div>
                     </div>
                 </Container>)
-            : <p></p>
+            : <p>Loading</p>
     );
 }
 

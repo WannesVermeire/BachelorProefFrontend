@@ -22,10 +22,21 @@ const SubjectForm = () =>{
     const [inputEducations, setInputEducations] = useState([]);
     const [campuses, setCampuses] = useState([]);
     const [inputCampuses, setInputCampuses] = useState([]);
-    const [hasLoaded, setHasLoaded] = useState([2]);
-    const [allHaveLoaded, setAllHaveLoaded] = useState(false);
     const [page, setPage]= useState(1);
     const [subjectId, setSubjectId] = useState('')
+
+    const hasLoadedArray = [
+        {
+            id: 1,
+            state: false,
+        },
+        {
+            id: 2,
+            state: false,
+        },
+    ]
+    const [hasLoaded, setHasLoaded] = useState(hasLoadedArray);
+    const [allHaveLoaded, setAllHaveLoaded] = useState(false);
 
     if(!allHaveLoaded){
         let axios = require('axios');

@@ -27,7 +27,7 @@ const StudentDetails =()=> {
                 if(student===''){
                     setStudent(res);
                     console.log("Student loaded");
-                    console.log(student);
+                    console.log(res);
                     counter++;
                 }
             })
@@ -80,12 +80,23 @@ const StudentDetails =()=> {
                             Preferences: {preferredSubjects}
                         </div>
                         <div className={"m-3"}>
-                            Campus:
-                            ToDo
+                            Faculty:
+                            {student.data.targetAudience!==null
+                                ? student.data.targetAudience.faculty
+                                : null
+                            }
                         </div>
                         <div className={"m-3"}>
-                            Campus:
-                            ToDo
+                            Education:
+                            {student.data.targetAudience!==null
+                                    ? student.data.targetAudience.education
+                                    : null
+                            }
+                        </div>
+                        <div className={"m-3"}>
+                            Campus: {student.data.targetAudience!==null
+                            ? student.data.targetAudience.campus
+                            : null}
                         </div>
                         <div className={"m-3"}>
                             FinalSubject:

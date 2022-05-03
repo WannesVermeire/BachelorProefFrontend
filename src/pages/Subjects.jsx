@@ -61,6 +61,7 @@ class Subjects extends Component {
                     <div className="card-body">
                         <h5 className="card-title">{subject.name}</h5>
                         {this.renderDetails(subject)}
+                        <h6>Tags: {subject.tags.map(tags => tags.name)+" "}</h6>
                     </div>
                 </div>
             </Container>

@@ -57,8 +57,6 @@ class RegisterForm extends Component{
                     </Form.Group>
                 </Form>
             </Container>
-
-
         );
     }
 }

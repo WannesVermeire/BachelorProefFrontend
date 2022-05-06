@@ -1,16 +1,15 @@
 import React from 'react'
 import {useState} from 'react';
-import {Button, Col, Form, Row, Container} from "react-bootstrap";
+import {Button, Form, Container} from "react-bootstrap";
 
 import axios from "axios";
 import qs from 'qs';
-import {Link, Navigate, useNavigate} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 import InputGroup from "react-bootstrap/InputGroup";
 import Select from "react-select";
 
 
 const SubjectForm = () =>{
-    const navigate = useNavigate;
     const [title,setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [nrOfStudents, setNrOfStudents] = useState('');
@@ -86,7 +85,7 @@ const SubjectForm = () =>{
 
         let counter =0;
         for(let i =0; i<2; i++){
-            if(hasLoaded[i] === true) counter++;
+            if(hasLoaded[i].state === true) counter++;
         }
         if(counter===2)setAllHaveLoaded(true);
     }
@@ -340,8 +339,6 @@ const SubjectForm = () =>{
                         <InputGroup className={"pt-3 pb-3"}>
                             <InputGroup.Text id="Educations">Education</InputGroup.Text>
                             <Select
-                                className={"basic-single"}
-                                classNamePrefix="select"
                                 fluid="sm"
                                 options={educations}
                                 getOptionLabel={(options) => options['name']}
@@ -366,8 +363,6 @@ const SubjectForm = () =>{
                         <InputGroup className={"pt-3 pb-3"}>
                             <InputGroup.Text id="campusses">Campus</InputGroup.Text>
                             <Select
-                                className={"basic-single"}
-                                classNamePrefix="select"
                                 fluid="sm"
                                 options={campuses}
                                 getOptionLabel={(options) => options['name']}

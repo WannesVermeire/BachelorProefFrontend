@@ -4,7 +4,7 @@ import {Button, Col, Form, Row, Container} from "react-bootstrap";
 
 import axios from "axios";
 import qs from 'qs';
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 
 let counter = 0;
 const StudentDetails =()=> {
@@ -77,9 +77,6 @@ const StudentDetails =()=> {
                             </div>
                         </div>
                         <div className={"m-3"}>
-                            Preferences: {preferredSubjects}
-                        </div>
-                        <div className={"m-3"}>
                             Faculty:
                             {student.data.targetAudience!==null
                                 ? student.data.targetAudience.faculty
@@ -99,9 +96,17 @@ const StudentDetails =()=> {
                             : null}
                         </div>
                         <div className={"m-3"}>
+                            Preferences: {preferredSubjects}
+                        </div>
+                        <div className={"m-3"}>
                             FinalSubject:
                             {student.data.finalSubject}
                         </div>
+                        <Link className={"m-3"} style={{textAlign: 'right'}} to ={"/targetAudienceUser" + id}>
+                            <Button variant={"outline-success"}>
+                                Change school information
+                            </Button>
+                        </Link>
                     </div>
                 </Container>)
             : <p>Loading</p>

@@ -11,6 +11,7 @@ import SubjectForm from "./SubjectForm";
 import StudentDetails from "./StudentDetails";
 import PromotorDetails from "./PromotorDetails";
 import CompanyDetails from "./CompanyDetails";
+import TargetAudienceUser from "./TargetAudienceUser";
 
 
 import Error from "./Error";
@@ -52,6 +53,9 @@ class App extends Component {
                         </Route>
                         <Route element={<RequireAuth allowedRoles={["ROLE_STUDENT","ROLE_ADMIN","ROLE_PROMOTOR", "ROLE_COORDINATOR", "ROLE_CONTACT"]}/>}>
                             <Route path='/subjectForm' element={<SubjectForm />}/>
+                        </Route>
+                        <Route element={<RequireAuth allowedRoles={["ROLE_STUDENT","ROLE_ADMIN"]}/>}>
+                            <Route path='/targetAudienceUser:id' element={<TargetAudienceUser />}/>
                         </Route>
                         <Route path='*' element={<Error/>}/>
                     </Route>

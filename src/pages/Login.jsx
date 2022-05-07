@@ -1,4 +1,5 @@
 import React from 'react';
+import backendURL from "../backendURL";
 import {Button, Col, Container, Form, Row, Image} from 'react-bootstrap';
 import { useRef, useState, useEffect } from 'react';
 import useAuth from '../hooks/useAuth';
@@ -38,7 +39,7 @@ const Login = () => {
         var data = qs.stringify({email, password});
         var config = {
             method: 'post',
-            url: 'http://localhost:8081/authentication/login',
+            url: backendURL + '/authentication/login',
             headers:{
                 'Content-Type': "application/x-www-form-urlencoded"
             },

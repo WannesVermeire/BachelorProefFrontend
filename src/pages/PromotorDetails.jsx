@@ -1,4 +1,5 @@
 import React,{Component} from 'react'
+import backendURL from "../backendURL";
 import {useState} from 'react';
 import {Button, Col, Form, Row, Container} from "react-bootstrap";
 
@@ -14,7 +15,7 @@ const PromotorDetails =()=> {
     var axios = require('axios');
     var config = {
         method: 'get',
-        url: 'http://localhost:8081/userManagement/users/' + id,
+        url: backendURL + '/userManagement/users/' + id,
         headers: {
             'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
         }

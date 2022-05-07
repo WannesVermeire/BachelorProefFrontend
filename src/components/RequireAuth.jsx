@@ -1,3 +1,4 @@
+import backendURL from "../backendURL";
 import { useLocation, Navigate, Outlet } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import jwt_decode from 'jwt-decode';
@@ -16,13 +17,14 @@ const RequireAuth = ({allowedRoles}) => {
         console.log("access token not expired");
         const decoded = jwt_decode(JSON.parse(localStorage.getItem('access_token')));
         if(decoded != null) roles = decoded.roles;
+        console.log(roles);
     }
     else if(expTime_rt>curTime){
         //If the access token has expired but the refresh token hasn't
         console.log("access token expired but refresh token not");
         let config = {
             method: 'get',
-            url: 'http://localhost:8081/authentication/token/refresh',
+            url: backendURL + '/authentication/token/refresh',
             headers:{
                 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('refresh_token'))
             }

@@ -1,10 +1,12 @@
 import React,{Component} from 'react'
-import {useState} from 'react';
+import {useState} from 'react'
+
 import {Button, Col, Form, Row, Container} from "react-bootstrap";
 
 import axios from "axios";
 import qs from 'qs';
 import {Link, useParams} from "react-router-dom";
+import backendURL from "../backendURL";
 
 let counter = 0;
 const StudentDetails =()=> {
@@ -17,7 +19,7 @@ const StudentDetails =()=> {
         let axios = require('axios');
         let config = {
             method: 'get',
-            url: 'http://localhost:8081/userManagement/users/' + id,
+            url: backendURL + '/userManagement/users/' + id,
             headers: {
                 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
             }
@@ -40,7 +42,7 @@ const StudentDetails =()=> {
         axios = require('axios');
         config = {
             method: 'get',
-            url: 'http://localhost:8081/userManagement/users/' + id +'/preferredSubjects',
+            url: backendURL + '/userManagement/users/' + id +'/preferredSubjects',
             headers: {
                 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
             }
@@ -77,22 +79,20 @@ const StudentDetails =()=> {
                             </div>
                         </div>
                         <div className={"m-3"}>
-                            Faculty:
-                            {student.data.targetAudience!==null
-                                ? student.data.targetAudience.faculty
+                            Faculty: {student.data.targetAudience!==null
+                                ? student.data.targetAudience.faculty.name
                                 : null
                             }
                         </div>
                         <div className={"m-3"}>
-                            Education:
-                            {student.data.targetAudience!==null
-                                    ? student.data.targetAudience.education
+                            Education: {student.data.targetAudience!==null
+                                    ? student.data.targetAudience.education.name
                                     : null
                             }
                         </div>
                         <div className={"m-3"}>
                             Campus: {student.data.targetAudience!==null
-                            ? student.data.targetAudience.campus
+                            ? student.data.targetAudience.campus.name
                             : null}
                         </div>
                         <div className={"m-3"}>

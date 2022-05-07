@@ -1,5 +1,6 @@
 import RegisterForm from "../components/RegisterForm";
 import React, {Component} from 'react';
+import backendURL from "../backendURL";
 import axios from "axios";
 import qs from 'qs';
 
@@ -15,7 +16,7 @@ class Register extends Component {
         var data = qs.stringify(details);
         var config = {
             method: 'post',
-            url: 'http://localhost:8081/userManagement/users',
+            url: backendURL + '/userManagement/users',
             headers:{
                 'Content-Type': "application/x-www-form-urlencoded"
             },

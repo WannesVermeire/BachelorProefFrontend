@@ -1,4 +1,5 @@
 import React,{Component} from 'react'
+import backendURL from "../backendURL";
 import {Button, Col, Form, Row, Container} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import qs from "qs";
@@ -26,7 +27,7 @@ class RegisterCompany extends Component{
 
         var config = {
             method: 'post',
-            url: 'http://localhost:8081/userManagement/company',
+            url: backendURL + '/userManagement/company',
             headers: {
                 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
             },

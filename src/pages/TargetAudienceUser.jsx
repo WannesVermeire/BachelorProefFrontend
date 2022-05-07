@@ -1,5 +1,6 @@
 import React from 'react'
 import {useState} from 'react';
+import backendURL from "../backendURL";
 import {Button, Form, Container} from "react-bootstrap";
 
 import axios from "axios";
@@ -23,7 +24,7 @@ const TargetAudienceUser = () =>{
         //Get all faculties
         let config = {
             method: 'get',
-            url: 'http://localhost:8081/subjectManagement/faculty',
+            url: backendURL + '/subjectManagement/faculty',
             headers: {
                 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
             }
@@ -52,7 +53,7 @@ const TargetAudienceUser = () =>{
         data.append('facultyIds',inputFaculty.id);
         let config = {
             method: 'POST',
-            url: 'http://localhost:8081/subjectManagement/education/byFaculties' ,
+            url: backendURL + '/subjectManagement/education/byFaculties' ,
             headers: {
                 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token')),
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -80,7 +81,7 @@ const TargetAudienceUser = () =>{
         data.append('educationIds', inputEducation.id);
         let config = {
             method: 'post',
-            url: 'http://localhost:8081/subjectManagement/campus/byEducations',
+            url: backendURL + '/subjectManagement/campus/byEducations',
             headers: {
                 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token')),
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -112,8 +113,8 @@ const TargetAudienceUser = () =>{
         });
         console.log(data);
         let config = {
-            method: 'put',
-            url: 'http://localhost:8081/userManagement/users/student/addTargetAudience',
+            method: 'post',
+            url: backendURL + '/userManagement/users/student/addTargetAudience',
             headers: {
                 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token')),
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -134,20 +135,23 @@ const TargetAudienceUser = () =>{
         console.log(page)
         if(page === 1){
             return(
-                <Container style={{textAlign:"left"}} fluid="sm"  >
-                    <Form id={"facultySubmit"} onSubmit={handleSubmitFaculties}>
-                        <InputGroup className={"pt-3 pb-3"}>
+                <Container >
+                    <Form  id={"facultySubmit"} onSubmit={handleSubmitFaculties}>
+                        <InputGroup style={{position: 'relative',left:'25%'}} className={"pt-3 pb-3"}>
                             <InputGroup.Text id="Faculties">Faculty</InputGroup.Text>
-                            <Select
-                                fluid="sm"
-                                options={faculties}
-                                getOptionLabel={(options) => options['name']}
-                                getOptionValue={(options) => options['id']}
-                                onChange={(e) => setInputFaculty(e)}>
-                            </Select>
+                            <div style={{width: '43%'}}>
+                                <Select
+                                    options={faculties}
+                                    autosize={true}
+                                    autocomplete="off"
+                                    getOptionLabel={(options) => options['name']}
+                                    getOptionValue={(options) => options['id']}
+                                    onChange={(e) => setInputFaculty(e)}>
+                                </Select>
+                            </div>
                         </InputGroup>
-                        <Form.Group style={{textAlign: 'center'}} className="mb-3">
-                            <Button id={"facultySubmit"} type="submit" >
+                        <Form.Group style={{textAlign:'center'}} className="mb-3">
+                            <Button  id={"facultySubmit"} type="submit" >
                                 Next
                             </Button>
                         </Form.Group>
@@ -157,19 +161,23 @@ const TargetAudienceUser = () =>{
         }
         else if(page===2){
             return(
-                <Container>
+                <Container >
                     <Form id={"educationSubmit"} onSubmit={handleSubmitEducations}>
-                        <InputGroup className={"pt-3 pb-3"}>
+                        <InputGroup style={{position: 'relative',left:'25%'}} className={"pt-3 pb-3"}>
                             <InputGroup.Text id="Educations">Education</InputGroup.Text>
-                            <Select
-                                fluid="sm"
-                                options={educations}
-                                getOptionLabel={(options) => options['name']}
-                                getOptionValue={(options) => options['id']}
-                                onChange={(e) => setInputEducation(e)}>
-                            </Select>
+                            <div style={{width: '43%'}}>
+                                <Select
+                                    fluid="sm"
+                                    options={educations}
+                                    autocomplete="off"
+                                    defaultValue={null}
+                                    getOptionLabel={(options) => options['name']}
+                                    getOptionValue={(options) => options['id']}
+                                    onChange={(e) => setInputEducation(e)}>
+                                </Select>
+                            </div>
                         </InputGroup>
-                        <Form.Group style={{textAlign: 'center'}} className="mb-3">
+                        <Form.Group style={{textAlign:'center'}} className="mb-3">
                             <Button id={"educationSubmit"} type="submit" >
                                 Next
                             </Button>
@@ -180,19 +188,22 @@ const TargetAudienceUser = () =>{
         }
         else if(page===3){
             return(
-                <Container>
+                <Container >
                     <Form id={"campusSubmit"} onSubmit={postTargetAudience}>
-                        <InputGroup className={"pt-3 pb-3"}>
+                        <InputGroup style={{position: 'relative',left:'25%'}} className={"pt-3 pb-3"}>
                             <InputGroup.Text id="campusses">Campus</InputGroup.Text>
-                            <Select
-                                fluid="sm"
-                                options={campuses}
-                                getOptionLabel={(options) => options['name']}
-                                getOptionValue={(options) => options['id']}
-                                onChange={(e) => setInputCampus(e)}>
-                            </Select>
+                            <div style={{width: '43%'}}>
+                                <Select
+                                    fluid="sm"
+                                    options={campuses}
+                                    defaultValue={null}
+                                    getOptionLabel={(options) => options['name']}
+                                    getOptionValue={(options) => options['id']}
+                                    onChange={(e) => setInputCampus(e)}>
+                                </Select>
+                            </div>
                         </InputGroup>
-                        <Form.Group style={{textAlign: 'center'}} className="mb-3">
+                        <Form.Group style={{textAlign:'center'}} className="mb-3">
                             <Button id={"campusSubmit"} type="submit" variant={"outline-success"}>
                                 Submit
                             </Button>
@@ -207,7 +218,7 @@ const TargetAudienceUser = () =>{
     }
     return (
         page===4 ?
-            <Navigate to="/subjects" />
+            <Navigate to="/userlist" />
             : hasLoaded?
                 (
                     renderForm()

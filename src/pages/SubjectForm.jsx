@@ -1,4 +1,5 @@
 import React from 'react'
+import backendURL from "../backendURL";
 import {useState} from 'react';
 import {Button, Form, Container} from "react-bootstrap";
 
@@ -43,7 +44,7 @@ const SubjectForm = () =>{
         //Get all tags
         let config = {
             method: 'get',
-            url: 'http://localhost:8081/subjectManagement/tag',
+            url: backendURL + '/subjectManagement/tag',
             headers: {
                 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
             }
@@ -65,7 +66,7 @@ const SubjectForm = () =>{
         //Get all faculties
         config = {
             method: 'get',
-            url: 'http://localhost:8081/subjectManagement/faculty',
+            url: backendURL + '/subjectManagement/faculty',
             headers: {
                 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
             }
@@ -106,7 +107,7 @@ const SubjectForm = () =>{
         console.log(data);
         let config = {
             method: 'post',
-            url: 'http://localhost:8081/subjectManagement/subjects',
+            url: backendURL + '/subjectManagement/subjects',
             headers: {
                 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token')),
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -140,7 +141,7 @@ const SubjectForm = () =>{
         }
         let config = {
             method: 'POST',
-            url: 'http://localhost:8081/subjectManagement/education/byFaculties' ,
+            url: backendURL + '/subjectManagement/education/byFaculties' ,
             headers: {
                 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token')),
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -174,7 +175,7 @@ const SubjectForm = () =>{
             }
             config = {
                 method: 'post',
-                url: 'http://localhost:8081/subjectManagement/campus/byFaculties',
+                url: backendURL + '/subjectManagement/campus/byFaculties',
                 headers: {
                     'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token')),
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -189,7 +190,7 @@ const SubjectForm = () =>{
             }
             config = {
                 method: 'post',
-                url: 'http://localhost:8081/subjectManagement/campus/byEducations',
+                url: backendURL + '/subjectManagement/campus/byEducations',
                 headers: {
                     'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token')),
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -226,7 +227,7 @@ const SubjectForm = () =>{
         console.log(data);
         var config = {
             method: 'post',
-            url: 'http://localhost:8081/subjectManagement/subjects/' + subjectId + '/addTargetAudience',
+            url: backendURL + '/subjectManagement/subjects/' + subjectId + '/addTargetAudience',
             headers: {
                 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token')),
                 'Content-Type': 'application/x-www-form-urlencoded'

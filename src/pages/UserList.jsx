@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import backendURL from "../backendURL";
 import {Container, Button} from 'react-bootstrap';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -20,7 +21,7 @@ class UserList extends Component {
         //Get all students
         var config = {
             method: 'get',
-            url: 'http://localhost:8081/userManagement/users/student',
+            url: backendURL + '/userManagement/users/student',
             headers: {
                 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))}
         };
@@ -33,7 +34,7 @@ class UserList extends Component {
         //Get all promotors
         config = {
             method: 'get',
-            url: 'http://localhost:8081/userManagement/users/promotor',
+            url: backendURL + '/userManagement/users/promotor',
             headers: {
                 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))}
         };
@@ -46,7 +47,7 @@ class UserList extends Component {
         //Get all companies
         config = {
             method: 'get',
-            url: 'http://localhost:8081/userManagement/company',
+            url: backendURL + '/userManagement/company',
             headers: {
                 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))}
         };

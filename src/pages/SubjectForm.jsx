@@ -8,6 +8,7 @@ import qs from 'qs';
 import {Navigate} from "react-router-dom";
 import InputGroup from "react-bootstrap/InputGroup";
 import Select from "react-select";
+import CreatableSelect from 'react-select/creatable';
 
 
 const SubjectForm = () =>{
@@ -104,7 +105,7 @@ const SubjectForm = () =>{
         for(let i =0; i<tagNames.length; i++){
             data.append('tagNames',tagNames[i]);
         }
-        console.log(data);
+        console.log(tagNames);
         let config = {
             method: 'post',
             url: backendURL + '/subjectManagement/subjects',
@@ -266,14 +267,15 @@ const SubjectForm = () =>{
 
                         <InputGroup className={"pt-3 pb-3"}>
                             <InputGroup.Text id="tags">Disciplines</InputGroup.Text>
-                            <Select
+                            <CreatableSelect
+                                key={"tags"}
                                 fluid="sm"
                                 options={tags}
                                 getOptionLabel={(options) => options['name']}
                                 getOptionValue={(options) => options['id']}
                                 isMulti
                                 onChange={(e) => setInputTags(e)}>
-                            </Select>
+                            </CreatableSelect>
                         </InputGroup>
 
                         <InputGroup style={{display: "flex",width:250}} className={"pt-3 pb-3"}>
@@ -313,16 +315,19 @@ const SubjectForm = () =>{
             return(
                 <Container style={{textAlign:"left"}} fluid="sm"  >
                     <Form id={"facultySubmit"} onSubmit={handleSubmitFaculties}>
-                        <InputGroup className={"pt-3 pb-3"}>
-                            <InputGroup.Text id="Faculties">Faculty</InputGroup.Text>
-                            <Select
-                                fluid="sm"
-                                options={faculties}
-                                getOptionLabel={(options) => options['name']}
-                                getOptionValue={(options) => options['id']}
-                                isMulti
-                                onChange={(e) => setInputFaculties(e)}>
-                            </Select>
+                        <InputGroup style={{position: 'relative',left:'25%'}} className={"pt-3 pb-3"}>
+                            <InputGroup.Text  id="Faculties">Faculty</InputGroup.Text>
+                            <div style={{width: '43%'}}>
+                                <Select
+                                    key={"Faculties"}
+                                    fluid="sm"
+                                    options={faculties}
+                                    getOptionLabel={(options) => options['name']}
+                                    getOptionValue={(options) => options['id']}
+                                    isMulti
+                                    onChange={(e) => setInputFaculties(e)}>
+                                </Select>
+                            </div>
                         </InputGroup>
                         <Form.Group style={{textAlign: 'center'}} className="mb-3">
                             <Button id={"facultySubmit"} type="submit" >
@@ -337,16 +342,19 @@ const SubjectForm = () =>{
             return(
                 <Container>
                     <Form id={"educationSubmit"} onSubmit={handleSubmitEducations}>
-                        <InputGroup className={"pt-3 pb-3"}>
+                        <InputGroup  style={{position: 'relative',left:'25%'}} className={"pt-3 pb-3"}>
                             <InputGroup.Text id="Educations">Education</InputGroup.Text>
-                            <Select
-                                fluid="sm"
-                                options={educations}
-                                getOptionLabel={(options) => options['name']}
-                                getOptionValue={(options) => options['id']}
-                                isMulti
-                                onChange={(e) => setInputEducations(e)}>
-                            </Select>
+                            <div style={{width: '43%'}}>
+                                <Select
+                                    key={"Educations"}
+                                    fluid="sm"
+                                    options={educations}
+                                    getOptionLabel={(options) => options['name']}
+                                    getOptionValue={(options) => options['id']}
+                                    isMulti
+                                    onChange={(e) => setInputEducations(e)}>
+                                </Select>
+                            </div>
                         </InputGroup>
                         <Form.Group style={{textAlign: 'center'}} className="mb-3">
                             <Button id={"educationSubmit"} type="submit" >
@@ -361,16 +369,19 @@ const SubjectForm = () =>{
             return(
                 <Container>
                     <Form id={"campusSubmit"} onSubmit={postTargetAudience}>
-                        <InputGroup className={"pt-3 pb-3"}>
-                            <InputGroup.Text id="campusses">Campus</InputGroup.Text>
-                            <Select
-                                fluid="sm"
-                                options={campuses}
-                                getOptionLabel={(options) => options['name']}
-                                getOptionValue={(options) => options['id']}
-                                isMulti
-                                onChange={(e) => setInputCampuses(e)}>
-                            </Select>
+                        <InputGroup style={{position: 'relative',left:'25%'}} className={"pt-3 pb-3"}>
+                            <InputGroup.Text  id="campusses">Campus</InputGroup.Text>
+                            <div style={{width: '43%'}}>
+                                <Select
+                                    key={"campusses"}
+                                    fluid="sm"
+                                    options={campuses}
+                                    getOptionLabel={(options) => options['name']}
+                                    getOptionValue={(options) => options['id']}
+                                    isMulti
+                                    onChange={(e) => setInputCampuses(e)}>
+                                </Select>
+                            </div>
                         </InputGroup>
                         <Form.Group style={{textAlign: 'center'}} className="mb-3">
                             <Button id={"campusSubmit"} type="submit" variant={"outline-success"}>

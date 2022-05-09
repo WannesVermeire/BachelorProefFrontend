@@ -141,6 +141,7 @@ const TargetAudienceUser = () =>{
                             <InputGroup.Text id="Faculties">Faculty</InputGroup.Text>
                             <div style={{width: '43%'}}>
                                 <Select
+                                    key={"faculty"}
                                     options={faculties}
                                     autosize={true}
                                     autocomplete="off"
@@ -167,6 +168,7 @@ const TargetAudienceUser = () =>{
                             <InputGroup.Text id="Educations">Education</InputGroup.Text>
                             <div style={{width: '43%'}}>
                                 <Select
+                                    key={"education"}
                                     fluid="sm"
                                     options={educations}
                                     autocomplete="off"
@@ -194,6 +196,7 @@ const TargetAudienceUser = () =>{
                             <InputGroup.Text id="campusses">Campus</InputGroup.Text>
                             <div style={{width: '43%'}}>
                                 <Select
+                                    key={"campus"}
                                     fluid="sm"
                                     options={campuses}
                                     defaultValue={null}

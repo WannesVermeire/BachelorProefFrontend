@@ -7,12 +7,14 @@ import {Link} from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import FormData from "form-data";
 import backendURL from "../backendURL";
+import {AiOutlineHeart, AiFillHeart} from 'react-icons/ai';
 
 class Subjects extends Component {
     state = {
         subjects: [],
         details: [],
-        approved: []
+        approved: [],
+        liked: []
     }
     constructor(props) {
         super(props);
@@ -107,14 +109,28 @@ class Subjects extends Component {
     approvedButton = (sub) =>{
         if(this.state.approved[this.state.subjects.findIndex(subject => subject.id === sub.id)]) {
             return (
-                <Button onClick={()=>{this.disapprove(sub)}} className={"m-3"} variant={"outline-danger"}>
+                <Button onClick={()=>{this.disapprove(sub)}} variant={"outline-danger"}>
                     Disapprove
                 </Button>)
         }
         else {
             return (
-                <Button onClick={()=>{this.approve(sub)}} className={"m-3"} variant={"outline-success"}>
+                <Button onClick={()=>{this.approve(sub)}}  variant={"outline-success"}>
                     Approve
+                </Button>)
+        }
+    }
+    likeButton = (sub) =>{
+        if(false) {
+            return (
+                <Button onClick={()=>{}} variant={"outline-warning"} >
+                    <AiOutlineHeart/>
+                </Button>)
+        }
+        else {
+            return (
+                <Button onClick={()=>{}} variant={"outline-warning"}>
+                    <AiFillHeart/>
                 </Button>)
         }
     }
@@ -150,7 +166,11 @@ class Subjects extends Component {
                 <div className="card text-white bg-dark mb-3">
                     <div className="card-header">
                         <div style={{float: 'left'}}>Students: {subject.nrOfStudents}</div>
-                        <div style={{float: 'right'}}>{this.isRole("ROLE_ADMIN")?this.approvedButton(subject): null}</div>
+                        <div style={{float: 'right'}}>{this.isRole("ROLE_ADMIN")?
+                            this.approvedButton(subject): this.isRole("ROLE_STUDENT")?
+                                this.likeButton(subject):
+                                null}
+                        </div>
                     </div>
 
                     <div className="card-body">

@@ -8,13 +8,15 @@ import qs from 'qs';
 import {Link, useParams} from "react-router-dom";
 import backendURL from "../backendURL";
 
-let counter = 0;
+
 const StudentDetails =()=> {
     const [student,setStudent] = useState('');
     const [id] = useState(useParams().id);
     const [preferredSubjects, setPreferredSubjects] = useState([]); //Get subject objects
+    const [studentLoaded, setStudentLoaded] = useState(false);
+    const [prefSubLoaded, setPrefSubLoaded] = useState(false);
 
-    if(counter<2){
+    if(!(studentLoaded && prefSubLoaded)){
         //Loading student
         let axios = require('axios');
         let config = {
@@ -30,7 +32,7 @@ const StudentDetails =()=> {
                     setStudent(res);
                     console.log("Student loaded");
                     console.log(res);
-                    counter++;
+                    setStudentLoaded(true);
                 }
             })
             .catch(function (error) {
@@ -53,7 +55,7 @@ const StudentDetails =()=> {
                     setPreferredSubjects(res.data);
                     console.log("preferred subjects loaded");
                     console.log(preferredSubjects);
-                    counter++;
+                    setPrefSubLoaded(true);
                 }
             })
             .catch(function (error) {
@@ -63,7 +65,7 @@ const StudentDetails =()=> {
 
 
     return(
-        counter>=2 ?
+        (studentLoaded && prefSubLoaded) ?
             (
                 <Container fluid="sm">
                     <div className="card text-black bg-white m-3">

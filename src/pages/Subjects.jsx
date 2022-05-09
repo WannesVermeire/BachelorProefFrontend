@@ -11,8 +11,8 @@ import backendURL from "../backendURL";
 class Subjects extends Component {
     state = {
         subjects: [],
-        approved: [],
-        details: []
+        details: [],
+        approved: []
     }
     constructor(props) {
         super(props);
@@ -27,7 +27,7 @@ class Subjects extends Component {
         axios(config)
             .then(function (res) {
                 self.setState({subjects: res.data});
-                self.setState({approved: res.data.approved});
+                self.setState({approved: res.data.map(subjects=>subjects.approved)})
                 console.log(self.state);
             }).catch(function (error) {
         });
@@ -47,7 +47,7 @@ class Subjects extends Component {
         return false;
     }
 
-    approve =(subject)=>{
+    approve =(sub)=>{
         let axios = require('axios');
         let FormData = require('form-data');
         let data = new FormData();
@@ -55,7 +55,7 @@ class Subjects extends Component {
 
         let config = {
             method: 'put',
-            url: backendURL + '/subjectManagement/subjects/' + subject.id + '/setApproved',
+            url: backendURL + '/subjectManagement/subjects/' + sub.id + '/setApproved',
             headers: {
                 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token')),
             },
@@ -65,14 +65,17 @@ class Subjects extends Component {
         axios(config)
             .then(function (response) {
                 console.log(JSON.stringify(response.data));
-                self.setState({approved: response.data.aproved})
+                let approveds = [...self.state.approved];
+                let approve = true;
+                approveds[self.state.subjects.findIndex(subject => subject.id === sub.id)] = approve;
+                self.setState({approved: approveds});
             })
             .catch(function (error) {
                 console.log(error);
             });
     }
 
-    disapprove =(subject)=>{
+    disapprove =(sub)=>{
         let axios = require('axios');
         let FormData = require('form-data');
         let data = new FormData();
@@ -80,7 +83,7 @@ class Subjects extends Component {
 
         let config = {
             method: 'put',
-            url: backendURL + '/subjectManagement/subjects/' + subject.id + '/setApproved',
+            url: backendURL + '/subjectManagement/subjects/' + sub.id + '/setApproved',
             headers: {
                 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token')),
             },
@@ -90,23 +93,27 @@ class Subjects extends Component {
         axios(config)
             .then(function (response) {
                 console.log(JSON.stringify(response.data));
-                self.setState({approved: response.data.aproved})
+                let disapproveds = [...self.state.approved];
+                let approve = false;
+                disapproveds[self.state.subjects.findIndex(subject => subject.id === sub.id)] = approve;
+                self.setState({approved: disapproveds});
             })
             .catch(function (error) {
                 console.log(error);
             });
+        this.setState({random: 'lol'})
     }
 
-    approvedButton = (subject) =>{
-        if(subject.approved) {
+    approvedButton = (sub) =>{
+        if(this.state.approved[this.state.subjects.findIndex(subject => subject.id === sub.id)]) {
             return (
-                <Button onClick={()=>{this.disapprove(subject)}} className={"m-3"} variant={"outline-danger"}>
+                <Button onClick={()=>{this.disapprove(sub)}} className={"m-3"} variant={"outline-danger"}>
                     Disapprove
                 </Button>)
         }
         else {
             return (
-                <Button onClick={()=>{this.approve(subject)}} className={"m-3"} variant={"outline-success"}>
+                <Button onClick={()=>{this.approve(sub)}} className={"m-3"} variant={"outline-success"}>
                     Approve
                 </Button>)
         }
@@ -141,12 +148,15 @@ class Subjects extends Component {
         return(
             <Container fluid="sm" key={subject.id}>
                 <div className="card text-white bg-dark mb-3">
-                    <div className="card-header">Students: {subject.nrOfStudents}</div>
+                    <div className="card-header">
+                        <div style={{float: 'left'}}>Students: {subject.nrOfStudents}</div>
+                        <div style={{float: 'right'}}>{this.isRole("ROLE_ADMIN")?this.approvedButton(subject): null}</div>
+                    </div>
+
                     <div className="card-body">
                         <h5 className="card-title">{subject.name}</h5>
                         <h6>Tags: {subject.tags.map(tags => tags.name)+" "}</h6>
                         {this.renderDetails(subject)}
-                        {this.isRole("ROLE_ADMIN")?this.approvedButton(subject): null}
                     </div>
                 </div>
             </Container>

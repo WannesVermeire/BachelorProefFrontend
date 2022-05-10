@@ -1,7 +1,7 @@
 import React,{Component} from 'react'
 import {useState} from 'react'
 
-import {Button, Col, Form, Row, Container} from "react-bootstrap";
+import {Button, Col, Form, Row, Container, Alert} from "react-bootstrap";
 
 import axios from "axios";
 import qs from 'qs';
@@ -52,7 +52,7 @@ const StudentDetails =()=> {
         axios(config)
             .then(function (res) {
                 if(preferredSubjects.length===0){
-                    setPreferredSubjects(res.data);
+                    setPreferredSubjects(res.data.map(prefSubject => prefSubject.subject));
                     console.log("preferred subjects loaded");
                     console.log(preferredSubjects);
                     setPrefSubLoaded(true);
@@ -62,7 +62,23 @@ const StudentDetails =()=> {
                 console.log(error);
             });
     }
+    console.log(preferredSubjects)
+    const renderSubject = (subject) => {
+        return(
+            <Container fluid="sm" key={subject.id}>
+                <div className="card text-white bg-dark m-3">
+                    <div className="card-header">
+                        <div style={{float: 'left'}}>Students: {subject.nrOfStudents}</div>
+                    </div>
 
+                    <div className="card-body">
+                        <h5 className="card-title">{subject.name}</h5>
+                        <h6>Tags: {subject.tags.map(tags => tags.name)+" "}</h6>
+                    </div>
+                </div>
+            </Container>
+        )
+    }
 
     return(
         (studentLoaded && prefSubLoaded) ?
@@ -80,25 +96,34 @@ const StudentDetails =()=> {
                                 <h6 className="m-3" >{student.data.telNr}</h6>
                             </div>
                         </div>
-                        <div className={"m-3"}>
-                            Faculty: {student.data.targetAudience!==null
+                        <div className={"row"}>
+                            <div className={"col m-3"}>
+                                Faculty: {student.data.targetAudience!==null
                                 ? student.data.targetAudience.faculty.name
                                 : null
                             }
-                        </div>
-                        <div className={"m-3"}>
-                            Education: {student.data.targetAudience!==null
-                                    ? student.data.targetAudience.education.name
-                                    : null
+                            </div>
+                            <div className={"col m-3"}>
+                                Education: {student.data.targetAudience!==null
+                                ? student.data.targetAudience.education.name
+                                : null
                             }
+                            </div>
+                            <div className={"col m-3"}>
+                                Campus: {student.data.targetAudience!==null
+                                ? student.data.targetAudience.campus.name
+                                : null}
+                            </div>
                         </div>
-                        <div className={"m-3"}>
-                            Campus: {student.data.targetAudience!==null
-                            ? student.data.targetAudience.campus.name
-                            : null}
-                        </div>
-                        <div className={"m-3"}>
-                            Preferences: {preferredSubjects}
+
+                        <div className="card text-black bg-white m-3">
+                            <div className="card-header">
+                                Preferences
+                            </div>
+                            <div className="card-body">
+                                {preferredSubjects.map(renderSubject)}
+                            </div>
+
                         </div>
                         <div className={"m-3"}>
                             FinalSubject:

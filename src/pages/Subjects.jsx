@@ -288,9 +288,14 @@ class Subjects extends Component {
         return(
             <Container>
                 <Container className={"mb-3"} style={{textAlign: 'right'}} >
+                    <Link to ="/finalSubject">
+                        <Button className={"m-1"} variant={"outline-success"}>
+                            Choose your final subject
+                        </Button>
+                    </Link>
                     <Link to ="/subjectForm">
-                        <Button variant={"outline-success"}>
-                            Upload
+                        <Button className={"m-1"} variant={"outline-success"}>
+                            Upload subject
                         </Button>
                     </Link>
                 </Container>

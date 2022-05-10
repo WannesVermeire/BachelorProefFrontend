@@ -8,13 +8,15 @@ import jwt_decode from "jwt-decode";
 import FormData from "form-data";
 import backendURL from "../backendURL";
 import {AiOutlineHeart, AiFillHeart} from 'react-icons/ai';
+import qs from "qs";
 
 class Subjects extends Component {
     state = {
         subjects: [],
         details: [],
         approved: [],
-        liked: []
+        liked: [],
+        ownID: ''
     }
     constructor(props) {
         super(props);
@@ -29,11 +31,35 @@ class Subjects extends Component {
         axios(config)
             .then(function (res) {
                 self.setState({subjects: res.data});
-                self.setState({approved: res.data.map(subjects=>subjects.approved)})
+                self.setState({approved: res.data.map(subjects=>subjects.approved)});
                 console.log(self.state);
             }).catch(function (error) {
         });
-
+        config = {
+            method: 'get',
+            url: backendURL + '/userManagement/users/ownId',
+            headers: {
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))}
+        };
+        axios(config)
+            .then(function (res) {
+                self.setState({ownID: res.data});
+                console.log(self.state);
+                config = {
+                    method: 'get',
+                    url: backendURL + '/userManagement/users/' + res.data,
+                    headers: {
+                        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))}
+                };
+                axios(config)
+                    .then(function (res2) {
+                        console.log(res2);
+                        if(self.state.liked.length===0) self.setState({liked: res2.data.favouriteSubjects});
+                        console.log(self.state);
+                    }).catch(function (error) {
+                });
+            }).catch(function (error) {
+        });
     }
 
 
@@ -121,18 +147,93 @@ class Subjects extends Component {
         }
     }
     likeButton = (sub) =>{
-        if(false) {
+        let isLiked = false;
+        for(let i =0; i < this.state.liked.length; i++){
+            if(this.state.liked[i].id===sub.id)isLiked = true;
+        }
+        if(isLiked) {
             return (
-                <Button onClick={()=>{}} variant={"outline-warning"} >
-                    <AiOutlineHeart/>
+                <Button onClick={()=>{this.dislikeSubject(sub)}} variant={"outline-warning"} >
+                    <AiFillHeart/>
                 </Button>)
         }
         else {
             return (
-                <Button onClick={()=>{}} variant={"outline-warning"}>
-                    <AiFillHeart/>
+                <Button onClick={()=>{this.likeSubject(sub)}} variant={"outline-warning"}>
+                    <AiOutlineHeart/>
                 </Button>)
         }
+    }
+
+    likeSubject = (sub) =>{
+        let qs = require('qs');
+        let data = qs.stringify({
+            'userId' : this.state.ownID,
+            'subjectId': sub.id
+        });
+        let config = {
+            method: 'post',
+            url: backendURL + '/userManagement/users/student/addFavouriteSubject',
+            headers: {
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token')),
+            },
+            data : data
+        };
+        let self = this
+        axios(config)
+            .then(function (response) {
+                console.log(JSON.stringify(response.data));
+                config = {
+                    method: 'get',
+                    url: backendURL + '/userManagement/users/' + self.state.ownID,
+                    headers: {
+                        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))}
+                };
+                axios(config)
+                    .then(function (res2) {
+                        self.setState({liked: res2.data.favouriteSubjects});
+                    }).catch(function (error) {
+                });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    dislikeSubject = (sub) =>{
+        let qs = require('qs');
+        let data = qs.stringify({
+            'userId' : this.state.ownID,
+            'subjectId': sub.id
+        });
+        let config = {
+            method: 'delete',
+            url: backendURL + '/userManagement/users/student/favouriteSubject',
+            headers: {
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token')),
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data : data
+        };
+        let self = this
+        axios(config)
+            .then(function (response) {
+                console.log(JSON.stringify(response.data));
+                config = {
+                    method: 'get',
+                    url: backendURL + '/userManagement/users/' + self.state.ownID,
+                    headers: {
+                        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))}
+                };
+                axios(config)
+                    .then(function (res2) {
+                        self.setState({liked: res2.data.favouriteSubjects});
+                    }).catch(function (error) {
+                });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }
 
     renderDetails =(subject)=>{

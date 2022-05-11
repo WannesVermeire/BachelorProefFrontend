@@ -9,6 +9,7 @@ import {Navigate} from "react-router-dom";
 import InputGroup from "react-bootstrap/InputGroup";
 import Select from "react-select";
 import CreatableSelect from 'react-select/creatable';
+import isRole from '../hooks/isRole'
 
 
 const SubjectForm = () =>{
@@ -65,25 +66,27 @@ const SubjectForm = () =>{
             });
 
         //Get all faculties
-        config = {
-            method: 'get',
-            url: backendURL + '/subjectManagement/faculty',
-            headers: {
-                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
-            }
-        };
-        console.log("loading faculties");
-        axios(config).then(function(res){
-            if(faculties.length===0){
-                for(let i=0; i < res.data.length;i++){
-                    setFaculties(res.data);
+        if(!isRole("ROLE_STUDENT")) {
+            config = {
+                method: 'get',
+                url: backendURL + '/subjectManagement/faculty',
+                headers: {
+                    'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
                 }
-                setHasLoaded[1] = true;
-                console.log("faculties loaded");
-            }
-        }).catch(function (error) {
+            };
+            console.log("loading faculties");
+            axios(config).then(function (res) {
+                if (faculties.length === 0) {
+                    for (let i = 0; i < res.data.length; i++) {
+                        setFaculties(res.data);
+                    }
+                    setHasLoaded[1] = true;
+                    console.log("faculties loaded");
+                }
+            }).catch(function (error) {
                 console.log(error);
             });
+        }
 
         let counter =0;
         for(let i =0; i<2; i++){
@@ -121,6 +124,7 @@ const SubjectForm = () =>{
                 console.log("baseSubject posted");
                 setSubjectId(res.data);
                 setPage(2);
+                if(isRole("ROLE_STUDENT"))setPage(5);
             })
             .catch(function (error) {
                 console.log(error);
@@ -134,7 +138,7 @@ const SubjectForm = () =>{
         console.log("processing faculties");
         //Get all educations by chosen faculty
         let axios = require('axios');
-        var data = new FormData();
+        let data = new FormData();
         let facultyIds = inputFaculties.map(inputFaculties=>inputFaculties.id);
         for(let i =0; i<facultyIds.length; i++){
             console.log(facultyIds[i]);

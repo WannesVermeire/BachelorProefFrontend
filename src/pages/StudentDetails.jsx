@@ -29,9 +29,8 @@ const StudentDetails =()=> {
         axios(config)
             .then(function (res) {
                 if(student===''){
-                    setStudent(res);
+                    setStudent(res.data);
                     console.log("Student loaded");
-                    console.log(res);
                     setStudentLoaded(true);
                 }
             })
@@ -41,7 +40,6 @@ const StudentDetails =()=> {
 
 
         //Loading preferred subject
-        axios = require('axios');
         config = {
             method: 'get',
             url: backendURL + '/userManagement/users/' + id +'/preferredSubjects',
@@ -87,31 +85,31 @@ const StudentDetails =()=> {
                     <div className="card text-black bg-white m-3">
                         <div className="row">
                             <div className="col">
-                                <h6 className="m-3" >{student.data.firstName} {student.data.lastName}</h6>
+                                <h6 className="m-3" >{student.firstName} {student.lastName}</h6>
                             </div>
                             <div className="col">
-                                <h6 className="m-3" >{student.data.email}</h6>
+                                <h6 className="m-3" >{student.email}</h6>
                             </div>
                             <div className="col">
-                                <h6 className="m-3" >{student.data.telNr}</h6>
+                                <h6 className="m-3" >{student.telNr}</h6>
                             </div>
                         </div>
                         <div className={"row"}>
                             <div className={"col m-3"}>
-                                Faculty: {student.data.targetAudience!==null
-                                ? student.data.targetAudience.faculty.name
+                                Faculty: {student.targetAudience!==null
+                                ? student.targetAudience.faculty.name
                                 : null
                             }
                             </div>
                             <div className={"col m-3"}>
-                                Education: {student.data.targetAudience!==null
-                                ? student.data.targetAudience.education.name
+                                Education: {student.targetAudience!==null
+                                ? student.targetAudience.education.name
                                 : null
                             }
                             </div>
                             <div className={"col m-3"}>
-                                Campus: {student.data.targetAudience!==null
-                                ? student.data.targetAudience.campus.name
+                                Campus: {student.targetAudience!==null
+                                ? student.targetAudience.campus.name
                                 : null}
                             </div>
                         </div>
@@ -127,7 +125,7 @@ const StudentDetails =()=> {
                         </div>
                         <div className={"m-3"}>
                             FinalSubject:
-                            {student.data.finalSubject}
+                            {student.finalSubject}
                         </div>
                         <Link className={"m-3"} style={{textAlign: 'right'}} to ={"/targetAudienceUser" + id}>
                             <Button variant={"outline-success"}>

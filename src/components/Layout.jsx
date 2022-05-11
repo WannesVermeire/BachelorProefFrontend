@@ -3,6 +3,7 @@ import {Container, Nav, Navbar, NavDropdown} from "react-bootstrap";
 import React from "react";
 import jwt_decode from "jwt-decode";
 import {useNavigate} from "react-router-dom";
+import {AiOutlineUser} from "react-icons/ai"
 
 
 const Layout = () => {
@@ -40,6 +41,9 @@ const Layout = () => {
                             {isRole("ROLE_ADMIN")?<Nav.Link as={Link} to ="/userlist">Userlist</Nav.Link>: null}
                         </Nav>
                         <Nav style={{textAlign: "right"}} >
+                            <Nav.Link as={Link} to ="/userDetails">
+                                <AiOutlineUser/>
+                            </Nav.Link>
                             <Nav.Link as={Link} onClick={Logout} to ="/login">Logout</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>

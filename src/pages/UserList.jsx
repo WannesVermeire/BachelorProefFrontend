@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import backendURL from "../backendURL";
-import {Container, Button} from 'react-bootstrap';
+import {Container, Button, Alert} from 'react-bootstrap';
 import axios from 'axios';
+import ReactFileReader from 'react-file-reader';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Link} from "react-router-dom";
 
@@ -61,6 +62,30 @@ class UserList extends Component {
 
     roleSwitch =(r)=>{
         this.setState({role: r.target.value})
+    }
+
+    uploadFile = (e) =>{
+        let files=e.target.files;
+        let axios = require('axios');
+        let data = new FormData();
+        data.append('file', files[0]);
+
+        let config = {
+            method: 'post',
+            url: backendURL + '/userManagement/users/batch',
+            headers: {
+                'Authorization': 'Bearer ' +JSON.parse(localStorage.getItem('access_token')),
+            },
+            data : data
+        };
+
+        axios(config)
+            .then(function (response) {
+                console.log(JSON.stringify(response.data));
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }
 
     renderDropdownMenu =()=>{
@@ -193,6 +218,9 @@ class UserList extends Component {
                 <div className={"users"}>
                     {this.renderUsers()}
                 </div>
+                <Alert style={{textAlign: 'center'}} variant={"warning"}>
+                    <input type ="file" placeholder="Add user batch file" onChange={(e)=>this.uploadFile(e)}/>
+                </Alert>
             </Container>
         );
     }

@@ -29,7 +29,7 @@ const FinalSubject =()=> {
                 };
                 axios(config)
                     .then(function (res2) {
-                        if(favSubjects.length===0) setFavSubjects(res2.data);
+                        if(favSubjects.length===0) setFavSubjects(sortArrayByIndex(res2.data));
                         config = {
                             method: 'get',
                             url: backendURL + '/userManagement/users/' + res.data + '/preferredSubjects',
@@ -48,6 +48,17 @@ const FinalSubject =()=> {
             }).catch(function (error) {
         });
     }
+
+    const sortArrayByIndex = (array) =>{
+        let newArray = [...array];
+        for(let i =0; i < array.length; i++){
+            for(let j =0; j < array.length; j++){
+                if(array[j].index===i)newArray[i] = array[j];
+            }
+        }
+        return newArray;
+    }
+
     const postPreferredSubjects = (e) =>{
         let axios = require('axios');
         let qs = require('qs');

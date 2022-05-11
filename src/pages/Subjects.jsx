@@ -8,6 +8,7 @@ import jwt_decode from "jwt-decode";
 import FormData from "form-data";
 import backendURL from "../backendURL";
 import {AiOutlineHeart, AiFillHeart} from 'react-icons/ai';
+import isRole from "../hooks/isRole"
 import qs from "qs";
 
 class Subjects extends Component {
@@ -63,17 +64,7 @@ class Subjects extends Component {
     }
 
 
-    isRole = (r)=>{
-        let roles = null;
-        if(localStorage.getItem('access_token')!=='undefined'){
-            const decoded = jwt_decode(JSON.parse(localStorage.getItem('access_token')));
-            roles = decoded.roles;
-            for(let i = 0; i < roles.length; i++){
-                if(r===roles[i])return true;
-            }
-        }
-        return false;
-    }
+
 
     approve =(sub)=>{
         let axios = require('axios');
@@ -267,8 +258,8 @@ class Subjects extends Component {
                 <div className="card text-white bg-dark mb-3">
                     <div className="card-header">
                         <div style={{float: 'left'}}>Students: {subject.nrOfStudents}</div>
-                        <div style={{float: 'right'}}>{this.isRole("ROLE_ADMIN")?
-                            this.approvedButton(subject): this.isRole("ROLE_STUDENT")?
+                        <div style={{float: 'right'}}>{isRole("ROLE_ADMIN")?
+                            this.approvedButton(subject): isRole("ROLE_STUDENT")?
                                 this.likeButton(subject):
                                 null}
                         </div>
@@ -288,11 +279,14 @@ class Subjects extends Component {
         return(
             <Container>
                 <Container className={"mb-3"} style={{textAlign: 'right'}} >
-                    <Link to ="/finalSubject">
-                        <Button className={"m-1"} variant={"outline-success"}>
-                            Choose your final subject
-                        </Button>
-                    </Link>
+                    {isRole("ROLE_STUDENT")?
+                        <Link to ="/finalSubject">
+                            <Button className={"m-1"} variant={"outline-success"}>
+                                Choose your final subject
+                            </Button>
+                        </Link>
+                        :null
+                    }
                     <Link to ="/subjectForm">
                         <Button className={"m-1"} variant={"outline-success"}>
                             Upload subject

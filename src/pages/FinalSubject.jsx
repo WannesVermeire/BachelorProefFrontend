@@ -29,7 +29,7 @@ const FinalSubject =()=> {
                 };
                 axios(config)
                     .then(function (res2) {
-                        if(favSubjects.length===0) setFavSubjects(sortArrayByIndex(res2.data));
+                        if(favSubjects.length===0) setFavSubjects(res2.data);
                         config = {
                             method: 'get',
                             url: backendURL + '/userManagement/users/' + res.data + '/preferredSubjects',
@@ -38,7 +38,9 @@ const FinalSubject =()=> {
                         };
                         axios(config)
                             .then(function (res3) {
-                                if(prevPrefSubjects.length===0) setPrevPrefSubjects(res3.data);
+                                console.log(res3.data);
+                                console.log(sortArrayByIndex(res3.data));
+                                if(prevPrefSubjects.length===0) setPrevPrefSubjects(sortArrayByIndex(res3.data));
                                 setHasloaded(true);
                             }).catch(function (error) {
                         });
@@ -53,7 +55,7 @@ const FinalSubject =()=> {
         let newArray = [...array];
         for(let i =0; i < array.length; i++){
             for(let j =0; j < array.length; j++){
-                if(array[j].index===i)newArray[i] = array[j];
+                if(array[j].index===i+1)newArray[i] = array[j];
             }
         }
         return newArray;
@@ -113,8 +115,7 @@ const FinalSubject =()=> {
                                                 getOptionValue={(options) => options['id']}
                                                 onChange={(sub)=> {
                                                     let prefSubjectsCopy = [...prefSubjects];
-                                                    let prefSubject = sub;
-                                                    prefSubjectsCopy[0] = prefSubject;
+                                                    prefSubjectsCopy[0] = sub;
                                                     setPrefSubjects(prefSubjectsCopy);
                                                 }}>
                                             </Select>
@@ -135,8 +136,7 @@ const FinalSubject =()=> {
                                                 getOptionValue={(options) => options['id']}
                                                 onChange={(sub) => {
                                                     let prefSubjectsCopy = [...prefSubjects];
-                                                    let prefSubject = sub;
-                                                    prefSubjectsCopy[1] = prefSubject;
+                                                    prefSubjectsCopy[1] = sub;
                                                     setPrefSubjects(prefSubjectsCopy);
                                                 }}>
                                             </Select>
@@ -157,8 +157,7 @@ const FinalSubject =()=> {
                                                 getOptionValue={(options) => options['id']}
                                                 onChange={(sub) => {
                                                     let prefSubjectsCopy = [...prefSubjects];
-                                                    let prefSubject = sub;
-                                                    prefSubjectsCopy[2] = prefSubject;
+                                                    prefSubjectsCopy[2] = sub;
                                                     setPrefSubjects(prefSubjectsCopy);
                                                 }}>
                                             </Select>

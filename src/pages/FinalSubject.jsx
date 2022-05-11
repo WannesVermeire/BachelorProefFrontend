@@ -1,4 +1,4 @@
-import React, {Component, useState} from "react";
+import React, { useState} from "react";
 import backendURL from "../backendURL";
 import axios from "axios";
 import {Alert, Container, Row, Col, Form, Button} from "react-bootstrap";

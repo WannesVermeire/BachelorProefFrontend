@@ -56,7 +56,8 @@ const UserDetails =()=> {
         axios(config)
             .then(function (res) {
                 if (preferredSubjects.length === 0) {
-                    setPreferredSubjects(res.data.map(prefSubject => prefSubject.subject));
+                    let sortedPrefSub = sortArrayByIndex(res.data);
+                    setPreferredSubjects(sortedPrefSub.map(prefSubject => prefSubject.subject));
                     setPrefSubLoaded(true);
                 }
             })
@@ -65,13 +66,24 @@ const UserDetails =()=> {
             });
     }
 
+    const sortArrayByIndex = (array) =>{
+        let newArray = [...array];
+        for(let i =0; i < array.length; i++){
+            for(let j =0; j < array.length; j++){
+                if(array[j].index===i+1)newArray[i] = array[j];
+            }
+        }
+        return newArray;
+    }
 
-    const renderSubject = (subject) => {
+    const renderSubject = (subject, index) => {
+        console.log(index);
         return(
             <Container fluid="sm" key={subject.id}>
                 <div className="card text-white bg-dark m-3">
                     <div className="card-header">
                         <div style={{float: 'left'}}>Students: {subject.nrOfStudents}</div>
+                        <div style={{ float:"right"  }}>Nr. {index+1}</div>
                     </div>
 
                     <div className="card-body">

@@ -36,6 +36,7 @@ const RequireAuth = ({allowedRoles}) => {
             localStorage.setItem("access_token_expired", JSON.stringify(access_token_expired));
             console.log("access token refreshed");
         }).catch(function (error) {
+            console.log(error);
         });
         const decoded = jwt_decode(JSON.parse(localStorage.getItem('access_token')));
         if(decoded != null) roles = decoded.roles;

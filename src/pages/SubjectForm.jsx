@@ -230,7 +230,7 @@ const SubjectForm = () =>{
             'campusIds': campusIds,
         }, {arrayFormat: 'repeat'});
         console.log(data);
-        var config = {
+        let config = {
             method: 'post',
             url: backendURL + '/subjectManagement/subjects/' + subjectId + '/addTargetAudience',
             headers: {

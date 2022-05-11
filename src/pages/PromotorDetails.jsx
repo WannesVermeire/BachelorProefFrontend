@@ -22,7 +22,7 @@ const PromotorDetails =()=> {
     };
     axios(config)
         .then(function (res) {
-            if(promotor==='')setPromotor(res);
+            if(promotor==='')setPromotor(res.data);
             setHasLoaded(true);
             console.log(res)
         })
@@ -37,26 +37,14 @@ const PromotorDetails =()=> {
                     <div className="card text-black bg-white m-3">
                         <div className="row">
                             <div className="col">
-                                <h6 className="m-3" >{promotor.data.firstName} {promotor.data.lastName}</h6>
+                                <h6 className="m-3" >{promotor.firstName} {promotor.lastName}</h6>
                             </div>
                             <div className="col">
-                                <h6 className="m-3" >{promotor.data.email}</h6>
+                                <h6 className="m-3" >{promotor.email}</h6>
                             </div>
                             <div className="col">
-                                <h6 className="m-3" >{promotor.data.telNr}</h6>
+                                <h6 className="m-3" >{promotor.telNr}</h6>
                             </div>
-                        </div>
-                        <div className={"m-3"}>
-                            Preferences:
-                            ToDo
-                        </div>
-                        <div className={"m-3"}>
-                            Specialization:
-                            ToDo
-                        </div>
-                        <div className={"m-3"}>
-                            Campus:
-                            ToDo
                         </div>
                     </div>
                 </Container>)

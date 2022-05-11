@@ -258,11 +258,21 @@ class Subjects extends Component {
                 <div className="card text-white bg-dark mb-3">
                     <div className="card-header">
                         <div style={{float: 'left'}}>Students: {subject.nrOfStudents}</div>
-                        <div style={{float: 'right'}}>{isRole("ROLE_ADMIN")?
+                        <div className={"ms-3"} style={{float: 'right'}}>{isRole("ROLE_ADMIN")?
                             this.approvedButton(subject): isRole("ROLE_STUDENT")?
                                 this.likeButton(subject):
                                 null}
                         </div>
+                        {isRole("ROLE_ADMIN")?
+                            <div style={{float: 'right'}}>
+                                <Link to ={"/targetAudienceSubject" + subject.id}>
+                                    <Button  variant={"outline-success"}>
+                                        Change targetAudience
+                                    </Button>
+                                </Link>
+                            </div>
+                        : null}
+
                     </div>
 
                     <div className="card-body">

@@ -241,7 +241,6 @@ class Subjects extends Component {
         uniqueCampusses = uniqueCampusses.filter((c, index) => {
             return uniqueCampusses.indexOf(c) === index;
         });
-        console.log(uniqueFaculties);
         return(
             <div>
                 <Button variant="secondary" onClick={() => {
@@ -265,15 +264,15 @@ class Subjects extends Component {
                             </div>
                             <div className="card-body">
                                 <div className="mb-3 row">
-                                    <Tooltip title={(subject.promotor!==null)?promotor.email:null} className="col-4">
+                                    <div className="col-4">
+                                        <div >Students: {subject.nrOfStudents}</div>
+                                    </div>
+                                    <Tooltip title={(subject.promotor!==null)?subject.promotor.email:null} arrow className="col-4">
                                         <div >Promotor: {(subject.promotor!==null)?(subject.promotor.firstName + " " + subject.promotor.lastName):null}</div>
                                     </Tooltip>
-                                    <div className="col-4">
+                                    <Tooltip title={(subject.company!==null)?((subject.company.contacts.length!==0)?subject.company.contacts.map(contact => contact.email):null):null} arrow className="col-4">
                                         <div>Company: {(subject.company!==null)?subject.company.name:null}</div>
-                                    </div>
-                                    <div className="col-4">
-                                        <div>Contacts: {(subject.company!==null?subject.company.contacts!==null:false)?subject.company.contacts.map(contact=>contact.email):null}</div>
-                                    </div>
+                                    </Tooltip>
                                 </div>
                                 <div className="row">
                                     <div className="col-4">
@@ -316,8 +315,6 @@ class Subjects extends Component {
                         </div>
                         <h5 className="card-title" >{subject.name}</h5>
                         <div>Tags: {subject.tags.map(tags => tags.name)+" "}</div>
-                        <div >Students: {subject.nrOfStudents}</div>
-
                     </div>
 
                     <div className="card-body">

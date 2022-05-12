@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import backendURL from "../backendURL";
 import {Container, Button, Alert} from 'react-bootstrap';
 import axios from 'axios';
-import ReactFileReader from 'react-file-reader';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Link} from "react-router-dom";
 

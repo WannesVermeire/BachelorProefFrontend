@@ -40,7 +40,7 @@ class App extends Component {
                         <Route element={<RequireAuth allowedRoles={["ROLE_ADMIN","ROLE_COORDINATOR"]}/>}>
                             <Route path='/userlist' element={<UserList/>}/>
                         </Route>
-                        <Route element={<RequireAuth allowedRoles={["ROLE_ADMIN","ROLE_COORDINATOR"]}/>}>
+                        <Route element={<RequireAuth allowedRoles={["ROLE_ADMIN","ROLE_COORDINATOR","ROLE_CONTACT"]}/>}>
                             <Route path='/registerCompany' element={<RegisterCompany/>}/>
                         </Route>
                         <Route element={<RequireAuth allowedRoles={["ROLE_ADMIN","ROLE_COORDINATOR"]}/>}>

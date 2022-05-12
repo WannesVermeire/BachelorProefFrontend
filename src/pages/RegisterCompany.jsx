@@ -1,9 +1,11 @@
 import React,{Component} from 'react'
 import backendURL from "../backendURL";
 import {Button, Col, Form, Row, Container} from "react-bootstrap";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import qs from "qs";
 import axios from "axios";
+import InputGroup from "react-bootstrap/InputGroup";
+import Select from "react-select";
 
 class RegisterCompany extends Component{
     constructor(props){
@@ -12,20 +14,36 @@ class RegisterCompany extends Component{
             name: "",
             address: "",
             BTWnr: "",
+            contacts: [],
+            inputContacts: [],
             description: ""
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.changeHandler = this.changeHandler.bind(this);
+        //Get all contacts
+        const self = this;
+        let config = {
+            method: 'get',
+            url: backendURL + '/userManagement/users/contact',
+            headers: {
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))}
+        };
+        axios(config)
+            .then(function (res) {
+                console.log(res.data);
+                self.setState({contacts: res.data});
+            }).catch(function (error) {
+        });
     }
 
     handleSubmit = (e) =>{
         e.preventDefault()
-        var axios = require('axios');
-        var FormData = require('form-data');
-        var data = qs.stringify(this.state);
+        let axios = require('axios');
+        let FormData = require('form-data');
+        let data = qs.stringify(this.state);
 
-        var config = {
+        let config = {
             method: 'post',
             url: backendURL + '/userManagement/company',
             headers: {
@@ -33,10 +51,29 @@ class RegisterCompany extends Component{
             },
             data : data
         };
-
+        const self = this;
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
+                let data = new FormData();
+                for(let i =0; i<self.state.inputContacts.length; i++){
+                    data.append('userId',self.state.inputContacts[i].id);
+                }
+                config = {
+                    method: 'post',
+                    url: backendURL + '/userManagement/company/' + response.data + '/addContact',
+                    headers: {
+                        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
+                    },
+                    data : data
+                };
+
+                axios(config)
+                    .then(function (response) {
+                        console.log(JSON.stringify(response.data));
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             })
             .catch(function (error) {
                 console.log(error);
@@ -48,6 +85,7 @@ class RegisterCompany extends Component{
     }
 
     render() {
+        console.log(this.state.contacts);
         return (
             <Container style={{textAlign: "left"}}>
                 <Form onSubmit={this.handleSubmit}>
@@ -65,6 +103,20 @@ class RegisterCompany extends Component{
                         <Form.Label>BTW</Form.Label>
                         <Form.Control type={"text"} name={"BTWnr"} id={"BTWnr"} onChange={this.changeHandler} required/>
                     </Form.Group>
+                    <InputGroup className={"pt-3 pb-3"}>
+                        <Form.Label>Contacts</Form.Label>
+                        <div style={{width: '100%'}}>
+                            <Select
+                                key={"Contacts"}
+                                fluid="sm"
+                                options={this.state.contacts}
+                                getOptionLabel={(options) => options['firstName'] + ' ' +options['lastName']}
+                                getOptionValue={(options) => options['id']}
+                                isMulti
+                                onChange={(e) => this.setState({inputContacts: e})}>
+                            </Select>
+                        </div>
+                    </InputGroup>
                     <Form.Group  className="mb-3">
                         <Form.Label>Description</Form.Label>
                         <Form.Control type={"text"} name={"description"} id={"description"} onChange={this.changeHandler} required/>
@@ -74,8 +126,6 @@ class RegisterCompany extends Component{
                     </Form.Group>
                 </Form>
             </Container>
-
-
         );
     }
 }

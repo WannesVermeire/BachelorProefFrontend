@@ -185,6 +185,13 @@ const UserDetails =()=> {
                             </div>
                             : null
                         }
+                        {isRole("ROLE_CONTACT")?
+                            <Link  className={'m-3'} style={{ float: 'right', textDecoration: 'none' }} to ="/registerCompany">
+                                <Button variant={"outline-success"}>
+                                    Add new company
+                                </Button>
+                            </Link>
+                        :null}
                     </div>
                 </Container>
     )

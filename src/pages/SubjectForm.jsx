@@ -16,8 +16,10 @@ const SubjectForm = () =>{
     const [title,setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [nrOfStudents, setNrOfStudents] = useState('');
+    const [tagsLoaded, setTagsLoaded] = useState(false);
     const [tags, setTags] = useState([]);
     const [inputTags, setInputTags] = useState([]);
+    const [facultiesLoaded, setFacultiesLoaded] = useState(false);
     const [faculties, setFaculties] = useState([]);
     const [inputFaculties, setInputFaculties] = useState([]);
     const [educations, setEducations] = useState([]);
@@ -26,24 +28,18 @@ const SubjectForm = () =>{
     const [inputCampuses, setInputCampuses] = useState([]);
     const [page, setPage]= useState(1);
     const [subjectId, setSubjectId] = useState('')
+    const [companiesLoaded, setCompaniesLoaded] = useState(false);
+    const [companies, setCompanies] = useState([]);
+    const [inputCompany, setInputCompany] = useState();
+    const [promotersLoaded, setPromotersLoaded] = useState(false);
+    const [promoters, setPromoters] = useState([]);
+    const [inputPromoter, setInputPromoter] = useState();
 
-    const hasLoadedArray = [
-        {
-            id: 1,
-            state: false,
-        },
-        {
-            id: 2,
-            state: false,
-        },
-    ]
-    const [hasLoaded, setHasLoaded] = useState(hasLoadedArray);
-    const [allHaveLoaded, setAllHaveLoaded] = useState(false);
 
-    if(!allHaveLoaded){
-        let axios = require('axios');
+    let axios = require('axios');
 
-        //Get all tags
+    //Get all tags
+    if(!tagsLoaded){
         let config = {
             method: 'get',
             url: backendURL + '/subjectManagement/tag',
@@ -57,42 +53,80 @@ const SubjectForm = () =>{
                     for(let i =0; i< res.data.length; i++){
                         setTags(res.data);
                     }
-                    setHasLoaded[0] = true;
+                    setTagsLoaded(true);
+                    console.log("Tags loaded");
                 }
 
             })
             .catch(function (error) {
                 console.log(error);
             });
+    }
 
-        //Get all faculties
-        if(!isRole("ROLE_STUDENT")) {
-            config = {
-                method: 'get',
-                url: backendURL + '/subjectManagement/faculty',
-                headers: {
-                    'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
-                }
-            };
-            console.log("loading faculties");
-            axios(config).then(function (res) {
-                if (faculties.length === 0) {
-                    for (let i = 0; i < res.data.length; i++) {
-                        setFaculties(res.data);
-                    }
-                    setHasLoaded[1] = true;
-                    console.log("faculties loaded");
-                }
-            }).catch(function (error) {
+
+    if(!promotersLoaded){
+        let config = {
+            method: 'get',
+            url: backendURL + '/userManagement/users/promotor',
+            headers: {
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
+            }
+        };
+
+        axios(config)
+            .then(function (res2) {
+                console.log("Promotors loaded");
+                setPromoters(res2.data);
+                setPromotersLoaded(true);
+                console.log(res2.data);
+            })
+            .catch(function (error) {
                 console.log(error);
             });
-        }
+    }
 
-        let counter =0;
-        for(let i =0; i<2; i++){
-            if(hasLoaded[i].state === true) counter++;
-        }
-        if(counter===2)setAllHaveLoaded(true);
+
+    if(!companiesLoaded){
+        let config = {
+            method: 'get',
+            url: backendURL + '/userManagement/company',
+            headers: {
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token')),
+            },
+        };
+
+        axios(config)
+            .then(function (res3) {
+                console.log("Companies loaded");
+                setCompanies(res3.data);
+                console.log(res3.data);
+                setCompaniesLoaded(true);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    //Get all faculties
+    if(!facultiesLoaded && !isRole("ROLE_STUDENT")) {
+        let config = {
+            method: 'get',
+            url: backendURL + '/subjectManagement/faculty',
+            headers: {
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
+            }
+        };
+        axios(config).then(function (res) {
+            if (faculties.length === 0) {
+                for (let i = 0; i < res.data.length; i++) {
+                    setFaculties(res.data);
+                }
+                setFacultiesLoaded(true);
+                console.log("faculties loaded");
+            }
+        }).catch(function (error) {
+            console.log(error);
+        });
     }
 
     const handleSubmitBaseSubject = async (e) =>{
@@ -123,8 +157,54 @@ const SubjectForm = () =>{
             .then(function (res) {
                 console.log("baseSubject posted");
                 setSubjectId(res.data);
-                setPage(2);
-                if(isRole("ROLE_STUDENT"))setPage(5);
+                console.log(inputCompany);
+                if(inputCompany!==undefined){
+                    let data = new FormData();
+                    data.append('companyId', inputCompany.id);
+
+                    config = {
+                        method: 'put',
+                        url: backendURL + '/subjectManagement/subjects/' + res.data +'/addCompany',
+                        headers: {
+                            'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token')),
+                        },
+                        data : data
+                    };
+
+                    axios(config)
+                        .then(function (response) {
+                            console.log(JSON.stringify(response.data));
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                }
+                if(inputPromoter!==undefined){
+                    let data = new FormData();
+                    console.log(inputPromoter);
+                    data.append('promotorId', inputPromoter.id);
+
+                    let config = {
+                        method: 'put',
+                        url: backendURL + '/subjectManagement/subjects/' + res.data + '/addPromotor',
+                        headers: {
+                            'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token')),
+                        },
+                        data : data
+                    };
+
+                    axios(config)
+                        .then(function (response) {
+                            console.log(JSON.stringify(response.data));
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                }
+
+                if(isRole("ROLE_COORDINATOR")||isRole("ROLE_ADMIN")||
+                    isRole("ROLE_PROMOTOR")||isRole("ROLE_CONTACT"))setPage(2);
+                else setPage(5);
             })
             .catch(function (error) {
                 console.log(error);
@@ -257,7 +337,7 @@ const SubjectForm = () =>{
             return(
                 <Container style={{textAlign:"left"}} fluid="sm"  >
                     <Form id={"BaseSubject"} onSubmit={handleSubmitBaseSubject}>
-                        <InputGroup style={{display: "flex",width:400}} className={"pt-3  pb-3"}>
+                        <InputGroup style={{width:400}} className={"pt-3  pb-3"}>
                             <InputGroup.Text id="title">Title</InputGroup.Text>
                             <Form.Control
                                 autoComplete={"off"}
@@ -269,20 +349,22 @@ const SubjectForm = () =>{
                                 required/>
                         </InputGroup>
 
-                        <InputGroup className={"pt-3 pb-3"}>
-                            <InputGroup.Text id="tags">Disciplines</InputGroup.Text>
-                            <CreatableSelect
-                                key={"tags"}
-                                fluid="sm"
-                                options={tags}
-                                getOptionLabel={(options) => options['name']}
-                                getOptionValue={(options) => options['id']}
-                                isMulti
-                                onChange={(e) => setInputTags(e)}>
-                            </CreatableSelect>
-                        </InputGroup>
+                        <InputGroup  className={"pt-3 pb-3"}>
+                            <InputGroup.Text id="tags">Disciplines*</InputGroup.Text>
+                            <div style={{width:295}}>
+                                <Select
+                                    key={"tags"}
+                                    fluid="sm"
+                                    options={tags}
+                                    getOptionLabel={(options) => options['name']}
+                                    getOptionValue={(options) => options['id']}
+                                    isMulti
+                                    onChange={(e) => setInputTags(e)}>
+                                </Select>
+                            </div>
 
-                        <InputGroup style={{display: "flex",width:250}} className={"pt-3 pb-3"}>
+                        </InputGroup>
+                        <InputGroup style={{width:250}}className={"pt-3 pb-3"}>
                             <InputGroup.Text id="nrOfStudents">Max amount of students</InputGroup.Text>
                             <Form.Control
                                 type={"number"}
@@ -293,7 +375,34 @@ const SubjectForm = () =>{
                                 value={nrOfStudents}
                                 required/>
                         </InputGroup>
-
+                        <InputGroup className={"pt-3 pb-3"}>
+                            <InputGroup.Text id="Promotor">Promotor*</InputGroup.Text>
+                            <div style={{width: 300}}>
+                                <Select
+                                    key={"promotor"}
+                                    options={promoters}
+                                    autosize={true}
+                                    autocomplete="off"
+                                    getOptionLabel={(options) => options['firstName'] + ' ' +options['lastName']}
+                                    getOptionValue={(options) => options['id']}
+                                    onChange={(e) => setInputPromoter(e)}>
+                                </Select>
+                            </div>
+                        </InputGroup>
+                        <InputGroup className={"pt-3 pb-3"}>
+                            <InputGroup.Text id="Company">Company*</InputGroup.Text>
+                            <div style={{width: 300}}>
+                                <Select
+                                    key={"company"}
+                                    options={companies}
+                                    autosize={true}
+                                    autocomplete="off"
+                                    getOptionLabel={(options) => options['name']}
+                                    getOptionValue={(options) => options['id']}
+                                    onChange={(e) => setInputCompany(e)}>
+                                </Select>
+                            </div>
+                        </InputGroup>
                         <InputGroup className={"pt-3 pb-3"}>
                             <InputGroup.Text id="description">Description</InputGroup.Text>
                             <textarea
@@ -312,6 +421,7 @@ const SubjectForm = () =>{
                             </Button>
                         </Form.Group>
                     </Form>
+                    <p>* = Not required</p>
                 </Container>
             )
         }
@@ -404,7 +514,7 @@ const SubjectForm = () =>{
     return (
         page===5 ?
             <Navigate to="/subjects" />
-            : hasLoaded ?
+            : tagsLoaded ?
                 (
                     renderForm()
                 )

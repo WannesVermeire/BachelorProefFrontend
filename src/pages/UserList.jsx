@@ -54,6 +54,7 @@ class UserList extends Component {
         };
         axios(config)
             .then(function (res) {
+                console.log(res.data);
                 self.setState({companies: res.data});
             }).catch(function (error) {
         });
@@ -121,18 +122,18 @@ class UserList extends Component {
                 <div className="card text-black bg-secondary mb-3">
                     {this.state.students.map(student =>
                         <Container fluid="sm" key={student.id}>
-                            <div className="card text-black bg-white m-3">
+                            <div style={{textAlign: 'left'}} className="card text-black bg-white m-3">
                                 <div className="row">
-                                    <div className="col">
+                                    <div className="col-3">
                                         <h6 className="m-3" key={student.id}>{student.firstName} {student.lastName}</h6>
                                     </div>
-                                    <div className="col">
+                                    <div className="col-3" >
                                         <h6 className="m-3" key={student.id}>{student.email}</h6>
                                     </div>
-                                    <div className="col">
+                                    <div className="col-3">
                                         <h6 className="m-3" key={student.id}>{student.telNr}</h6>
                                     </div>
-                                    <div className={"col"}>
+                                    <div className={"col-3"}>
                                         <Link fluid="sm" to={{pathname:"/studentDetails/" + student.id }}>
                                             <Button className="m-2" variant={"link"}
                                                     style={{color: '#000', textDecoration: 'none'}}>
@@ -155,16 +156,16 @@ class UserList extends Component {
                             <Container fluid="lg" key={promotor.id}>
                                 <div className="card text-black bg-white m-3">
                                     <div className="row">
-                                        <div className="col">
+                                        <div className="col-3">
                                             <h6 className="m-3" key={promotor.id}>{promotor.firstName} {promotor.lastName}</h6>
                                         </div>
-                                        <div className="col">
+                                        <div className="col-3">
                                             <h6 className="m-3" key={promotor.id}>{promotor.email}</h6>
                                         </div>
-                                        <div className="col">
+                                        <div className="col-3">
                                             <h6 className="m-3" key={promotor.id}>{promotor.telNr}</h6>
                                         </div>
-                                        <div className={"col"}>
+                                        <div className={"col-3"}>
                                             <Link fluid="sm" to={"/promotorDetails/" + promotor.id}>
                                                 <Button className="m-2" variant={"link"}
                                                         style={{color: '#000', textDecoration: 'none'}}>
@@ -188,13 +189,13 @@ class UserList extends Component {
                             <Container fluid="sm" key={company.id}>
                                 <div className={company.approved?"card text-black m-3 bg-white" : "card text-black m-3 bg-danger"}>
                                     <div className="row">
-                                        <div className="col">
+                                        <div className="col-2">
                                             <h6 className="m-3" key={company.id}>{company.name}</h6>
                                         </div>
-                                        <div className="col">
-                                            <h6 className="m-3" key={company.id}>{company.btwnr}</h6>
+                                        <div className="col-2">
+                                            <h6 className="m-3" key={company.id}>{company.btwNr}</h6>
                                         </div>
-                                        <div className={"col"}>
+                                        <div className={"col-2"}>
                                             <Link fluid="sm" to={"/companyDetails/" + company.id}>
                                                 <Button className="m-2" variant={"link"}
                                                         style={{color: '#000', textDecoration: 'none'}}>

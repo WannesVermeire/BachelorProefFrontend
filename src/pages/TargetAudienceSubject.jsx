@@ -67,7 +67,7 @@ const TargetAudienceSubject = () =>{
             if(educations.length===0){
                 setEducations(res.data);
                 setPage(2);
-                console.log(educations);
+                console.log( res.data);
             }
         }).catch(function (error) {
             console.log(error);
@@ -205,7 +205,7 @@ const TargetAudienceSubject = () =>{
                                     defaultValue={null}
                                     getOptionLabel={(options) => options['name']}
                                     getOptionValue={(options) => options['id']}
-                                    onChange={(e) => setInputEducations(e)}>
+                                    onChange={(e) => {setInputEducations(e);console.log(e);}}>
                                 </Select>
                             </div>
                         </InputGroup>

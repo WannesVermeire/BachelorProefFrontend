@@ -4,6 +4,7 @@ import React from "react";
 import jwt_decode from "jwt-decode";
 import {useNavigate} from "react-router-dom";
 import {AiOutlineUser} from "react-icons/ai"
+import isRole from "../hooks/isRole";
 
 
 const Layout = () => {
@@ -38,7 +39,7 @@ const Layout = () => {
                         <Nav className="me-auto">
                             <Nav.Link as={Link} to ="/">Home</Nav.Link>
                             <Nav.Link as={Link} to ="/subjects">Subjects</Nav.Link>
-                            {isRole("ROLE_ADMIN")?<Nav.Link as={Link} to ="/userlist">Userlist</Nav.Link>: null}
+                            {(isRole("ROLE_ADMIN") || isRole("ROLE_COORDINATOR"))?<Nav.Link as={Link} to ="/userlist">Userlist</Nav.Link>: null}
                         </Nav>
                         <Nav style={{textAlign: "right"}} >
                             <Nav.Link as={Link} to ="/userDetails">

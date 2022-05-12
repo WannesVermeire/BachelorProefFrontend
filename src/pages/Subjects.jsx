@@ -10,6 +10,7 @@ import backendURL from "../backendURL";
 import {AiOutlineHeart, AiFillHeart} from 'react-icons/ai';
 import isRole from "../hooks/isRole"
 import qs from "qs";
+import Tooltip from '@mui/material/Tooltip';
 
 class Subjects extends Component {
     state = {
@@ -228,8 +229,21 @@ class Subjects extends Component {
     }
 
     renderDetails =(subject)=>{
+        let uniqueFaculties = subject.targetAudiences.map(sub=>sub).map(sub=>sub.faculty.name);
+        uniqueFaculties = uniqueFaculties.filter((c, index) => {
+            return uniqueFaculties.indexOf(c) === index;
+        });
+        let uniqueEducations = subject.targetAudiences.map(sub=>sub).map(sub=>sub.education.name);
+        uniqueEducations = uniqueEducations.filter((c, index) => {
+            return uniqueEducations.indexOf(c) === index;
+        });
+        let uniqueCampusses = subject.targetAudiences.map(sub=>sub).map(sub=>sub.campus.name);
+        uniqueCampusses = uniqueCampusses.filter((c, index) => {
+            return uniqueCampusses.indexOf(c) === index;
+        });
+        console.log(uniqueFaculties);
         return(
-            <>
+            <div>
                 <Button variant="secondary" onClick={() => {
                     let details = [...this.state.details];
                     let detail = details[subject.id-1];
@@ -244,11 +258,49 @@ class Subjects extends Component {
                     Details
                 </Button>
                 <Collapse in={this.state.details[subject.id-1]}>
-                    <div id={"subjectDescription"}>
-                        {subject.description}
+                    <div>
+                        <div className="card text-white bg-secondary m-3">
+                            <div className="card-header">
+                                Info
+                            </div>
+                            <div className="card-body">
+                                <div className="mb-3 row">
+                                    <Tooltip title={(subject.promotor!==null)?promotor.email:null} className="col-4">
+                                        <div >Promotor: {(subject.promotor!==null)?(subject.promotor.firstName + " " + subject.promotor.lastName):null}</div>
+                                    </Tooltip>
+                                    <div className="col-4">
+                                        <div>Company: {(subject.company!==null)?subject.company.name:null}</div>
+                                    </div>
+                                    <div className="col-4">
+                                        <div>Contacts: {(subject.company!==null?subject.company.contacts!==null:false)?subject.company.contacts.map(contact=>contact.email):null}</div>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-4">
+                                        <div >Faculties: {uniqueFaculties}</div>
+                                    </div>
+                                    <div className="col-4">
+                                        <div >Educations: {uniqueEducations}</div>
+                                    </div>
+                                    <div className="col-4">
+                                        <div>Campusses: {uniqueCampusses}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="card text-white bg-secondary m-3">
+                            <div className="card-header">
+                                Description
+                            </div>
+                            <div className="card-body">
+                                <div id={"subjectDescription"}>
+                                    {subject.description}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </Collapse>
-            </>
+            </div>
         )
     }
 
@@ -257,13 +309,20 @@ class Subjects extends Component {
             <Container fluid="sm" key={subject.id}>
                 <div className="card text-white bg-dark mb-3">
                     <div className="card-header">
-                        <div style={{float: 'left'}}>Students: {subject.nrOfStudents}</div>
-                        <div className={"ms-3"} style={{float: 'right'}}>{isRole("ROLE_ADMIN")?
+                        <div className={"ms-3"} style={{float: 'right'}}>{(isRole("ROLE_ADMIN") || isRole("ROLE_COORDINATOR"))?
                             this.approvedButton(subject): isRole("ROLE_STUDENT")?
                                 this.likeButton(subject):
                                 null}
                         </div>
-                        {isRole("ROLE_ADMIN")?
+                        <h5 className="card-title" >{subject.name}</h5>
+                        <div>Tags: {subject.tags.map(tags => tags.name)+" "}</div>
+                        <div >Students: {subject.nrOfStudents}</div>
+
+                    </div>
+
+                    <div className="card-body">
+                        {this.renderDetails(subject)}
+                        {(isRole("ROLE_ADMIN") || isRole("ROLE_COORDINATOR"))?
                             <div style={{float: 'right'}}>
                                 <Link to ={"/targetAudienceSubject" + subject.id}>
                                     <Button  variant={"outline-success"}>
@@ -271,14 +330,7 @@ class Subjects extends Component {
                                     </Button>
                                 </Link>
                             </div>
-                        : null}
-
-                    </div>
-
-                    <div className="card-body">
-                        <h5 className="card-title">{subject.name}</h5>
-                        <h6>Tags: {subject.tags.map(tags => tags.name)+" "}</h6>
-                        {this.renderDetails(subject)}
+                            : null}
                     </div>
                 </div>
             </Container>

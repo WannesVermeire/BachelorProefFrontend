@@ -57,7 +57,7 @@ class App extends Component {
                         <Route element={<RequireAuth allowedRoles={["ROLE_STUDENT","ROLE_ADMIN","ROLE_PROMOTOR", "ROLE_COORDINATOR", "ROLE_CONTACT"]}/>}>
                             <Route path='/subjectForm' element={<SubjectForm />}/>
                         </Route>
-                        <Route element={<RequireAuth allowedRoles={["ROLE_STUDENT","ROLE_ADMIN"]}/>}>
+                        <Route element={<RequireAuth allowedRoles={["ROLE_STUDENT","ROLE_ADMIN","ROLE_COORDINATOR"]}/>}>
                             <Route path='/targetAudienceUser:id' element={<TargetAudienceUser />}/>
                         </Route>
                         <Route element={<RequireAuth allowedRoles={["ROLE_STUDENT"]}/>}>

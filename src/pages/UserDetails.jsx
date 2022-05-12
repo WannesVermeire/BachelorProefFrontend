@@ -16,6 +16,9 @@ const UserDetails =()=> {
     const [ownID, setOwnID] = useState('');
     const [preferredSubjects, setPreferredSubjects] = useState([]);
     const [prefSubLoaded, setPrefSubLoaded] = useState(false);
+    const [ownSubjects, setOwnSubjects] = useState([]);
+    const [ownSubjectsLoaded, setOwnSubjectsLoaded] = useState(false);
+
     let axios = require('axios');
     if(!userLoaded){
         let config = {
@@ -59,6 +62,26 @@ const UserDetails =()=> {
                     let sortedPrefSub = sortArrayByIndex(res.data);
                     setPreferredSubjects(sortedPrefSub.map(prefSubject => prefSubject.subject));
                     setPrefSubLoaded(true);
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+    if((isRole("ROLE_PROMOTOR")||isRole("ROLE_CONTACT")) && userLoaded && !ownSubjectsLoaded){
+        let config = {
+            method: 'get',
+            url: backendURL + '/userManagement/users/mySubjects',
+            headers: {
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
+            }
+        };
+        axios(config)
+            .then(function (res) {
+                if (ownSubjects.length === 0) {
+                    console.log(res.data);
+                    setOwnSubjects(res.data);
+                    setOwnSubjectsLoaded(true);
                 }
             })
             .catch(function (error) {
@@ -111,7 +134,17 @@ const UserDetails =()=> {
                                 telNr: {user.telNr}
                             </div>
                         </div>
-                        {isRole("ROLE_STUDENT")?
+                        {(isRole("ROLE_PROMOTOR")||isRole("ROLE_CONTACT"))?
+                        <div className="card text-black bg-white m-3">
+                            <div className="card-header">
+                                My posted subjects
+                            </div>
+                            <div className="card-body">
+                                {ownSubjects.map(renderSubject)}
+                            </div>
+
+                        </div>
+                        :isRole("ROLE_STUDENT")?
                             <div>
                                 <div className={"row"}>
                                     <div className={"col m-3"}>
@@ -146,7 +179,8 @@ const UserDetails =()=> {
                                     {user.finalSubject}
                                 </div>
                             </div>
-                            : null}
+                            : null
+                        }
                     </div>
                 </Container>
     )

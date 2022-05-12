@@ -11,6 +11,7 @@ import {AiOutlineHeart, AiFillHeart} from 'react-icons/ai';
 import isRole from "../hooks/isRole"
 import qs from "qs";
 import Tooltip from '@mui/material/Tooltip';
+import subDelete from "../hooks/subDelete";
 
 class Subjects extends Component {
     state = {
@@ -121,19 +122,18 @@ class Subjects extends Component {
             .catch(function (error) {
                 console.log(error);
             });
-        this.setState({random: 'lol'})
     }
 
     approvedButton = (sub) =>{
         if(this.state.approved[this.state.subjects.findIndex(subject => subject.id === sub.id)]) {
             return (
-                <Button onClick={()=>{this.disapprove(sub)}} variant={"outline-danger"}>
+                <Button className={'me-2'} onClick={()=>{this.disapprove(sub)}} variant={"outline-warning"}>
                     Disapprove
                 </Button>)
         }
         else {
             return (
-                <Button onClick={()=>{this.approve(sub)}}  variant={"outline-success"}>
+                <Button className={'me-2'} onClick={()=>{this.approve(sub)}}  variant={"outline-success"}>
                     Approve
                 </Button>)
         }
@@ -307,7 +307,11 @@ class Subjects extends Component {
         return(
             <Container fluid="sm" key={subject.id}>
                 <div className="card text-white bg-dark mb-3">
-                    <div className="card-header">
+                    <div  className="card-header">
+                        {(isRole("ROLE_ADMIN") || isRole("ROLE_COORDINATOR"))?
+                            <Button style={{float: 'right'}} onClick={()=>{subDelete(subject.id)}}  variant={"outline-danger"}>
+                                Delete
+                            </Button>:null}
                         <div className={"ms-3"} style={{float: 'right'}}>{(isRole("ROLE_ADMIN") || isRole("ROLE_COORDINATOR"))?
                             this.approvedButton(subject): isRole("ROLE_STUDENT")?
                                 this.likeButton(subject):
@@ -338,14 +342,6 @@ class Subjects extends Component {
         return(
             <Container>
                 <Container className={"mb-3"} style={{textAlign: 'right'}} >
-                    {isRole("ROLE_STUDENT")?
-                        <Link to ="/finalSubject">
-                            <Button className={"m-1"} variant={"outline-success"}>
-                                Choose your final subject
-                            </Button>
-                        </Link>
-                        :null
-                    }
                     <Link to ="/subjectForm">
                         <Button className={"m-1"} variant={"outline-success"}>
                             Upload subject

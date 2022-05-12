@@ -1,5 +1,5 @@
 import {Link, Outlet} from "react-router-dom"
-import {Container, Nav, Navbar, NavDropdown} from "react-bootstrap";
+import {Button, Container, Nav, Navbar, NavDropdown} from "react-bootstrap";
 import React from "react";
 import jwt_decode from "jwt-decode";
 import {useNavigate} from "react-router-dom";
@@ -40,6 +40,7 @@ const Layout = () => {
                             <Nav.Link as={Link} to ="/">Home</Nav.Link>
                             <Nav.Link as={Link} to ="/subjects">Subjects</Nav.Link>
                             {(isRole("ROLE_ADMIN") || isRole("ROLE_COORDINATOR"))?<Nav.Link as={Link} to ="/userlist">Userlist</Nav.Link>: null}
+                            {isRole("ROLE_STUDENT")? <Nav.Link as={Link} to ="/finalSubject">Final subject</Nav.Link> :null}
                         </Nav>
                         <Nav style={{textAlign: "right"}} >
                             <Nav.Link as={Link} to ="/userDetails">

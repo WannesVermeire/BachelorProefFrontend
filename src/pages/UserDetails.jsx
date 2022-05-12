@@ -8,6 +8,7 @@ import qs from 'qs';
 import {Link, useParams} from "react-router-dom";
 import backendURL from "../backendURL";
 import isRole from "../hooks/isRole"
+import subDelete from "../hooks/subDelete";
 
 
 const UserDetails =()=> {
@@ -106,7 +107,11 @@ const UserDetails =()=> {
                 <div className="card text-white bg-dark m-3">
                     <div className="card-header">
                         <div style={{float: 'left'}}>Students: {subject.nrOfStudents}</div>
-                        <div style={{ float:"right"  }}>Nr. {index+1}</div>
+                        {isRole("ROLE_STUDENT")?<div style={{ float:"right"  }}>Nr. {index+1}</div>:null}
+                        {(isRole("ROLE_ADMIN") || isRole("ROLE_COORDINATOR") || isRole("ROLE_PROMOTOR") || isRole("ROLE_CONTACT"))?
+                            <Button style={{float: 'right'}} onClick={()=>{subDelete(subject.id)}}  variant={"outline-danger"}>
+                                Delete
+                            </Button>:null}
                     </div>
 
                     <div className="card-body">

@@ -10,6 +10,7 @@ class UserList extends Component {
         promotors: [],
         companies: [],
         students: [],
+        contacts: [],
         dropdown: false,
         role: "Students"
     }
@@ -53,8 +54,21 @@ class UserList extends Component {
         };
         axios(config)
             .then(function (res) {
-                console.log(res.data);
                 self.setState({companies: res.data});
+            }).catch(function (error) {
+        });
+
+        //Get all contacts
+        config = {
+            method: 'get',
+            url: backendURL + '/userManagement/users/contact',
+            headers: {
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))}
+        };
+        axios(config)
+            .then(function (res) {
+                console.log(res.data);
+                self.setState({contacts: res.data});
             }).catch(function (error) {
         });
 
@@ -98,6 +112,8 @@ class UserList extends Component {
                     <input className={"me-3"} type="radio" name="roleRadios" value={"Promotors"}/>
                     <label className={"me-1"}>Companies</label>
                     <input className={"me-3"} type="radio" name="roleRadios" value={"Companies"}/>
+                    <label className={"me-1"}>Contacts</label>
+                    <input className={"me-3"} type="radio" name="roleRadios" value={"Contacts"}/>
                 </div>
                 <div style={{ float:"right"  }}>
                     <Link  className={"me-3"} style={{ textDecoration: 'none' }} to ="/register">
@@ -188,13 +204,13 @@ class UserList extends Component {
                             <Container fluid="sm" key={company.id}>
                                 <div className={company.approved?"card text-black m-3 bg-white" : "card text-black m-3 bg-danger"}>
                                     <div className="row">
-                                        <div className="col-2">
+                                        <div className="col-4">
                                             <h6 className="m-3" key={company.id}>{company.name}</h6>
                                         </div>
-                                        <div className="col-2">
+                                        <div className="col-4">
                                             <h6 className="m-3" key={company.id}>{company.btwNr}</h6>
                                         </div>
-                                        <div className={"col-2"}>
+                                        <div className={"col-4"}>
                                             <Link fluid="sm" to={"/companyDetails/" + company.id}>
                                                 <Button className="m-2" variant={"link"}
                                                         style={{color: '#000', textDecoration: 'none'}}>
@@ -206,6 +222,38 @@ class UserList extends Component {
                                 </div>
                             </Container>
                         )
+                    }
+                </div>
+            )
+        }
+        if(this.state.role === "Contacts"){
+            return(
+                <div className="card text-black bg-secondary mb-3">
+                    {this.state.contacts.map(contact =>
+                        <Container fluid="sm" key={contact.id}>
+                            <div style={{textAlign: 'left'}} className="card text-black bg-white m-3">
+                                <div className="row">
+                                    <div className="col-3">
+                                        <h6 className="m-3" key={contact.id}>{contact.firstName} {contact.lastName}</h6>
+                                    </div>
+                                    <div className="col-3" >
+                                        <h6 className="m-3" key={contact.id}>{contact.email}</h6>
+                                    </div>
+                                    <div className="col-3">
+                                        <h6 className="m-3" key={contact.id}>{contact.telNr}</h6>
+                                    </div>
+                                    <div className={"col-3"}>
+                                        <Link fluid="sm" to={{pathname:"/contactDetails/" + contact.id }}>
+                                            <Button className="m-2" variant={"link"}
+                                                    style={{color: '#000', textDecoration: 'none'}}>
+                                                <h6>Details</h6>
+                                            </Button>
+                                        </Link>
+                                    </div>
+                                </div>
+                            </div>
+                        </Container>
+                    )
                     }
                 </div>
             )

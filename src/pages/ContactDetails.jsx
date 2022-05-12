@@ -10,8 +10,8 @@ import isRole from "../hooks/isRole";
 import subDelete from "../hooks/subDelete";
 
 
-const PromotorDetails =()=> {
-    const [promotor,setPromotor] = useState('');
+const ContactDetails =()=> {
+    const [contact,setContact] = useState('');
     const [id] = useState(useParams().id);
     const [userLoaded, setUserLoaded] = useState(false);
 
@@ -26,9 +26,9 @@ const PromotorDetails =()=> {
         };
         axios(config)
             .then(function (res) {
-                if(promotor==='')setPromotor(res.data);
+                if(contact==='')setContact(res.data);
                 setUserLoaded(true);
-                console.log("userLoaded")
+                console.log(res.data)
             })
             .catch(function (error) {
                 console.log(error);
@@ -42,13 +42,13 @@ const PromotorDetails =()=> {
                     <div className="card text-black bg-white m-3">
                         <div className="row">
                             <div className="col m-3">
-                                Name: {promotor.firstName} {promotor.lastName}
+                                Name: {contact.firstName} {contact.lastName}
                             </div>
                             <div className="col m-3">
-                                Email: {promotor.email}
+                                Email: {contact.email}
                             </div>
                             <div className="col m-3">
-                                telNr: {promotor.telNr}
+                                telNr: {contact.telNr}
                             </div>
                         </div>
                     </div>
@@ -58,4 +58,4 @@ const PromotorDetails =()=> {
     );
 }
 
-export default PromotorDetails;
+export default ContactDetails;

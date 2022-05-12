@@ -80,7 +80,6 @@ const UserDetails =()=> {
         axios(config)
             .then(function (res) {
                 if (ownSubjects.length === 0) {
-                    console.log(res.data);
                     setOwnSubjects(res.data);
                     setOwnSubjectsLoaded(true);
                 }
@@ -124,7 +123,7 @@ const UserDetails =()=> {
     }
 
     return(
-        (userLoaded && (prefSubLoaded || !isRole("ROLE_STUDENT"))) ?
+        (userLoaded && (prefSubLoaded || !isRole("ROLE_STUDENT")) && (ownSubjectsLoaded || (!isRole("ROLE_PROMOTOR") && !isRole("ROLE_CONTACT")))) ?
             (
                 <Container fluid="sm">
                     <div className="card text-black bg-white m-3">

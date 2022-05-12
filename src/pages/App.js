@@ -15,6 +15,7 @@ import TargetAudienceUser from "./TargetAudienceUser";
 import FinalSubject from "./FinalSubject";
 import UserDetails from "./UserDetails";
 import TargetAudienceSubject from "./TargetAudienceSubject";
+import ContactDetails from "./ContactDetails";
 
 
 import Error from "./Error";
@@ -50,6 +51,9 @@ class App extends Component {
                         </Route>
                         <Route element={<RequireAuth allowedRoles={["ROLE_ADMIN","ROLE_COORDINATOR"]}/>}>
                             <Route path='/companyDetails/:id' element={<CompanyDetails/>}/>
+                        </Route>
+                        <Route element={<RequireAuth allowedRoles={["ROLE_ADMIN","ROLE_COORDINATOR"]}/>}>
+                            <Route path='/contactDetails/:id' element={<ContactDetails/>}/>
                         </Route>
                         <Route element={<RequireAuth allowedRoles={["ROLE_STUDENT","ROLE_ADMIN","ROLE_PROMOTOR", "ROLE_COORDINATOR", "ROLE_CONTACT"]}/>}>
                             <Route path='/subjects' element={<Subjects />}/>

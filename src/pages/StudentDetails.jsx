@@ -42,7 +42,7 @@ const StudentDetails =()=> {
         //Loading preferred subject
         config = {
             method: 'get',
-            url: backendURL + '/userManagement/users/' + id +'/preferredSubjects',
+            url: backendURL + '/userManagement/users/' + id +'/preferredSubject',
             headers: {
                 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
             }

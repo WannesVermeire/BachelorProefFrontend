@@ -79,10 +79,9 @@ const TargetAudienceSubject = () =>{
 
         //Get all educations by chosen faculty
         let axios = require('axios');
-        console.log("Loading campusses");
         const educationIds = inputEducations.map(inputEducations=>inputEducations.id);
         let config;
-        if(educationIds === []) {
+        if(educationIds.length===0) {
             let data = new FormData();
             const facultyIds = inputFaculties.map(inputFaculties=>inputFaculties.id);
             for(let i =0; i<facultyIds.length; i++){
@@ -132,8 +131,9 @@ const TargetAudienceSubject = () =>{
 
         const facultyIds = inputFaculties.map(inputFaculties=>inputFaculties.id);
         const educationIds = inputEducations.map(inputEducations=>inputEducations.id);
+        if(inputEducations.length===0)educationIds[0]=0;
         const campusIds = inputCampuses.map(inputCampuses=>inputCampuses.id);
-        console.log(educationIds);
+        if(inputCampuses.length===0)campusIds[0]=0;
         let data = qs.stringify({
             'facultyIds': facultyIds,
             'educationIds': educationIds,

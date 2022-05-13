@@ -52,7 +52,7 @@ const UserDetails =()=> {
     if (isRole("ROLE_STUDENT") && userLoaded && !prefSubLoaded) {
         let config = {
             method: 'get',
-            url: backendURL + '/userManagement/users/' + ownID + '/preferredSubjects',
+            url: backendURL + '/userManagement/users/' + ownID + '/preferredSubject',
             headers: {
                 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
             }

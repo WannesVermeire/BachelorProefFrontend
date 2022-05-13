@@ -11,16 +11,18 @@ class RegisterCompany extends Component{
     constructor(props){
         super(props);
         this.state = {
-            name: "",
-            address: "",
-            BTWnr: "",
+            company: {
+                name: "",
+                address: "",
+                BTWnr: "",
+                description: ""
+            },
             contacts: [],
             inputContacts: [],
-            description: ""
+
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.changeHandler = this.changeHandler.bind(this);
         //Get all contacts
         const self = this;
         let config = {
@@ -38,11 +40,12 @@ class RegisterCompany extends Component{
     }
 
     handleSubmit = (e) =>{
+        console.log(this.state);
         e.preventDefault()
         let axios = require('axios');
         let FormData = require('form-data');
-        let data = qs.stringify(this.state);
-
+        let data = qs.stringify(this.state.company);
+        console.log(data);
         let config = {
             method: 'post',
             url: backendURL + '/userManagement/company',
@@ -80,10 +83,6 @@ class RegisterCompany extends Component{
             });
     }
 
-    changeHandler = (e) =>{
-        this.setState({[e.target.name]: e.target.value})
-    }
-
     render() {
         console.log(this.state.contacts);
         return (
@@ -92,16 +91,38 @@ class RegisterCompany extends Component{
                     <Row className={"mb-3"}>
                         <Form.Group as={Col}  >
                             <Form.Label >Name</Form.Label>
-                            <Form.Control type={"text"} name={"name"} id={"name"} onChange={this.changeHandler} required/>
+                            <Form.Control type={"text"} name={"name"} id={"name"}
+                                          onChange={(e) => this.setState(prevState => ({
+                                              company: {
+                                                  ...prevState.company,
+                                                  name: e.target.value
+                                              }
+                                          }))}
+                                          required/>
                         </Form.Group>
                     </Row>
                     <Form.Group className="mb-3">
                         <Form.Label>Address</Form.Label>
-                        <Form.Control type={"text"} name={"address"} id={"address"} onChange={this.changeHandler} required/>
+                        <Form.Control type={"text"} name={"address"} id={"address"}
+                                      onChange={(e) => this.setState(prevState => ({
+                                          company: {
+                                              ...prevState.company,
+                                              address: e.target.value
+
+                                          }
+                                      }))}
+                                      required/>
                     </Form.Group>
                     <Form.Group  className="mb-3">
                         <Form.Label>BTW</Form.Label>
-                        <Form.Control type={"text"} name={"BTWnr"} id={"BTWnr"} onChange={this.changeHandler} required/>
+                        <Form.Control type={"text"} name={"BTWnr"} id={"BTWnr"}
+                                      onChange={(e) => this.setState(prevState => ({
+                                          company: {
+                                              ...prevState.company,
+                                              BTWnr: e.target.value
+                                          }
+                                      }))}
+                                      required/>
                     </Form.Group>
                     <InputGroup className={"pt-3 pb-3"}>
                         <Form.Label>Contacts</Form.Label>
@@ -119,7 +140,14 @@ class RegisterCompany extends Component{
                     </InputGroup>
                     <Form.Group  className="mb-3">
                         <Form.Label>Description</Form.Label>
-                        <Form.Control type={"text"} name={"description"} id={"description"} onChange={this.changeHandler} required/>
+                        <Form.Control type={"text"} name={"description"} id={"description"}
+                                      onChange={(e) => this.setState(prevState => ({
+                                          company: {
+                                              ...prevState.company,
+                                              description: e.target.value
+                                          }
+                                      }))}
+                                      required/>
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Button type="submit" onSubmit={this.handleSubmit} >Register</Button>

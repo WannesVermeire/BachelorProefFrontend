@@ -133,7 +133,7 @@ const TargetAudienceSubject = () =>{
         const facultyIds = inputFaculties.map(inputFaculties=>inputFaculties.id);
         const educationIds = inputEducations.map(inputEducations=>inputEducations.id);
         const campusIds = inputCampuses.map(inputCampuses=>inputCampuses.id);
-
+        console.log(educationIds);
         let data = qs.stringify({
             'facultyIds': facultyIds,
             'educationIds': educationIds,
@@ -205,7 +205,7 @@ const TargetAudienceSubject = () =>{
                                     defaultValue={null}
                                     getOptionLabel={(options) => options['name']}
                                     getOptionValue={(options) => options['id']}
-                                    onChange={(e) => {setInputEducations(e);console.log(e);}}>
+                                    onChange={(e) => {setInputEducations(e)}}>
                                 </Select>
                             </div>
                         </InputGroup>
@@ -252,7 +252,7 @@ const TargetAudienceSubject = () =>{
     }
     return (
         page===4 ?
-            <Navigate to="/userlist" />
+            <Navigate to="/subjects" />
             : hasLoaded?
                 (
                     renderForm()

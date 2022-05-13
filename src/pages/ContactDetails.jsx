@@ -51,6 +51,10 @@ const ContactDetails =()=> {
                                 telNr: {contact.telNr}
                             </div>
                         </div>
+                        {isRole("ROLE_CONTACT")?
+                            <div>
+                                Company: {contact.companyName}
+                            </div>:null}
                     </div>
                 </Container>
             )

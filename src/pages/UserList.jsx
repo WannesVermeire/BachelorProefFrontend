@@ -4,6 +4,9 @@ import {Container, Button, Alert} from 'react-bootstrap';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Link} from "react-router-dom";
+import isRole from "../hooks/isRole";
+import userDelete from "../hooks/userDelete";
+import companyDelete from "../hooks/companyDelete";
 
 class UserList extends Component {
     state = {
@@ -139,22 +142,28 @@ class UserList extends Component {
                         <Container fluid="sm" key={student.id}>
                             <div style={{textAlign: 'left'}} className="card text-black bg-white m-3">
                                 <div className="row">
-                                    <div className="col-3">
+                                    <div className="col-2">
                                         <h6 className="m-3" key={student.id}>{student.firstName} {student.lastName}</h6>
                                     </div>
-                                    <div className="col-3" >
+                                    <div className="col-4" >
                                         <h6 className="m-3" key={student.id}>{student.email}</h6>
                                     </div>
-                                    <div className="col-3">
+                                    <div className="col-2">
                                         <h6 className="m-3" key={student.id}>{student.telNr}</h6>
                                     </div>
-                                    <div className={"col-3"}>
+                                    <div className={"col-1"}>
                                         <Link fluid="sm" to={{pathname:"/studentDetails/" + student.id }}>
                                             <Button className="m-2" variant={"link"}
                                                     style={{color: '#000', textDecoration: 'none'}}>
                                                 <h6>Details</h6>
                                             </Button>
                                         </Link>
+                                    </div>
+                                    <div className={"col-2 m-3"}>
+                                        {(isRole("ROLE_ADMIN") || isRole("ROLE_COORDINATOR"))?
+                                            <Button style={{float: 'right'}} onClick={()=>{userDelete(student.id)}}  variant={"outline-danger"}>
+                                                Delete
+                                            </Button>:null}
                                     </div>
                                 </div>
                             </div>
@@ -171,22 +180,28 @@ class UserList extends Component {
                             <Container fluid="lg" key={promotor.id}>
                                 <div className="card text-black bg-white m-3">
                                     <div className="row">
-                                        <div className="col-3">
+                                        <div className="col-2">
                                             <h6 className="m-3" key={promotor.id}>{promotor.firstName} {promotor.lastName}</h6>
                                         </div>
-                                        <div className="col-3">
+                                        <div className="col-4">
                                             <h6 className="m-3" key={promotor.id}>{promotor.email}</h6>
                                         </div>
-                                        <div className="col-3">
+                                        <div className="col-2">
                                             <h6 className="m-3" key={promotor.id}>{promotor.telNr}</h6>
                                         </div>
-                                        <div className={"col-3"}>
+                                        <div className={"col-1"}>
                                             <Link fluid="sm" to={"/promotorDetails/" + promotor.id}>
                                                 <Button className="m-2" variant={"link"}
                                                         style={{color: '#000', textDecoration: 'none'}}>
                                                     <h6>Details</h6>
                                                 </Button>
                                             </Link>
+                                        </div>
+                                        <div className={"col-2 m-3"}>
+                                            {(isRole("ROLE_ADMIN") || isRole("ROLE_COORDINATOR"))?
+                                                <Button style={{float: 'right'}} onClick={()=>{userDelete(promotor.id)}}  variant={"outline-danger"}>
+                                                    Delete
+                                                </Button>:null}
                                         </div>
                                     </div>
                                 </div>
@@ -202,21 +217,27 @@ class UserList extends Component {
                 <div className="card text-black bg-secondary mb-3">
                     {this.state.companies.map(company =>
                             <Container fluid="sm" key={company.id}>
-                                <div className={company.approved?"card text-black m-3 bg-white" : "card text-black m-3 bg-danger"}>
+                                <div className={company.approved?"card text-black m-3 bg-white" : "card text-black m-3 bg-warning"}>
                                     <div className="row">
-                                        <div className="col-4">
+                                        <div className="col-3">
                                             <h6 className="m-3" key={company.id}>{company.name}</h6>
                                         </div>
-                                        <div className="col-4">
+                                        <div className="col-3">
                                             <h6 className="m-3" key={company.id}>{company.btwNr}</h6>
                                         </div>
-                                        <div className={"col-4"}>
+                                        <div className={"col-3"}>
                                             <Link fluid="sm" to={"/companyDetails/" + company.id}>
                                                 <Button className="m-2" variant={"link"}
                                                         style={{color: '#000', textDecoration: 'none'}}>
                                                     <h6>Details</h6>
                                                 </Button>
                                             </Link>
+                                        </div>
+                                        <div className={"col-2 m-3"}>
+                                            {(isRole("ROLE_ADMIN") || isRole("ROLE_COORDINATOR"))?
+                                                <Button style={{float: 'right'}} onClick={()=>{companyDelete(company.id)}}  variant={"outline-danger"}>
+                                                    Delete
+                                                </Button>:null}
                                         </div>
                                     </div>
                                 </div>
@@ -233,22 +254,28 @@ class UserList extends Component {
                         <Container fluid="sm" key={contact.id}>
                             <div style={{textAlign: 'left'}} className="card text-black bg-white m-3">
                                 <div className="row">
-                                    <div className="col-3">
+                                    <div className="col-2">
                                         <h6 className="m-3" key={contact.id}>{contact.firstName} {contact.lastName}</h6>
                                     </div>
-                                    <div className="col-3" >
+                                    <div className="col-4" >
                                         <h6 className="m-3" key={contact.id}>{contact.email}</h6>
                                     </div>
-                                    <div className="col-3">
+                                    <div className="col-2">
                                         <h6 className="m-3" key={contact.id}>{contact.telNr}</h6>
                                     </div>
-                                    <div className={"col-3"}>
+                                    <div className={"col-1"}>
                                         <Link fluid="sm" to={{pathname:"/contactDetails/" + contact.id }}>
                                             <Button className="m-2" variant={"link"}
                                                     style={{color: '#000', textDecoration: 'none'}}>
                                                 <h6>Details</h6>
                                             </Button>
                                         </Link>
+                                    </div>
+                                    <div className={"col-2 m-3"}>
+                                        {(isRole("ROLE_ADMIN") || isRole("ROLE_COORDINATOR"))?
+                                            <Button style={{float: 'right'}} onClick={()=>{userDelete(contact.id)}}  variant={"outline-danger"}>
+                                                Delete
+                                            </Button>:null}
                                     </div>
                                 </div>
                             </div>

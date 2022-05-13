@@ -138,8 +138,8 @@ const UserDetails =()=> {
                                 telNr: {user.telNr}
                             </div>
                         </div>
-                        {isRole("ROLE_CONTACT")?
-                            <div>
+                        {(user.roles[0].name==="ROLE_CONTACT")?
+                            <div className="m-3">
                                 Company: {user.companyName}
                             </div>:null}
                         {(isRole("ROLE_PROMOTOR")||isRole("ROLE_CONTACT"))?

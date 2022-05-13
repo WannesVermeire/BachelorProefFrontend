@@ -57,6 +57,7 @@ class UserList extends Component {
         };
         axios(config)
             .then(function (res) {
+                console.log("companies: " + res.data);
                 self.setState({companies: res.data});
             }).catch(function (error) {
         });

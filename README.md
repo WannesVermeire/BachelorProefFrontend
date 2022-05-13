@@ -20,8 +20,8 @@ The coordinator has complete control over the process and chooses the final comp
 - npm start (starts the application)
 
 ## Collaborators
-- Toon Eeraerts
-- Wannes Vermeiren
-- Wout Deleu
+- Toon Eeraerts (Frontend web)
+- Wannes Vermeiren (Backend)
+- Wout Deleu (Frontend app)
 
 

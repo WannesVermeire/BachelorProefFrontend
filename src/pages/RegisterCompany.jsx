@@ -14,7 +14,7 @@ class RegisterCompany extends Component{
             company: {
                 name: "",
                 address: "",
-                BTWnr: "",
+                btwNr: "",
                 description: ""
             },
             contacts: [],
@@ -59,7 +59,7 @@ class RegisterCompany extends Component{
             .then(function (response) {
                 let data = new FormData();
                 for(let i =0; i<self.state.inputContacts.length; i++){
-                    data.append('userId',self.state.inputContacts[i].id);
+                    data.append('userIds',self.state.inputContacts[i].id);
                 }
                 config = {
                     method: 'post',
@@ -115,11 +115,11 @@ class RegisterCompany extends Component{
                     </Form.Group>
                     <Form.Group  className="mb-3">
                         <Form.Label>BTW</Form.Label>
-                        <Form.Control type={"text"} name={"BTWnr"} id={"BTWnr"}
+                        <Form.Control type={"text"} name={"btwNr"} id={"btwNr"}
                                       onChange={(e) => this.setState(prevState => ({
                                           company: {
                                               ...prevState.company,
-                                              BTWnr: e.target.value
+                                              btwNr: e.target.value
                                           }
                                       }))}
                                       required/>

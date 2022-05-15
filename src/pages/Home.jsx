@@ -9,12 +9,15 @@ class Home extends Component {
         return(
             <Container fluid="sm">
                 <div className="card text-white bg-primary mb-3">
-                    <div className="card-header">Ku Leuven</div>
+                    <div className="card-header">MasterTool</div>
                     <div className="card-body">
-                        <h5 className="card-title">MasterTool</h5>
-                        <p className="card-text">Met deze mastertool geraak je aan een onderwerp voor je masterproef.
-                        Als je naar de opbouw van deze tool kijkt zie je dat hij perfect is. Moest je dus geen
-                        onderwerp vinden ligt het aan jou en niet aan de makers van deze tool!</p>
+                        <h5 className="card-title">How to use?</h5>
+                        <div  className="card-text">
+                            <p>1. Start of by scrolling through the available subjects. </p>
+                            <p>2. Like the subjects you prefer. </p>
+                            <p>3. Contact the promoter/contact of the subject. You can view their emails by hovering over their name.</p>
+                            <p>4. Choose your final top 3 in the Final subject page. Only your liked subjects will appear as a choice.</p>
+                        </div>
                     </div>
                 </div>
             </Container>

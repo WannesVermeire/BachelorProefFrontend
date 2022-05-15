@@ -462,7 +462,7 @@ class Subjects extends Component {
                                         <div >Students: {subject.nrOfStudents}</div>
                                     </div>
                                     <Tooltip title={(subject.promotor!==null)?subject.promotor.email:null} arrow className="col-4">
-                                        <div >Promotor: {(subject.promotor!==null)?(subject.promotor.firstName + " " + subject.promotor.lastName):null}</div>
+                                        <div >Promoter: {(subject.promotor!==null)?(subject.promotor.firstName + " " + subject.promotor.lastName):null}</div>
                                     </Tooltip>
                                     <Tooltip title={(subject.company!==null)?((subject.company.contacts.length!==0)?subject.company.contacts.map(contact => contact.email):null):null} arrow className="col-4">
                                         <div>Company: {(subject.company!==null)?subject.company.name:null}</div>

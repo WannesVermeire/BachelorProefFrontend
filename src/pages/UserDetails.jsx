@@ -19,6 +19,8 @@ const UserDetails =()=> {
     const [prefSubLoaded, setPrefSubLoaded] = useState(false);
     const [ownSubjects, setOwnSubjects] = useState([]);
     const [ownSubjectsLoaded, setOwnSubjectsLoaded] = useState(false);
+    const [finalSubject, setFinalSubject]= useState();
+    const [finalSubjectLoaded, setFinalSubjectLoaded] = useState();
 
     let axios = require('axios');
     if(!userLoaded){
@@ -46,13 +48,33 @@ const UserDetails =()=> {
                     }).catch(function (error) {
                     console.log(error);
                 });
+                if(!finalSubjectLoaded) {
+                    let config = {
+                        method: 'get',
+                        url: backendURL + '/userManagement/users/' + res.data + '/finalSubject',
+                        headers: {
+                            'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
+                        }
+                    };
+                    axios(config)
+                        .then(function (res) {
+                            if (preferredSubjects.length === 0) {
+                                setFinalSubject(res.data);
+                                setFinalSubjectLoaded(true);
+                            }
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                }
             }).catch(function (error) {
         });
     }
+
     if (isRole("ROLE_STUDENT") && userLoaded && !prefSubLoaded) {
         let config = {
             method: 'get',
-            url: backendURL + '/userManagement/users/' + ownID + '/preferredSubject',
+            url: backendURL + '/userManagement/users/' + ownID + '/preferredSubjects',
             headers: {
                 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
             }
@@ -100,7 +122,6 @@ const UserDetails =()=> {
     }
 
     const renderSubject = (subject, index) => {
-        console.log(index);
         return(
             <Container fluid="sm" key={subject.id}>
                 <div className="card text-white bg-dark m-3">
@@ -184,7 +205,7 @@ const UserDetails =()=> {
                                 </div>
                                 <div className={"m-3"}>
                                     FinalSubject:
-                                    {user.finalSubject}
+                                    {finalSubject}
                                 </div>
                             </div>
                             : null

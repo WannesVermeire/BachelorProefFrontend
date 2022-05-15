@@ -136,10 +136,11 @@ class UserList extends Component {
     }
 
     renderUsers =()=>{
+        console.log(this.state)
         if(this.state.role === "Students"){
             return(
                 <div className="card text-black bg-secondary mb-3">
-                    {this.state.students.map(student =>
+                    {(this.state.students!=='[]')?this.state.students.map(student =>
                         <Container fluid="sm" key={student.id}>
                             <div style={{textAlign: 'left'}} className="card text-black bg-white m-3">
                                 <div className="row">
@@ -169,7 +170,7 @@ class UserList extends Component {
                                 </div>
                             </div>
                         </Container>
-                    )
+                    ):null
                     }
                 </div>
             )

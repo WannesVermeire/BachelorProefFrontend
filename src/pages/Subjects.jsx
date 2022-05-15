@@ -1,21 +1,21 @@
 import React, {Component} from 'react';
-import {Button, Container, Collapse, Nav} from 'react-bootstrap';
+import {Button, Collapse, Container} from 'react-bootstrap';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
 import {Link} from "react-router-dom";
-import jwt_decode from "jwt-decode";
 import FormData from "form-data";
 import backendURL from "../backendURL";
-import {AiOutlineHeart, AiFillHeart} from 'react-icons/ai';
+import {AiFillHeart, AiOutlineHeart, AiFillStar, AiOutlineStar, AiFillFlag, AiOutlineFlag} from 'react-icons/ai';
 import isRole from "../hooks/isRole"
-import qs from "qs";
 import Tooltip from '@mui/material/Tooltip';
 import subDelete from "../hooks/subDelete";
+import qs from "qs";
 
 class Subjects extends Component {
     state = {
         subjects: [],
+        preferredStudents: [],
         details: [],
         approved: [],
         liked: [],
@@ -35,7 +35,29 @@ class Subjects extends Component {
             .then(function (res) {
                 self.setState({subjects: res.data});
                 self.setState({approved: res.data.map(subjects=>subjects.approved)});
-                console.log(self.state);
+                console.log(res);
+                for(let i =0; i < res.data.length; i++){
+                    let subjectId = res.data[i].id;
+                    let FormData = require('form-data');
+                    let data = new FormData();
+                    data.append('subjectId', subjectId);
+                    let config = {
+                        method: 'post',
+                        url: backendURL + '/subjectManagement/subjects/preferredStudents',
+                        headers: {
+                            'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
+                        },
+                        data: data
+                    };
+                    axios(config)
+                        .then(function (res2) {
+                            let preferredStudentsCopy = [...self.state.preferredStudents];
+                            preferredStudentsCopy[i] = res2.data;
+                            self.setState({preferredStudents: preferredStudentsCopy});
+                        }).catch(function (error) {
+                    });
+                }
+
             }).catch(function (error) {
         });
         config = {
@@ -50,15 +72,14 @@ class Subjects extends Component {
                 console.log(self.state);
                 config = {
                     method: 'get',
-                    url: backendURL + '/userManagement/users/' + res.data,
+                    url: backendURL + '/userManagement/users/' + res.data + '/favouriteSubjects',
                     headers: {
                         'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))}
                 };
                 axios(config)
                     .then(function (res2) {
                         console.log(res2);
-                        if(self.state.liked.length===0) self.setState({liked: res2.data.favouriteSubjects});
-                        console.log(self.state);
+                        if(self.state.liked.length===0) self.setState({liked: res2.data});
                     }).catch(function (error) {
                 });
             }).catch(function (error) {
@@ -177,13 +198,13 @@ class Subjects extends Component {
                 console.log(JSON.stringify(response.data));
                 config = {
                     method: 'get',
-                    url: backendURL + '/userManagement/users/' + self.state.ownID,
+                    url: backendURL + '/userManagement/users/' + self.state.ownID + '/favouriteSubjects',
                     headers: {
                         'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))}
                 };
                 axios(config)
                     .then(function (res2) {
-                        self.setState({liked: res2.data.favouriteSubjects});
+                        self.setState({liked: res2.data});
                     }).catch(function (error) {
                 });
             })
@@ -228,7 +249,166 @@ class Subjects extends Component {
             });
     }
 
-    renderDetails =(subject)=>{
+
+    boostStudent =(student, subject) =>{
+        let axios = require('axios');
+        let qs = require('qs');
+        let data = qs.stringify({
+            'userId': student.id,
+            'subjectId': subject.id
+        });
+        let config = {
+            method: 'post',
+            url: backendURL + '/userManagement/users/student/addBoost' ,
+            headers: {
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token')),
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data : data
+        };
+
+        let self = this;
+        axios(config)
+            .then(function (response) {
+                config = {
+                    method: 'get',
+                    url: backendURL + '/subjectManagement/subjects',
+                    headers: {
+                        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))}
+                };
+
+                axios(config)
+                    .then(function (res) {
+                        console.log(res.data)
+                        self.setState({subjects: res.data});
+                    }).catch(function (error){
+                })
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+    }
+
+    removeBoostStudent =(student, subject) =>{
+        let axios = require('axios');
+        let qs = require('qs');
+        let data = qs.stringify({
+            'userId': student.id,
+            'subjectId': subject.id
+        });
+        let config = {
+            method: 'post',
+            url: backendURL + '/userManagement/users/student/removeBoost' ,
+            headers: {
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token')),
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data : data
+        };
+
+        let self = this;
+        axios(config)
+            .then(function (response) {
+                config = {
+                    method: 'get',
+                    url: backendURL + '/subjectManagement/subjects',
+                    headers: {
+                        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))}
+                };
+
+                axios(config)
+                    .then(function (res) {
+                        console.log(res.data)
+                        self.setState({subjects: res.data});
+                    }).catch(function (error){
+                })
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    preferredStudentsDetails =(student, subject) =>{
+        let isBoosted = false;
+        for(let i =0; i < subject.boostedStudents.length; i++){
+            if(student.id===subject.boostedStudents[i].id)isBoosted = true;
+        }
+        let isFinal = false;
+        for(let i =0; i < subject.finalStudents.length;i++) {
+            if (student.id === subject.finalStudents.length) isFinal = true;
+        }
+        return (
+            <div className={'mb-3'}>
+                {isRole("ROLE_ADMIN")||isRole("ROLE_COORDINATOR")?
+                    isBoosted?
+                        <Button className={'me-3'} style={{float:'left'}} onClick={()=>{this.removeBoostStudent(student,subject)}} variant={"outline-warning"}>
+                            <AiFillStar/>
+                        </Button>
+                        :
+                        <Button className={'me-3'} style={{float:'left'}} onClick={()=>{this.boostStudent(student,subject)}} variant={"outline-warning"}>
+                            <AiOutlineStar/>
+                        </Button>
+                    :null}
+                {isRole("ROLE_ADMIN")||isRole("ROLE_COORDINATOR")?
+                    isFinal?
+                        <Button className={'me-3'} style={{float:'left'}} variant={"outline-warning"}>
+                            <AiFillFlag/>
+                        </Button>
+                        :
+                        <Button className={'me-3'} style={{float:'left'}} onClick={()=>{this.postFinalStudent(student,subject)}} variant={"outline-warning"}>
+                            <AiOutlineFlag/>
+                        </Button>
+                    :null}
+                <Tooltip title={(student!==null)?student.email:null} arrow className="col-4">
+                    <div>
+                        {student.firstName + ' ' + student.lastName}
+                    </div>
+                </Tooltip>
+            </div>
+        );
+    }
+
+    postFinalStudent = (student,subject)=>{
+        let axios = require('axios');
+        let qs = require('qs');
+        let data = qs.stringify({
+            'userId': student.id,
+            'subjectId': subject.id
+        });
+        let config = {
+            method: 'put',
+            url: backendURL + '/userManagement/users/student/addFinalSubject' ,
+            headers: {
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token')),
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data : data
+        };
+
+        let self = this;
+        axios(config)
+            .then(function (response) {
+                config = {
+                    method: 'get',
+                    url: backendURL + '/subjectManagement/subjects',
+                    headers: {
+                        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))}
+                };
+
+                axios(config)
+                    .then(function (res) {
+                        console.log(res.data)
+                        self.setState({subjects: res.data});
+                    }).catch(function (error){
+                })
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    renderDetails =(subject,index)=>{
         let uniqueFaculties = subject.targetAudiences.map(sub=>sub).map(sub=>sub.faculty.name);
         uniqueFaculties = uniqueFaculties.filter((c, index) => {
             return uniqueFaculties.indexOf(c) === index;
@@ -297,13 +477,33 @@ class Subjects extends Component {
                                 </div>
                             </div>
                         </div>
+                        <div className="card text-white bg-secondary m-3">
+                            <div className="card-header">
+                                <div style={{float:'left'}}>Interested students</div>
+                                {isRole("ROLE_ADMIN")||isRole("ROLE_COORDINATOR")?
+                                <div style={{float:'right'}}>
+                                    Boosting
+                                    <AiFillStar/>
+                                    Final
+                                    <AiFillFlag/>
+                                </div>:null}
+
+                            </div>
+                            <div className="card-body">
+                                <div id={"interestedStudents"}>
+                                    {(this.state.preferredStudents[index]!==undefined)?this.state.preferredStudents[index].map(student =>
+                                        (this.preferredStudentsDetails(student.student,subject))
+                                    ):null}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </Collapse>
             </div>
         )
     }
 
-    renderSubject = (subject) => {
+    renderSubject = (subject, index) => {
         return(
             <Container fluid="sm" key={subject.id}>
                 <div className="card text-white bg-dark mb-3">
@@ -322,7 +522,7 @@ class Subjects extends Component {
                     </div>
 
                     <div className="card-body">
-                        {this.renderDetails(subject)}
+                        {this.renderDetails(subject, index)}
                         {(isRole("ROLE_ADMIN") || isRole("ROLE_COORDINATOR"))?
                             <div style={{float: 'right'}}>
                                 <Link to ={"/targetAudienceSubject" + subject.id}>
@@ -339,6 +539,7 @@ class Subjects extends Component {
     }
 
     render(){
+        console.log(this.state);
         return(
             <Container>
                 <Container className={"mb-3"} style={{textAlign: 'right'}} >
@@ -348,7 +549,7 @@ class Subjects extends Component {
                         </Button>
                     </Link>
                 </Container>
-                {this.state.subjects.map(this.renderSubject)}
+                {this.state.subjects.map((subject,index) => this.renderSubject(subject, index))}
             </Container>
         );
     }

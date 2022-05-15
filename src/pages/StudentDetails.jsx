@@ -15,52 +15,71 @@ const StudentDetails =()=> {
     const [preferredSubjects, setPreferredSubjects] = useState([]); //Get subject objects
     const [studentLoaded, setStudentLoaded] = useState(false);
     const [prefSubLoaded, setPrefSubLoaded] = useState(false);
+    const [finalSubject, setFinalSubject]= useState();
+    const [finalSubjectLoaded, setFinalSubjectLoaded] = useState();
 
-    if(!(studentLoaded && prefSubLoaded)){
-        //Loading student
+    if(!(studentLoaded && prefSubLoaded && finalSubjectLoaded)){
         let axios = require('axios');
-        let config = {
-            method: 'get',
-            url: backendURL + '/userManagement/users/' + id,
-            headers: {
-                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
-            }
-        };
-        axios(config)
-            .then(function (res) {
-                if(student===''){
+        //Loading student
+        if(!studentLoaded) {
+            let axios = require('axios');
+            let config = {
+                method: 'get',
+                url: backendURL + '/userManagement/users/' + id,
+                headers: {
+                    'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
+                }
+            };
+            axios(config)
+                .then(function (res) {
                     setStudent(res.data);
-                    console.log("Student loaded");
                     setStudentLoaded(true);
-                }
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
 
-
-        //Loading preferred subject
-        config = {
-            method: 'get',
-            url: backendURL + '/userManagement/users/' + id +'/preferredSubject',
-            headers: {
-                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
-            }
-        };
-        axios(config)
-            .then(function (res) {
-                if(preferredSubjects.length===0){
-                    setPreferredSubjects(res.data.map(prefSubject => prefSubject.subject));
-                    console.log("preferred subjects loaded");
-                    console.log(preferredSubjects);
-                    setPrefSubLoaded(true);
+        if(!prefSubLoaded) {
+            //Loading preferred subject
+            let config = {
+                method: 'get',
+                url: backendURL + '/userManagement/users/' + id + '/preferredSubjects',
+                headers: {
+                    'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
                 }
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+            };
+            axios(config)
+                .then(function (res) {
+                    if (preferredSubjects.length === 0) {
+                        setPreferredSubjects(res.data.map(prefSubject => prefSubject.subject));
+                        setPrefSubLoaded(true);
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+        if(!finalSubjectLoaded) {
+            let config = {
+                method: 'get',
+                url: backendURL + '/userManagement/users/' + id + '/finalSubject',
+                headers: {
+                    'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
+                }
+            };
+            axios(config)
+                .then(function (res) {
+                    if (preferredSubjects.length === 0) {
+                        setFinalSubject(res.data);
+                        setFinalSubjectLoaded(true);
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
     }
-    console.log(preferredSubjects)
     const renderSubject = (subject) => {
         return(
             <Container fluid="sm" key={subject.id}>
@@ -125,7 +144,7 @@ const StudentDetails =()=> {
                         </div>
                         <div className={"m-3"}>
                             FinalSubject:
-                            {student.finalSubject}
+                            {finalSubject}
                         </div>
                         <Link className={"m-3"} style={{textAlign: 'right'}} to ={"/targetAudienceUser" + id}>
                             <Button variant={"outline-success"}>

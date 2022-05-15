@@ -9,6 +9,9 @@ import {Link, useParams} from "react-router-dom";
 import backendURL from "../backendURL";
 import isRole from "../hooks/isRole"
 import subDelete from "../hooks/subDelete";
+import FormData from "form-data";
+import {AiFillFlag, AiFillStar, AiOutlineFlag, AiOutlineStar} from "react-icons/ai";
+import Tooltip from "@mui/material/Tooltip";
 
 
 const UserDetails =()=> {
@@ -17,6 +20,7 @@ const UserDetails =()=> {
     const [ownID, setOwnID] = useState('');
     const [preferredSubjects, setPreferredSubjects] = useState([]);
     const [prefSubLoaded, setPrefSubLoaded] = useState(false);
+    const [preferredStudents, setPreferredStudents] = useState([]);
     const [ownSubjects, setOwnSubjects] = useState([]);
     const [ownSubjectsLoaded, setOwnSubjectsLoaded] = useState(false);
     const [finalSubject, setFinalSubject]= useState();
@@ -58,10 +62,8 @@ const UserDetails =()=> {
                     };
                     axios(config)
                         .then(function (res) {
-                            if (preferredSubjects.length === 0) {
-                                setFinalSubject(res.data);
-                                setFinalSubjectLoaded(true);
-                            }
+                            if(res.data.length!==0) setFinalSubject(res.data);
+                            setFinalSubjectLoaded(true);
                         })
                         .catch(function (error) {
                             console.log(error);
@@ -81,11 +83,10 @@ const UserDetails =()=> {
         };
         axios(config)
             .then(function (res) {
-                if (preferredSubjects.length === 0) {
-                    let sortedPrefSub = sortArrayByIndex(res.data);
-                    setPreferredSubjects(sortedPrefSub.map(prefSubject => prefSubject.subject));
-                    setPrefSubLoaded(true);
-                }
+                console.log(res.data);
+                let sortedPrefSub = sortArrayByIndex(res.data);
+                setPreferredSubjects(sortedPrefSub.map(prefSubject => prefSubject.subject));
+                setPrefSubLoaded(true);
             })
             .catch(function (error) {
                 console.log(error);
@@ -101,10 +102,30 @@ const UserDetails =()=> {
         };
         axios(config)
             .then(function (res) {
-                if (ownSubjects.length === 0) {
-                    setOwnSubjects(res.data);
-                    setOwnSubjectsLoaded(true);
+                setOwnSubjects(res.data);
+                for(let i =0; i < res.data.length; i++){
+                    let subjectId = res.data[i].id;
+                    let FormData = require('form-data');
+                    let data = new FormData();
+                    data.append('subjectId', subjectId);
+                    let config = {
+                        method: 'post',
+                        url: backendURL + '/subjectManagement/subjects/preferredStudents',
+                        headers: {
+                            'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
+                        },
+                        data: data
+                    };
+                    axios(config)
+                        .then(function (res2) {
+                            let preferredStudentsCopy = [...preferredStudents];
+                            preferredStudentsCopy[i] = res2.data;
+                            setPreferredStudents(preferredStudentsCopy);
+                        }).catch(function (error) {
+                    });
                 }
+                setOwnSubjectsLoaded(true);
+
             })
             .catch(function (error) {
                 console.log(error);
@@ -121,22 +142,146 @@ const UserDetails =()=> {
         return newArray;
     }
 
+    const subDeleteDynamic = (subID) =>{
+        subDelete(subID);
+        let axios = require('axios');
+        let config = {
+            method: 'get',
+            url: backendURL + '/subjectManagement/subjects',
+            headers: {
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))}
+        };
+        const self =this;
+        axios(config)
+            .then(function (res) {
+                self.setState({subjects: res.data});
+            }).catch(function (error){
+        })
+    }
+
+    const boostStudent =(student, subject) =>{
+        let axios = require('axios');
+        let qs = require('qs');
+        let data = qs.stringify({
+            'userId': student.id,
+            'subjectId': subject.id
+        });
+        let config = {
+            method: 'post',
+            url: backendURL + '/userManagement/users/student/addBoost' ,
+            headers: {
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token')),
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data : data
+        };
+
+        let self = this;
+        axios(config)
+            .then(function (response) {
+                config = {
+                    method: 'get',
+                    url: backendURL + '/userManagement/users/mySubjects',
+                    headers: {
+                        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
+                    }
+                };
+                axios(config)
+                    .then(function (res) {
+                        setOwnSubjects(res.data);
+                    }).catch(function (error) {
+            })}).catch(function (error){
+        })
+    }
+
+    const removeBoostStudent =(student, subject) =>{
+        let axios = require('axios');
+        let qs = require('qs');
+        let data = qs.stringify({
+            'userId': student.id,
+            'subjectId': subject.id
+        });
+        let config = {
+            method: 'post',
+            url: backendURL + '/userManagement/users/student/removeBoost' ,
+            headers: {
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token')),
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data : data
+        };
+
+        axios(config)
+            .then(function (response) {
+                config = {
+                    method: 'get',
+                    url: backendURL + '/userManagement/users/mySubjects',
+                    headers: {
+                        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
+                    }
+                };
+                axios(config)
+                    .then(function (res) {
+                        setOwnSubjects(res.data);
+                    }).catch(function (error) {
+                })}).catch(function (error){
+        })
+    }
+
+    const renderStudent = (student, subject)=>{
+        let isBoosted = false;
+        for(let i =0; i < subject.boostedStudents.length; i++){
+            if(student.id===subject.boostedStudents[i].id)isBoosted = true;
+        }
+        return (
+            <div className={'mb-3'}>
+                {isBoosted?
+                        <Button className={'me-3'} style={{float:'left'}} onClick={()=>{removeBoostStudent(student,subject)}} variant={"outline-warning"}>
+                            <AiFillStar/>
+                        </Button>
+                        :
+                        <Button className={'me-3'} style={{float:'left'}} onClick={()=>{boostStudent(student,subject)}} variant={"outline-warning"}>
+                            <AiOutlineStar/>
+                        </Button>}
+                <Tooltip title={(student!==null)?student.email:null} arrow className="col-4">
+                    <div>
+                        {student.firstName + ' ' + student.lastName}
+                    </div>
+                </Tooltip>
+            </div>
+        );
+    }
+
     const renderSubject = (subject, index) => {
+        if(subject===undefined)return null;
         return(
             <Container fluid="sm" key={subject.id}>
                 <div className="card text-white bg-dark m-3">
                     <div className="card-header">
-                        <div style={{float: 'left'}}>Students: {subject.nrOfStudents}</div>
-                        {isRole("ROLE_STUDENT")?<div style={{ float:"right"  }}>Nr. {index+1}</div>:null}
                         {(isRole("ROLE_ADMIN") || isRole("ROLE_COORDINATOR") || isRole("ROLE_PROMOTOR") || isRole("ROLE_CONTACT"))?
-                            <Button style={{float: 'right'}} onClick={()=>{subDelete(subject.id)}}  variant={"outline-danger"}>
-                                Delete
-                            </Button>:null}
+                        <Button style={{float: 'right'}} onClick={()=>{subDeleteDynamic(subject.id)}}  variant={"outline-danger"}>
+                            Delete
+                        </Button>:null}
+                        {isRole("ROLE_STUDENT")?<div style={{ float:"right"  }}>Nr. {index+1}</div>:null}
+                        <h5 className="card-title">{subject.name}</h5>
+                        <h6 >Tags: {(subject.tags!==undefined)?subject.tags.map(tags => tags.name)+" ":null}</h6>
                     </div>
 
                     <div className="card-body">
-                        <h5 className="card-title">{subject.name}</h5>
-                        <h6>Tags: {subject.tags.map(tags => tags.name)+" "}</h6>
+                        <div >Students: {subject.nrOfStudents}</div>
+                        {(isRole("ROLE_ADMIN") || isRole("ROLE_COORDINATOR") || isRole("ROLE_PROMOTOR") || isRole("ROLE_CONTACT"))?
+                        (preferredStudents[index]!==undefined)?preferredStudents[index].map(student =>
+                            (renderStudent(student.student,subject))
+                        ):null:null}
+                        {(isRole("ROLE_ADMIN") || isRole("ROLE_COORDINATOR")|| isRole("ROLE_PROMOTOR")|| isRole("ROLE_CONTACT"))?
+                            <div style={{float: 'right'}}>
+                                <Link to ={"/targetAudienceSubject" + subject.id}>
+                                    <Button  variant={"outline-success"}>
+                                        Change targetAudience
+                                    </Button>
+                                </Link>
+                            </div>
+                            : null}
                     </div>
                 </div>
             </Container>
@@ -144,7 +289,7 @@ const UserDetails =()=> {
     }
 
     return(
-        (userLoaded && (prefSubLoaded || !isRole("ROLE_STUDENT")) && (ownSubjectsLoaded || (!isRole("ROLE_PROMOTOR") && !isRole("ROLE_CONTACT")))) ?
+        (userLoaded && ((prefSubLoaded && finalSubjectLoaded) || !isRole("ROLE_STUDENT")) && (ownSubjectsLoaded || (!isRole("ROLE_PROMOTOR") && !isRole("ROLE_CONTACT")))) ?
             (
                 <Container fluid="sm">
                     <div className="card text-black bg-white m-3">
@@ -203,9 +348,13 @@ const UserDetails =()=> {
                                     </div>
 
                                 </div>
-                                <div className={"m-3"}>
-                                    FinalSubject:
-                                    {finalSubject}
+                                <div className="card text-black bg-white m-3">
+                                    <div className="card-header">
+                                        Final subject
+                                    </div>
+                                    <div className="card-body">
+                                        {renderSubject(finalSubject)}
+                                    </div>
                                 </div>
                             </div>
                             : null

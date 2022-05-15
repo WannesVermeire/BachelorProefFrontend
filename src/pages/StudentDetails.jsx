@@ -15,8 +15,8 @@ const StudentDetails =()=> {
     const [preferredSubjects, setPreferredSubjects] = useState([]); //Get subject objects
     const [studentLoaded, setStudentLoaded] = useState(false);
     const [prefSubLoaded, setPrefSubLoaded] = useState(false);
-    const [finalSubject, setFinalSubject]= useState();
-    const [finalSubjectLoaded, setFinalSubjectLoaded] = useState();
+    const [finalSubject, setFinalSubject]= useState('');
+    const [finalSubjectLoaded, setFinalSubjectLoaded] = useState(false);
 
     if(!(studentLoaded && prefSubLoaded && finalSubjectLoaded)){
         let axios = require('axios');
@@ -51,10 +51,9 @@ const StudentDetails =()=> {
             };
             axios(config)
                 .then(function (res) {
-                    if (preferredSubjects.length === 0) {
-                        setPreferredSubjects(res.data.map(prefSubject => prefSubject.subject));
-                        setPrefSubLoaded(true);
-                    }
+                    let sortedPrefSub = sortArrayByIndex(res.data);
+                    setPreferredSubjects(sortedPrefSub.map(prefSubject => prefSubject.subject));
+                    setPrefSubLoaded(true);
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -70,22 +69,32 @@ const StudentDetails =()=> {
             };
             axios(config)
                 .then(function (res) {
-                    if (preferredSubjects.length === 0) {
-                        setFinalSubject(res.data);
-                        setFinalSubjectLoaded(true);
-                    }
+                    setFinalSubject(res.data);
+                    setFinalSubjectLoaded(true);
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
         }
     }
-    const renderSubject = (subject) => {
+
+    const sortArrayByIndex = (array) =>{
+        let newArray = [...array];
+        for(let i =0; i < array.length; i++){
+            for(let j =0; j < array.length; j++){
+                if(array[j].index===i+1)newArray[i] = array[j];
+            }
+        }
+        return newArray;
+    }
+
+    const renderSubject = (subject, index) => {
         return(
             <Container fluid="sm" key={subject.id}>
                 <div className="card text-white bg-dark m-3">
                     <div className="card-header">
                         <div style={{float: 'left'}}>Students: {subject.nrOfStudents}</div>
+                        <div style={{ float:"right"  }}>Nr. {index+1}</div>
                     </div>
 
                     <div className="card-body">
@@ -98,7 +107,7 @@ const StudentDetails =()=> {
     }
 
     return(
-        (studentLoaded && prefSubLoaded) ?
+        (studentLoaded && prefSubLoaded && finalSubjectLoaded) ?
             (
                 <Container fluid="sm">
                     <div className="card text-black bg-white m-3">
@@ -140,11 +149,15 @@ const StudentDetails =()=> {
                             <div className="card-body">
                                 {preferredSubjects.map(renderSubject)}
                             </div>
-
                         </div>
-                        <div className={"m-3"}>
-                            FinalSubject:
-                            {finalSubject}
+
+                        <div className="card text-black bg-white m-3">
+                            <div className="card-header">
+                                Final subject
+                            </div>
+                            <div className="card-body">
+                                {renderSubject(finalSubject)}
+                            </div>
                         </div>
                         <Link className={"m-3"} style={{textAlign: 'right'}} to ={"/targetAudienceUser" + id}>
                             <Button variant={"outline-success"}>

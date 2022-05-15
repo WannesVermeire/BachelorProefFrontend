@@ -79,7 +79,7 @@ class Subjects extends Component {
                 axios(config)
                     .then(function (res2) {
                         console.log(res2);
-                        if(self.state.liked.length===0) self.setState({liked: res2.data});
+                        self.setState({liked: res2.data});
                     }).catch(function (error) {
                 });
             }).catch(function (error) {
@@ -106,7 +106,6 @@ class Subjects extends Component {
         let self = this
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
                 let approveds = [...self.state.approved];
                 let approve = true;
                 approveds[self.state.subjects.findIndex(subject => subject.id === sub.id)] = approve;
@@ -134,7 +133,6 @@ class Subjects extends Component {
         let self = this
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
                 let disapproveds = [...self.state.approved];
                 let approve = false;
                 disapproveds[self.state.subjects.findIndex(subject => subject.id === sub.id)] = approve;
@@ -234,13 +232,13 @@ class Subjects extends Component {
                 console.log(JSON.stringify(response.data));
                 config = {
                     method: 'get',
-                    url: backendURL + '/userManagement/users/' + self.state.ownID,
+                    url: backendURL + '/userManagement/users/' + self.state.ownID + '/favouriteSubjects',
                     headers: {
                         'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))}
                 };
                 axios(config)
                     .then(function (res2) {
-                        self.setState({liked: res2.data.favouriteSubjects});
+                        self.setState({liked: res2.data});
                     }).catch(function (error) {
                 });
             })
@@ -279,7 +277,6 @@ class Subjects extends Component {
 
                 axios(config)
                     .then(function (res) {
-                        console.log(res.data)
                         self.setState({subjects: res.data});
                     }).catch(function (error){
                 })
@@ -319,7 +316,6 @@ class Subjects extends Component {
 
                 axios(config)
                     .then(function (res) {
-                        console.log(res.data)
                         self.setState({subjects: res.data});
                     }).catch(function (error){
                 })
@@ -336,7 +332,7 @@ class Subjects extends Component {
         }
         let isFinal = false;
         for(let i =0; i < subject.finalStudents.length;i++) {
-            if (student.id === subject.finalStudents.length) isFinal = true;
+            if (student.id === subject.finalStudents[i].id) isFinal = true;
         }
         return (
             <div className={'mb-3'}>
@@ -376,8 +372,9 @@ class Subjects extends Component {
             'userId': student.id,
             'subjectId': subject.id
         });
+        console.log(data);
         let config = {
-            method: 'put',
+            method: 'post',
             url: backendURL + '/userManagement/users/student/addFinalSubject' ,
             headers: {
                 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token')),
@@ -389,6 +386,7 @@ class Subjects extends Component {
         let self = this;
         axios(config)
             .then(function (response) {
+                console.log(response)
                 config = {
                     method: 'get',
                     url: backendURL + '/subjectManagement/subjects',
@@ -398,7 +396,6 @@ class Subjects extends Component {
 
                 axios(config)
                     .then(function (res) {
-                        console.log(res.data)
                         self.setState({subjects: res.data});
                     }).catch(function (error){
                 })
@@ -406,6 +403,23 @@ class Subjects extends Component {
             .catch(function (error) {
                 console.log(error);
             });
+    }
+
+    subDeleteDynamic = (subID) =>{
+        subDelete(subID);
+        let axios = require('axios');
+        let config = {
+            method: 'get',
+            url: backendURL + '/subjectManagement/subjects',
+            headers: {
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))}
+        };
+        const self =this;
+        axios(config)
+            .then(function (res) {
+                self.setState({subjects: res.data});
+            }).catch(function (error){
+        })
     }
 
     renderDetails =(subject,index)=>{
@@ -509,7 +523,7 @@ class Subjects extends Component {
                 <div className="card text-white bg-dark mb-3">
                     <div  className="card-header">
                         {(isRole("ROLE_ADMIN") || isRole("ROLE_COORDINATOR"))?
-                            <Button style={{float: 'right'}} onClick={()=>{subDelete(subject.id)}}  variant={"outline-danger"}>
+                            <Button style={{float: 'right'}} onClick={()=>{this.subDeleteDynamic(subject.id)}}  variant={"outline-danger"}>
                                 Delete
                             </Button>:null}
                         <div className={"ms-3"} style={{float: 'right'}}>{(isRole("ROLE_ADMIN") || isRole("ROLE_COORDINATOR"))?

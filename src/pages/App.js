@@ -16,6 +16,7 @@ import FinalSubject from "./FinalSubject";
 import UserDetails from "./UserDetails";
 import TargetAudienceSubject from "./TargetAudienceSubject";
 import ContactDetails from "./ContactDetails";
+import Timing from "./Timing";
 
 
 import Error from "./Error";
@@ -72,6 +73,9 @@ class App extends Component {
                         </Route>
                         <Route element={<RequireAuth allowedRoles={["ROLE_ADMIN","ROLE_PROMOTOR", "ROLE_COORDINATOR", "ROLE_CONTACT"]}/>}>
                             <Route path='/targetAudienceSubject:id' element={<TargetAudienceSubject />}/>
+                        </Route>
+                        <Route element={<RequireAuth allowedRoles={["ROLE_ADMIN", "ROLE_COORDINATOR"]}/>}>
+                            <Route path='/timing' element={<Timing />}/>
                         </Route>
                         <Route path='*' element={<Error/>}/>
                     </Route>

@@ -17,14 +17,14 @@ const Timing =()=> {
         e.preventDefault()
         let axios = require('axios');
         let data = qs.stringify({
-            'endAddingSubjects': endAddingSubjects,
-            'endPreferredSubjects': endStudentsChoice,
-            'endFinalAllocation': endFinalAllocation
+            'endAddingSubjects': endAddingSubjects.toISOString().substring(0,10),
+            'endPreferredSubjects': endStudentsChoice.toISOString().substring(0,10),
+            'endFinalAllocation': endFinalAllocation.toISOString().substring(0,10)
             }
         )
         console.log(data);
         let config = {
-            method: 'put',
+            method: 'post',
             url: backendURL + '/timing',
             headers: {
                 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))},

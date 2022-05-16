@@ -109,7 +109,7 @@ const Login = () => {
                 <Form.Group as={Row}  className="mb-3">
                     <Col >
                         <Link to ="/register">
-                            <Button variant={"link"}>Don't have an account yet?</Button>
+                            <Button variant={"link"}>Are you a contact for a company?</Button>
                         </Link>
                     </Col>
                 </Form.Group>

@@ -34,14 +34,26 @@ const CompanyDetails =()=> {
         axios(config)
             .then(function (res) {
                 setCompany(res.data);
-                setApproved(res.data.approved);
-                setContacts(res.data.contacts);
                 setCompanyLoaded(true);
-
+                setApproved(res.data.approved);
             })
             .catch(function (error) {
                 console.log(error);
             });
+    }
+    if(!contactsLoaded){
+        let config = {
+            method: 'get',
+            url: backendURL + '/userManagement/users/contact',
+            headers: {
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))}
+        };
+        axios(config)
+            .then(function (res) {
+                setContacts(res.data);
+                setContactsLoaded(true);
+            }).catch(function (error) {
+        });
     }
 
     const approve =()=>{
@@ -120,7 +132,7 @@ const CompanyDetails =()=> {
     }
 
     return(
-        (companyLoaded)?
+        (contactsLoaded && companyLoaded)?
             (
                 <Container fluid="sm">
                     <div  className="card text-black bg-white m-3">
@@ -138,10 +150,10 @@ const CompanyDetails =()=> {
                                 <h6 className="m-3" >{company.btwNr}</h6>
                             </div>
                         </div>
-                        <Tooltip title={contacts.map(contact=> contact.email)} arrow className="col-4">
+                        <Tooltip title={company.contacts.map(contact=> contact.email + ' ')} arrow className="col-4">
                             <div className={"m-3"}>
                                 Contacts:
-                                {contacts.map(contact=> ' ' + contact.firstName + ' ' + contact.lastName)}
+                                {company.contacts.map(contact=> ' ' + contact.firstName + ' ' + contact.lastName)}
                             </div>
                         </Tooltip>
                         <Button onClick={()=>{setContactForm(true)}} className={"m-3"} variant={"outline-success"}>

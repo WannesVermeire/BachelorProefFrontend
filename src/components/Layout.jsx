@@ -37,7 +37,6 @@ const Layout = () => {
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
-                            <Nav.Link as={Link} to ="/">Home</Nav.Link>
                             <Nav.Link as={Link} to ="/subjects">Subjects</Nav.Link>
                             {(isRole("ROLE_ADMIN") || isRole("ROLE_COORDINATOR"))?<Nav.Link as={Link} to ="/userlist">Userlist</Nav.Link>: null}
                             {(isRole("ROLE_ADMIN") || isRole("ROLE_COORDINATOR"))?<Nav.Link as={Link} to ="/timing">Deadlines</Nav.Link>: null}

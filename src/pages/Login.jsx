@@ -60,7 +60,6 @@ const Login = () => {
             localStorage.setItem("refresh_token", JSON.stringify(res.data.refresh_token));
             navigate(from, {replace: true});
         }).catch(function (error) {
-            console.log(error.response?.status)
             if (!error?.response) {
                 setErrMsg('No Server Response');
             } else if (error.response?.status ===401){

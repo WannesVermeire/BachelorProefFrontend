@@ -222,6 +222,7 @@ const UserDetails =()=> {
                 };
                 axios(config)
                     .then(function (res) {
+                        console.log(res.data);
                         setOwnSubjects(res.data);
                     }).catch(function (error) {
                 })}).catch(function (error){
@@ -314,7 +315,7 @@ const UserDetails =()=> {
                                 My posted subjects
                             </div>
                             <div className="card-body">
-                                {ownSubjects.map(renderSubject)}
+                                {ownSubjects.length!==0?ownSubjects.map(renderSubject):null}
                             </div>
 
                         </div>
@@ -344,7 +345,7 @@ const UserDetails =()=> {
                                         Preferences
                                     </div>
                                     <div className="card-body">
-                                        {preferredSubjects.map(renderSubject)}
+                                        {preferredSubjects.length!==0?preferredSubjects.map(renderSubject):null}
                                     </div>
 
                                 </div>
@@ -353,7 +354,7 @@ const UserDetails =()=> {
                                         Final subject
                                     </div>
                                     <div className="card-body">
-                                        {renderSubject(finalSubject)}
+                                        {finalSubject.length!==0?renderSubject(finalSubject):null}
                                     </div>
                                 </div>
                             </div>

@@ -41,7 +41,6 @@ const Timing =()=> {
             <Container >
                     <div>
                         <Form onSubmit={postTiming}>
-                            <Alert style={{textAlign: 'center'}} className={"m-50"} variant={"warning"}>Work in progress</Alert>
                             <Row style={{textAlign: 'center'}}>
                                 <Col>
                                     <h1 style={{textAlign: 'center'}}>End adding subjects</h1>

@@ -34,27 +34,14 @@ const CompanyDetails =()=> {
         axios(config)
             .then(function (res) {
                 setCompany(res.data);
-                setCompanyLoaded(true);
                 setApproved(res.data.approved);
-                console.log(res);
+                setContacts(res.data.contacts);
+                setCompanyLoaded(true);
+
             })
             .catch(function (error) {
                 console.log(error);
             });
-    }
-    if(!contactsLoaded){
-        let config = {
-            method: 'get',
-            url: backendURL + '/userManagement/users/contact',
-            headers: {
-                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))}
-        };
-        axios(config)
-            .then(function (res) {
-                setContacts(res.data);
-                setContactsLoaded(true);
-            }).catch(function (error) {
-        });
     }
 
     const approve =()=>{
@@ -106,33 +93,34 @@ const CompanyDetails =()=> {
             });
     }
 
-    const postContacts =() =>{
+    const postContacts =(e) =>{
+        e.preventDefault();
         let data = new FormData();
-        console.log(inputContacts[0].id)
-        for(let i =0; i<inputContacts.length; i++){
-            data.append('userIds',inputContacts[i].id);
-        }
-        let config = {
-            method: 'post',
-            url: backendURL + '/userManagement/company/' + company.id + '/addContact',
-            headers: {
-                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
-            },
-            data : data
-        };
+        if(inputContacts.length!==0){
+            for(let i =0; i<inputContacts.length; i++){
+                data.append('userIds',inputContacts[i].id);
+            }
+            let config = {
+                method: 'post',
+                url: backendURL + '/userManagement/company/' + company.id + '/addContact',
+                headers: {
+                    'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
+                },
+                data : data
+            };
 
-        axios(config)
-            .then(function (response) {
-                console.log(JSON.stringify(response.data));
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-        setContactForm(false);
+            axios(config)
+                .then(function (response) {
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            setContactForm(false);
+        }
     }
 
     return(
-        (contactsLoaded && companyLoaded)?
+        (companyLoaded)?
             (
                 <Container fluid="sm">
                     <div  className="card text-black bg-white m-3">

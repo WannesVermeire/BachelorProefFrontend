@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useRef} from 'react'
 import backendURL from "../backendURL";
 import {useState} from 'react';
 import {Button, Form, Container} from "react-bootstrap";
@@ -34,7 +34,8 @@ const SubjectForm = () =>{
     const [promotersLoaded, setPromotersLoaded] = useState(false);
     const [promoters, setPromoters] = useState([]);
     const [inputPromoter, setInputPromoter] = useState();
-
+    const [errMsg, setErrMsg] = useState('');
+    const errRef = useRef();
 
     let axios = require('axios');
 
@@ -207,7 +208,14 @@ const SubjectForm = () =>{
                 else setPage(5);
             })
             .catch(function (error) {
-                console.log(error);
+                if (!error?.response) {
+                    setErrMsg('No Server Response');
+                } else if (error.response?.status ===403){
+                    setErrMsg('Deadline passed');
+                } else {
+                    setErrMsg('Error');
+                }
+                errRef.current.focus();
             });
 
     }
@@ -327,7 +335,6 @@ const SubjectForm = () =>{
                 setPage(5);
             })
             .catch(function (error) {
-                console.log(error);
             });
     }
 
@@ -421,6 +428,7 @@ const SubjectForm = () =>{
                             </Button>
                         </Form.Group>
                     </Form>
+                    <p className="alert alert-danger" hidden={!errMsg} ref={errRef} aria-live="assertive" >{errMsg}</p>
                     <p>* = Not required</p>
                 </Container>
             )

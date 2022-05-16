@@ -69,7 +69,7 @@ const StudentDetails =()=> {
             };
             axios(config)
                 .then(function (res) {
-                    setFinalSubject(res.data);
+                    if(res.data!=='') setFinalSubject(res.data);
                     setFinalSubjectLoaded(true);
                 })
                 .catch(function (error) {
@@ -99,7 +99,7 @@ const StudentDetails =()=> {
 
                     <div className="card-body">
                         <h5 className="card-title">{subject.name}</h5>
-                        <h6>Tags: {subject.tags.map(tags => tags.name)+" "}</h6>
+                        <h6>Tags: {(subject.tags!==undefined)?subject.tags.map(tags => tags.name)+" ":null}</h6>
                     </div>
                 </div>
             </Container>
@@ -147,7 +147,7 @@ const StudentDetails =()=> {
                                 Preferences
                             </div>
                             <div className="card-body">
-                                {preferredSubjects.map(renderSubject)}
+                                {preferredSubjects.length!==0?preferredSubjects.map(renderSubject):null}
                             </div>
                         </div>
 
@@ -156,7 +156,7 @@ const StudentDetails =()=> {
                                 Final subject
                             </div>
                             <div className="card-body">
-                                {renderSubject(finalSubject)}
+                                {finalSubject!==''?renderSubject(finalSubject):null}
                             </div>
                         </div>
                         <Link className={"m-3"} style={{textAlign: 'right'}} to ={"/targetAudienceUser" + id}>

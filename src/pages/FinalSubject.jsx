@@ -62,6 +62,7 @@ const FinalSubject =()=> {
     }
 
     const postPreferredSubjects = (e) =>{
+        e.preventDefault()
         let axios = require('axios');
         let qs = require('qs');
         console.log(prefSubjects);
@@ -74,7 +75,7 @@ const FinalSubject =()=> {
                 });
                 let config = {
                     method: 'post',
-                    url: 'https://mastertoolbackend.herokuapp.com/userManagement/users/student/addPreferredSubject',
+                    url: backendURL + '/userManagement/users/student/addPreferredSubject',
                     headers: {
                         'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token')),
                         'Content-Type': 'application/x-www-form-urlencoded'

@@ -1,7 +1,7 @@
 import React,{Component} from 'react'
 
 import {Button, Col, Form, Row, Container} from "react-bootstrap";
-import {Link} from "react-router-dom";
+import {Link, Navigate} from "react-router-dom";
 
 class RegisterForm extends Component{
     constructor(props){
@@ -11,7 +11,8 @@ class RegisterForm extends Component{
             lastName: "",
             email: "",
             telNr: "",
-            password: ""
+            password: "",
+            posted: false
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -21,6 +22,7 @@ class RegisterForm extends Component{
     handleSubmit = (e) =>{
         e.preventDefault()
         this.props.Register(this.state);
+        this.setState({posted:true})
     }
 
     changeHandler = (e) =>{
@@ -29,6 +31,9 @@ class RegisterForm extends Component{
 
     render() {
         return (
+            this.state.posted?
+                <Navigate to="/" />
+                :
             <Container style={{textAlign: "left"}}>
                 <Form onSubmit={this.handleSubmit}>
                     <Row className={"mb-3"}>

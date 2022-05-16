@@ -259,7 +259,7 @@ const UserDetails =()=> {
             <Container fluid="sm" key={subject.id}>
                 <div className="card text-white bg-dark m-3">
                     <div className="card-header">
-                        {(isRole("ROLE_ADMIN") || isRole("ROLE_COORDINATOR") || isRole("ROLE_PROMOTOR") || isRole("ROLE_CONTACT"))?
+                        {(isRole("ROLE_ADMIN") || isRole("ROLE_COORDINATOR"))?
                         <Button style={{float: 'right'}} onClick={()=>{subDeleteDynamic(subject.id)}}  variant={"outline-danger"}>
                             Delete
                         </Button>:null}
@@ -354,7 +354,7 @@ const UserDetails =()=> {
                                         Final subject
                                     </div>
                                     <div className="card-body">
-                                        {finalSubject.length!==0?renderSubject(finalSubject):null}
+                                        {finalSubject!==''?renderSubject(finalSubject):null}
                                     </div>
                                 </div>
                             </div>

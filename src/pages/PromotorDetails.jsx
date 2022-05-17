@@ -28,7 +28,6 @@ const PromotorDetails =()=> {
             .then(function (res) {
                 if(promotor==='')setPromotor(res.data);
                 setUserLoaded(true);
-                console.log("userLoaded")
             })
             .catch(function (error) {
                 console.log(error);

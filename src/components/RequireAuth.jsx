@@ -17,7 +17,6 @@ const RequireAuth = ({allowedRoles}) => {
         console.log("access token not expired");
         const decoded = jwt_decode(JSON.parse(localStorage.getItem('access_token')));
         if(decoded != null) roles = decoded.roles;
-        console.log(roles);
     }
     else if(expTime_rt>curTime){
         //If the access token has expired but the refresh token hasn't

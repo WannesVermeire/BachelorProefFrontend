@@ -22,7 +22,6 @@ const Timing =()=> {
             'endFinalAllocation': endFinalAllocation.toISOString().substring(0,10)
             }
         )
-        console.log(data);
         let config = {
             method: 'post',
             url: backendURL + '/timing',
@@ -32,7 +31,6 @@ const Timing =()=> {
         };
         axios(config)
             .then(function (res) {
-                console.log(res)
             }).catch(function (error){
 
         })

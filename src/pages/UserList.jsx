@@ -57,7 +57,6 @@ class UserList extends Component {
         };
         axios(config)
             .then(function (res) {
-                console.log("companies: " + res.data);
                 self.setState({companies: res.data});
             }).catch(function (error) {
         });
@@ -71,7 +70,6 @@ class UserList extends Component {
         };
         axios(config)
             .then(function (res) {
-                console.log(res.data);
                 self.setState({contacts: res.data});
             }).catch(function (error) {
         });
@@ -99,7 +97,6 @@ class UserList extends Component {
 
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
             })
             .catch(function (error) {
                 console.log(error);
@@ -136,7 +133,6 @@ class UserList extends Component {
     }
 
     renderUsers =()=>{
-        console.log(this.state)
         if(this.state.role === "Students"){
             return(
                 <div className="card text-black bg-secondary mb-3">

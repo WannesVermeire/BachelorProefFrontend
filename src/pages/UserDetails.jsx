@@ -83,7 +83,6 @@ const UserDetails =()=> {
         };
         axios(config)
             .then(function (res) {
-                console.log(res.data);
                 let sortedPrefSub = sortArrayByIndex(res.data);
                 setPreferredSubjects(sortedPrefSub.map(prefSubject => prefSubject.subject));
                 setPrefSubLoaded(true);
@@ -222,7 +221,6 @@ const UserDetails =()=> {
                 };
                 axios(config)
                     .then(function (res) {
-                        console.log(res.data);
                         setOwnSubjects(res.data);
                     }).catch(function (error) {
                 })}).catch(function (error){

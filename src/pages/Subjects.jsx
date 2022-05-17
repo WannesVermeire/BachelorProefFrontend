@@ -35,7 +35,6 @@ class Subjects extends Component {
             .then(function (res) {
                 self.setState({subjects: res.data});
                 self.setState({approved: res.data.map(subjects=>subjects.approved)});
-                console.log(res);
                 for(let i =0; i < res.data.length; i++){
                     let subjectId = res.data[i].id;
                     let FormData = require('form-data');
@@ -69,7 +68,6 @@ class Subjects extends Component {
         axios(config)
             .then(function (res) {
                 self.setState({ownID: res.data});
-                console.log(self.state);
                 config = {
                     method: 'get',
                     url: backendURL + '/userManagement/users/' + res.data + '/favouriteSubjects',
@@ -78,7 +76,6 @@ class Subjects extends Component {
                 };
                 axios(config)
                     .then(function (res2) {
-                        console.log(res2);
                         self.setState({liked: res2.data});
                     }).catch(function (error) {
                 });
@@ -193,7 +190,6 @@ class Subjects extends Component {
         let self = this
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
                 config = {
                     method: 'get',
                     url: backendURL + '/userManagement/users/' + self.state.ownID + '/favouriteSubjects',
@@ -229,7 +225,6 @@ class Subjects extends Component {
         let self = this
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
                 config = {
                     method: 'get',
                     url: backendURL + '/userManagement/users/' + self.state.ownID + '/favouriteSubjects',
@@ -372,7 +367,6 @@ class Subjects extends Component {
             'userId': student.id,
             'subjectId': subject.id
         });
-        console.log(data);
         let config = {
             method: 'post',
             url: backendURL + '/userManagement/users/student/addFinalSubject' ,
@@ -386,7 +380,6 @@ class Subjects extends Component {
         let self = this;
         axios(config)
             .then(function (response) {
-                console.log(response)
                 config = {
                     method: 'get',
                     url: backendURL + '/subjectManagement/subjects',
@@ -553,7 +546,6 @@ class Subjects extends Component {
     }
 
     render(){
-        console.log(this.state);
         return(
             <Container>
                 <Container className={"mb-3"} style={{textAlign: 'right'}} >

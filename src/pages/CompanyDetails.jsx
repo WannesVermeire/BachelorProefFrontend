@@ -73,7 +73,6 @@ const CompanyDetails =()=> {
 
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
                 setApproved(true);
             })
             .catch(function (error) {
@@ -97,7 +96,6 @@ const CompanyDetails =()=> {
 
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
                 setApproved(false);
             })
             .catch(function (error) {

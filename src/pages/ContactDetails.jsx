@@ -28,7 +28,7 @@ const ContactDetails =()=> {
             .then(function (res) {
                 if(contact==='')setContact(res.data);
                 setUserLoaded(true);
-                console.log(res.data)
+
             })
             .catch(function (error) {
                 console.log(error);

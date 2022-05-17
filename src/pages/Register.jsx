@@ -13,8 +13,8 @@ class Register extends Component {
     }
 
     Register =(details) =>{
-        var data = qs.stringify(details);
-        var config = {
+        let data = qs.stringify(details);
+        let config = {
             method: 'post',
             url: backendURL + '/userManagement/users',
             headers:{
@@ -26,7 +26,6 @@ class Register extends Component {
         }).catch(function() {
             this.setState({error: "Details do not match!"});
         })
-        console.log(details);
     }
 
 

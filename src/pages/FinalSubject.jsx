@@ -38,8 +38,6 @@ const FinalSubject =()=> {
                         };
                         axios(config)
                             .then(function (res3) {
-                                console.log(res3.data);
-                                console.log(sortArrayByIndex(res3.data));
                                 if(prevPrefSubjects.length===0) setPrevPrefSubjects(sortArrayByIndex(res3.data));
                                 setHasloaded(true);
                             }).catch(function (error) {
@@ -65,7 +63,6 @@ const FinalSubject =()=> {
         e.preventDefault()
         let axios = require('axios');
         let qs = require('qs');
-        console.log(prefSubjects);
         for(let i =0; i <3; i++){
             if(prefSubjects[i]!==undefined){
                 let data = qs.stringify({
@@ -85,7 +82,6 @@ const FinalSubject =()=> {
 
                 axios(config)
                     .then(function (response) {
-                        console.log(JSON.stringify(response.data));
                     })
                     .catch(function (error) {
                         console.log(error);

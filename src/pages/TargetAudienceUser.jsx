@@ -29,14 +29,12 @@ const TargetAudienceUser = () =>{
                 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
             }
         };
-        console.log("loading faculties");
         axios(config).then(function(res){
             if(faculties.length===0){
                 for(let i=0; i < res.data.length;i++){
                     setFaculties(res.data);
                 }
                 setHasLoaded(true);
-                console.log("faculties loaded");
             }
         }).catch(function (error) {
             console.log(error);
@@ -45,11 +43,9 @@ const TargetAudienceUser = () =>{
 
     const handleSubmitFaculties = async (e)=>{
         e.preventDefault();
-        console.log("processing faculties");
         //Get all educations by chosen faculty
         let axios = require('axios');
-        var data = new FormData();
-        console.log(inputFaculty.id);
+        let data = new FormData();
         data.append('facultyIds',inputFaculty.id);
         let config = {
             method: 'POST',
@@ -64,7 +60,6 @@ const TargetAudienceUser = () =>{
             if(educations.length===0){
                 setEducations(res.data);
                 setPage(2);
-                console.log(educations);
             }
         }).catch(function (error) {
             console.log(error);
@@ -76,7 +71,6 @@ const TargetAudienceUser = () =>{
 
         //Get all educations by chosen faculty
         let axios = require('axios');
-        console.log("Loading campusses");
         let data = new FormData();
         data.append('educationIds', inputEducation.id);
         let config = {
@@ -91,7 +85,6 @@ const TargetAudienceUser = () =>{
         axios(config).then(function (res) {
             if (campuses.length === 0) {
                 setCampuses(res.data);
-                console.log(campuses);
                 setPage(3);
             }
         }).catch(function (error) {
@@ -111,7 +104,6 @@ const TargetAudienceUser = () =>{
             'educationId': inputEducation.id,
             'campusId': inputCampus.id,
         });
-        console.log(data);
         let config = {
             method: 'post',
             url: backendURL + '/userManagement/users/student/addTargetAudience',
@@ -123,8 +115,6 @@ const TargetAudienceUser = () =>{
         };
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
-                console.log("TargetAudience posted");
                 setPage(4);
             })
             .catch(function (error) {
@@ -132,7 +122,6 @@ const TargetAudienceUser = () =>{
             });
     }
     const renderForm = () => {
-        console.log(page)
         if(page === 1){
             return(
                 <Container >

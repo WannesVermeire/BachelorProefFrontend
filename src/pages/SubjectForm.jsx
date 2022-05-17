@@ -55,7 +55,6 @@ const SubjectForm = () =>{
                         setTags(res.data);
                     }
                     setTagsLoaded(true);
-                    console.log("Tags loaded");
                 }
 
             })
@@ -76,10 +75,8 @@ const SubjectForm = () =>{
 
         axios(config)
             .then(function (res2) {
-                console.log("Promotors loaded");
                 setPromoters(res2.data);
                 setPromotersLoaded(true);
-                console.log(res2.data);
             })
             .catch(function (error) {
                 console.log(error);
@@ -98,9 +95,7 @@ const SubjectForm = () =>{
 
         axios(config)
             .then(function (res3) {
-                console.log("Companies loaded");
                 setCompanies(res3.data);
-                console.log(res3.data);
                 setCompaniesLoaded(true);
             })
             .catch(function (error) {
@@ -123,7 +118,6 @@ const SubjectForm = () =>{
                     setFaculties(res.data);
                 }
                 setFacultiesLoaded(true);
-                console.log("faculties loaded");
             }
         }).catch(function (error) {
             console.log(error);
@@ -143,7 +137,6 @@ const SubjectForm = () =>{
         for(let i =0; i<tagNames.length; i++){
             data.append('tagNames',tagNames[i]);
         }
-        console.log(tagNames);
         let config = {
             method: 'post',
             url: backendURL + '/subjectManagement/subjects',
@@ -156,9 +149,7 @@ const SubjectForm = () =>{
 
         axios(config)
             .then(function (res) {
-                console.log("baseSubject posted");
                 setSubjectId(res.data);
-                console.log(inputCompany);
                 if(inputCompany!==undefined){
                     let data = new FormData();
                     data.append('companyId', inputCompany.id);
@@ -174,7 +165,6 @@ const SubjectForm = () =>{
 
                     axios(config)
                         .then(function (response) {
-                            console.log(JSON.stringify(response.data));
                         })
                         .catch(function (error) {
                             console.log(error);
@@ -182,7 +172,6 @@ const SubjectForm = () =>{
                 }
                 if(inputPromoter!==undefined){
                     let data = new FormData();
-                    console.log(inputPromoter);
                     data.append('promotorId', inputPromoter.id);
 
                     let config = {
@@ -196,7 +185,6 @@ const SubjectForm = () =>{
 
                     axios(config)
                         .then(function (response) {
-                            console.log(JSON.stringify(response.data));
                         })
                         .catch(function (error) {
                             console.log(error);
@@ -223,13 +211,11 @@ const SubjectForm = () =>{
     //Target Audience post
     const handleSubmitFaculties = async (e)=>{
         e.preventDefault();
-        console.log("processing faculties");
         //Get all educations by chosen faculty
         let axios = require('axios');
         let data = new FormData();
         let facultyIds = inputFaculties.map(inputFaculties=>inputFaculties.id);
         for(let i =0; i<facultyIds.length; i++){
-            console.log(facultyIds[i]);
             data.append('facultyIds',facultyIds[i]);
         }
         let config = {
@@ -245,7 +231,6 @@ const SubjectForm = () =>{
             if(educations.length===0){
                 setEducations(res.data);
                 setPage(3);
-                console.log(educations);
             }
         }).catch(function (error) {
             console.log(error);
@@ -257,7 +242,6 @@ const SubjectForm = () =>{
 
         //Get all educations by chosen faculty
         let axios = require('axios');
-        console.log("Loading campusses");
         const educationIds = inputEducations.map(inputEducations=>inputEducations.id);
         let config;
         if(educationIds === []) {
@@ -294,7 +278,6 @@ const SubjectForm = () =>{
         axios(config).then(function(res){
             if(campuses.length===0){
                 setCampuses(res.data);
-                console.log(campuses);
                 setPage(4);
             }
         }).catch(function (error) {
@@ -317,7 +300,6 @@ const SubjectForm = () =>{
             'educationIds': educationIds,
             'campusIds': campusIds,
         }, {arrayFormat: 'repeat'});
-        console.log(data);
         let config = {
             method: 'post',
             url: backendURL + '/subjectManagement/subjects/' + subjectId + '/addTargetAudience',
@@ -330,8 +312,6 @@ const SubjectForm = () =>{
 
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
-                console.log("TargetAudience posted");
                 setPage(5);
             })
             .catch(function (error) {
@@ -339,7 +319,6 @@ const SubjectForm = () =>{
     }
 
     const renderForm = () => {
-        console.log(page)
         if(page === 1){
             return(
                 <Container style={{textAlign:"left"}} fluid="sm"  >

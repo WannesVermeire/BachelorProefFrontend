@@ -35,19 +35,16 @@ class RegisterCompany extends Component{
         };
         axios(config)
             .then(function (res) {
-                console.log(res.data);
                 self.setState({contacts: res.data});
             }).catch(function (error) {
         });
     }
 
     handleSubmit = (e) =>{
-        console.log(this.state);
         e.preventDefault()
         let axios = require('axios');
         let FormData = require('form-data');
         let data = qs.stringify(this.state.company);
-        console.log(data);
         let config = {
             method: 'post',
             url: backendURL + '/userManagement/company',
@@ -74,7 +71,6 @@ class RegisterCompany extends Component{
 
                 axios(config)
                     .then(function (response) {
-                        console.log(JSON.stringify(response.data));
                         self.setState({done: true})
                     })
                     .catch(function (error) {

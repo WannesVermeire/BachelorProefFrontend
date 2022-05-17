@@ -29,14 +29,13 @@ const TargetAudienceSubject = () =>{
                 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('access_token'))
             }
         };
-        console.log("loading faculties");
+
         axios(config).then(function(res){
             if(faculties.length===0){
                 for(let i=0; i < res.data.length;i++){
                     setFaculties(res.data);
                 }
                 setHasLoaded(true);
-                console.log("faculties loaded");
             }
         }).catch(function (error) {
             console.log(error);
@@ -45,13 +44,11 @@ const TargetAudienceSubject = () =>{
 
     const handleSubmitFaculties = async (e)=>{
         e.preventDefault();
-        console.log("processing faculties");
         //Get all educations by chosen faculty
         let axios = require('axios');
         let data = new FormData();
         let facultyIds = inputFaculties.map(inputFaculties=>inputFaculties.id);
         for(let i =0; i<facultyIds.length; i++){
-            console.log(facultyIds[i]);
             data.append('facultyIds',facultyIds[i]);
         }
         let config = {
@@ -67,7 +64,6 @@ const TargetAudienceSubject = () =>{
             if(educations.length===0){
                 setEducations(res.data);
                 setPage(2);
-                console.log( res.data);
             }
         }).catch(function (error) {
             console.log(error);
@@ -115,7 +111,6 @@ const TargetAudienceSubject = () =>{
         axios(config).then(function (res) {
             if (campuses.length === 0) {
                 setCampuses(res.data);
-                console.log(campuses);
                 setPage(3);
             }
         }).catch(function (error) {
@@ -139,7 +134,6 @@ const TargetAudienceSubject = () =>{
             'educationIds': educationIds,
             'campusIds': campusIds,
         }, {arrayFormat: 'repeat'});
-        console.log(data);
         let config = {
             method: 'post',
             url: backendURL + '/subjectManagement/subjects/' + id + '/addTargetAudience',
@@ -151,8 +145,6 @@ const TargetAudienceSubject = () =>{
         };
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
-                console.log("TargetAudience posted");
                 setPage(4);
             })
             .catch(function (error) {
@@ -160,7 +152,6 @@ const TargetAudienceSubject = () =>{
             });
     }
     const renderForm = () => {
-        console.log(page)
         if(page === 1){
             return(
                 <Container >
